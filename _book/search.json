@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "IDB SS23 Solutions & Notes",
     "section": "",
-    "text": "IDB SS 23 Loesungen & Notizen\nLoesungen der Uebungsaufgaben und Notizen von der Vorlesung Datenbanken Sommersemester 23 Uni Heidelberg."
+    "text": "IDB SS 23 Loesungen & Notizen\nIDB SS 23 Loesungen & Notizen"
   },
   {
     "objectID": "01/blatt01.html#grundlagen-der-logik",
@@ -123,7 +123,7 @@
     "href": "05/blatt05.html#string-funktionen",
     "title": "5  SQL-Anfragen",
     "section": "5.2 String-Funktionen",
-    "text": "5.2 String-Funktionen\n\n\n\n\nselect txt \nfrom tweet\nwhere txt ilike '%openai%'\nand retweet_count &gt;= 20\n\n\nA 2.1\n\n\n\n\n\ntxt\n\n\n\n\nRT @DrScheuch: Die meisten Aerosolforscher haben damals schon sehr starke Zweifel am Sinn von Ausgangssperren geäußert, (#openairstattausgangssperre) wurden aber nicht gehört. @Karl_Lauterbach, die NoCovid Modellierer und @janoschdahmen waren die lautesten Befürworter. https://t.co/bL7QMaoyKP\n\n\nRT @_SilkeHahn: Guten Morgen: #OpenAI ist doch schon lange #ClosedAI. Seit der ersten Milliarde durch Microsoft 2019 lassen sie sich nicht mehr in die Karten schauen. @netzpolitik_org legt gekonnt den Finger in offene Wunden. Der “Technical Report” schweigt sich auf 98 https://t.co/ix1EYCAOKG… https://t.co/hAW5rbRUtH\n\n\n\n\n\n\n\n\n\nselect txt, char_length(txt) as Laenge\nfrom named_entity\nwhere char_length(txt) &gt;= all (\n    select char_length(txt)\n    from named_entity\n)\n\n\nA 2.2\n\n\ntxt\nlaenge\n\n\n\n\nArbeitsgemeinschaft Sozialdemokratischer Frauen\n47\n\n\n\n\n\n\n\n\n\nselect txt\nfrom named_entity\nwhere char_length(txt) &gt;= 4\nand txt like reverse(txt) \n\n\nA 2.3\n\n\ntxt\n\n\n\n\nDAAD\n\n\nGASAG\n\n\nCIMIC\n\n\nABBA"
+    "text": "5.2 String-Funktionen\n\n\n\n\nselect txt \nfrom tweet\nwhere txt ilike '%openai%'\nand retweet_count &gt;= 20\n\n\nA 2.1\n\n\n\n\n\ntxt\n\n\n\n\nRT @_SilkeHahn: Guten Morgen: #OpenAI ist doch schon lange #ClosedAI. Seit der ersten Milliarde durch Microsoft 2019 lassen sie sich nicht mehr in die Karten schauen. @netzpolitik_org legt gekonnt den Finger in offene Wunden. Der “Technical Report” schweigt sich auf 98 https://t.co/ix1EYCAOKG… https://t.co/hAW5rbRUtH\n\n\nRT @DrScheuch: Die meisten Aerosolforscher haben damals schon sehr starke Zweifel am Sinn von Ausgangssperren geäußert, (#openairstattausgangssperre) wurden aber nicht gehört. @Karl_Lauterbach, die NoCovid Modellierer und @janoschdahmen waren die lautesten Befürworter. https://t.co/bL7QMaoyKP\n\n\n\n\n\n\n\n\n\nselect txt, char_length(txt) as Laenge\nfrom named_entity\nwhere char_length(txt) &gt;= all (\n    select char_length(txt)\n    from named_entity\n)\n\n\nA 2.2\n\n\ntxt\nlaenge\n\n\n\n\nArbeitsgemeinschaft Sozialdemokratischer Frauen\n47\n\n\n\n\n\n\n\n\n\nselect txt\nfrom named_entity\nwhere char_length(txt) &gt;= 4\nand txt like reverse(txt) \n\n\nA 2.3\n\n\ntxt\n\n\n\n\nDAAD\n\n\nGASAG\n\n\nCIMIC\n\n\nABBA"
   },
   {
     "objectID": "05/blatt05.html#exists-operatoren",
