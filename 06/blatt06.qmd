@@ -13,7 +13,7 @@ format:
 #             \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
 ---
 
-# Blatt 6
+# Blatt 6: Rekursion, Relationale Algebra und SQL
 
 ```{r}
 #| echo: false
@@ -32,7 +32,7 @@ con2 <-
 
 *note*: html [Version](https://igor-dimi.github.io/idb-blatt06) der Abgabe (fuer die leichtere Kopierung der Code Blocks)
 
-## Aufgabe 1
+## Data Definition Language (DDL) und Rekursion in SQL
 
 1. 
 ```sql
@@ -91,7 +91,7 @@ select id
 from subcatofchordate 
 ```
 
-## Aufgabe 2 
+## Relationale Algebra und SQL
 
 1. 
   - **rel**:   $\pi_{\texttt{real\_name, tweet\_count, follower\_count}}\Bigl( \\ \sigma_{\texttt{created\_at > 01.01.2019, follower\_count > 8000, tweet\_count > 1000, like\_count > 1000}} \\(\beta_{\texttt{author\_id} \leftarrow \texttt{id}}(\texttt{twitter\_user}) \bowtie \beta_{\texttt{ca}\leftarrow\texttt{created\_at}}(\texttt{tweet})) \Bigr)$
@@ -183,7 +183,7 @@ where exists (
 ) 
 ```
 
-## Aufgabe 3
+## Regulaere Ausdruecke in SQL
 
 ```{sql, connection = "con1", tab.cap = "A 3"}
 select tu.real_name, regexp_count(t.txt, '\m[[:upper:]]{2,}\M') as cnt, t.txt
@@ -194,4 +194,22 @@ and regexp_count(t.txt, '\m[[:upper:]]{2,}\M') >= all (
 	select regexp_count(txt, '\m[[:upper:]]{2,}\M')
 	from tweet
 )
+```
+
+## Feedback
+
+```text
+Punkte: 33/33
+
+Zur Aufgabe 1:
+
+1.-3. Richtig
+
+Zur Aufgabe 2:
+
+1.-3. Richtig
+
+Zur Aufgabe 3:
+
+Geht einfacher, aber richtig.
 ```

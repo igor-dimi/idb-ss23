@@ -23,11 +23,11 @@ con1 <-
     user = "igor")
 ```
 
-# Blatt 7
+# Blatt 7: SQL und Anfragesprachen
 
 *note*: html [Version](https://igor-dimi.github.io/idb-blatt07) der Abgabe fuer leichtere Kopierung der Codeblocks.
 
-## Aufgabe 1
+## Fortgeschrittene SQL-Anfragen
 1. 
 ```{sql, connection = "con1", tab.cap = "A1.1"}
 select tu.real_name , tu.twitter_name 
@@ -93,7 +93,7 @@ order by count(*) desc
 limit 5
 ```
 
-## Aufgabe 2
+## Relationale Algebra und Tupelkalkuel
 
 1. 
   * **umg**: Was sind die echten Namen von allen Twitter Benutzern, die Lobbyisten sind, die einen Tweet mit ueber 2000 Likes veroeffentlicht haben, der die EU oder die USA erwaehnt? 
@@ -129,3 +129,10 @@ limit 5
                      &\quad\quad \texttt{hp.tweet\_id = t.id}\, \wedge \\
                      &\quad\quad \texttt{h.txt = 'chatgpt'} )\}
   \end{align*}
+
+
+## Feedback
+
+```text
+Punkte: 28/28
+```

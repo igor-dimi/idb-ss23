@@ -12,7 +12,7 @@ format:
    #          \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
 ---
 
-# Blatt 1
+# Blatt 1: Grundlagen der Relationalen Algebra
 
 ## Grundlagen der Logik
 
@@ -51,7 +51,7 @@ b)
 2. $\forall x\in T\forall y\in T: fam(x, y) \wedge le(x, y) \wedge er(x, y) \rightarrow x = y$
 3. $\forall x \in T \forall y\in T: fam(x, y) \rightarrow er(x, y)$
 
-## 1-2 Relationale Algebra
+## Relationale Algebra
 
 1. Gebe die Modelle von Flugzeugen, die so heissen, wie einer aus dem Personal.
 
@@ -114,7 +114,7 @@ b)
    | Deutschland |
 
 
-## 1-3 Datenmanagementsysteme
+## Datenmanagementsysteme
 
 a) XML und HTML basieren sich beide auf **SGML** - eine Metasprache, mit deren Hilfe man verschiedene Markup-sprachen fuer
    Dokumente definieren kann. 

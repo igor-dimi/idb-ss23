@@ -23,9 +23,9 @@ con1 <-
     user = "igor")
 ```
 
-# Blatt 8
+# Blatt 8: Physiche Datenorganisation und Baeume
 
-## Aufgabe 1
+## Seiten und Saetze
 
 1. Satzlaenge `twitter_user` 
    
@@ -82,7 +82,7 @@ Also in Wirklichkeit werden 22 Seiten gebraucht statt 17 Seiten. D.h. mehr Speic
   * Special-/Free Space in Pages
   * Optionalen Zusatzelementen wie Null Bitmap in den Tuples
 
-## Aufgabe 2
+## B-Baeume
 
 1. B-Baum 1.1 @fig-a2-1
 
@@ -92,7 +92,7 @@ Also in Wirklichkeit werden 22 Seiten gebraucht statt 17 Seiten. D.h. mehr Speic
 
 ![B-Baum: A2.1](imgs/A2.2.png){#fig-a2-2}
 
-## Aufgabe 3
+## $\text{B}^{+}$-Baeume
 
 1. B+-Baum 3.1 @fig-a3-1
 
@@ -101,3 +101,36 @@ Also in Wirklichkeit werden 22 Seiten gebraucht statt 17 Seiten. D.h. mehr Speic
 2. Die Elemente in der sortierten Reihenfolge in den B+ Baum einfuegen, aber nicht durch ein normales Insert, sondern direkt an das
 Blatt ganz rechts einfuegen. Dadurch spart man sich die look-up Operation $\mathcal{O}(\log_m(n))$ des insert, die ein groeseres
 Element als die bisherigen sowieso ganz rechts in Baum ablegen wuerde. 
+
+## Feedback
+
+```text
+Punkte: 19.5/24.0
+- A1: 5.0/8.0
+- A2: 6.5/8.0
+- A3: 8.0/8.0          
+
+Zur Aufgabe 1:
+
+1. typ hat Länge 4, da enum => -0.5 P.
+
+2. Tupel Header richtig, Attribut-Größe fehlt => -0.5 P.
+
+3. So war die Aufgabe nicht gemeint, man sollte aus den Werten der 1. und 2. das Ausrechnen => -2 P.
+
+4. Richtig
+
+Zur Aufgabe 2:
+
+1. Richtig 2. Beide Varianten nicht ganz richtig:
+
+Grundstruktur teilweise richtig: Links sehr nah an ML man müsste nur 43 und 37 tauschen (der angesprochene Leichtsinnsfehler), rechts bei Löschen eines Nicht-Blattknotens wird Element durch (längen-)lexikographisch nächst kleineres Element ersetzt, in diesem Fall die 47. Ab dann ändert sich logischerweise auch euer Baum im Vergleich zur ML.
+
+ => -1.5 P.
+
+Zur Aufgabe 3:
+
+1. Diese Woche war die ML falsch, deswegen habe ich hier einen Fehler beim Korrigieren gemacht. Nur Ma zu M wäre schön.
+
+2. Habe ich übersehen, ist richtig.
+```

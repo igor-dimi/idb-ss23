@@ -1,0 +1,161 @@
+---
+author:
+    - Jacob Rose
+    - Jonathan Barthelms
+    - Igor Dimitrov
+highlight-style: atom-one
+format:
+   pdf:
+      include-in-header: 
+         - text: |
+            \usepackage{fvextra} 
+            \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+```{r}
+#| echo: false
+library(RPostgres)
+con1 <- 
+    dbConnect(RPostgres::Postgres(),
+    dbname = "TwitterDB",
+    host = "localhost",
+    user = "igor")
+```
+
+# Blatt 10: Anfragebearbeitung
+
+## Join-Strategien
+
+1. cost: $b_r + \lceil\frac{b_{r}}{\text{mem} - 1}\rceil\times b_{s}$  
+   R: 115000 Tupel, 30 pro Seite $\Rightarrow$ 3834 Seiten  
+   S: 22500 Tupel, 100 pro Seite $\Rightarrow$ 225 Seiten  
+   mem = 70  
+
+   Somit: $\text{cost} = 225 + \lceil\frac{225}{69}\rceil\times 3834 = 15561$
+
+   Kosten sind minimal g.d.w. $b_r$ Komplett in dem Speicher passt und noch eine
+   Seite frei ist fuer $b_s \Rightarrow 226$:
+
+   $$
+   \text{cost} = 225 + \lceil\frac{225}{226 - 1}\rceil\cdot 3834 = 4059
+   $$
+
+2. cost: $b_r + p \cdot b_s$ mit $p = \lceil\frac{b_r}{\text{mem} - 1}\rceil$  
+   $\Rightarrow$ Kosten gleich wie Block-Nested-Loop.
+
+3. Da die Formeln zu Berechnung gleich sind, sind beide Algorithmen gleich optimal
+   bei einer RAM-Groesse von 226 Sieten. (Kosten wie in 1.)
+
+4. Y ist primary-key von S $\Rightarrow$ alle Werte sind Unique.
+   D.h. ein tupel in R kann mit max **einem** Tupel aus S matchen **aber**
+   ein Tupel aus S kann maximal mit allen Tupel aus R matchen. 
+
+   D.h. maximal: 115000 Tupel wenn alle aus R matchen. 
+
+   R: 30 Tupel Pro Seite,  
+   S: 100 Tupel pro Seite,  
+   S + R = ?
+
+   \begin{align*}
+   &r \in R, s \in S, p := \text{Seite}\\
+   &30r = p \iff r = \frac{1}{30}p \\
+   &100s = p \iff s = \frac{1}{100} \\
+   &x(s + r) = p \\
+   \Rightarrow  &x(\frac{1}{30}p + \frac{1}{100}p)  = p \\
+   \iff &x\frac{13p}{300} = p \\
+   \iff  &x \approx 23,07 \approx 23 \text{Tupel} \tag{Annahme: nicht-Spannsaetze}
+   \end{align*}
+
+   Somit: $\frac{115000\text{ Tupel}}{23\frac{\text{Tupel}}{\text{Seite}}} = 5000 \text{ Seiten}$
+   
+## Algebraische Optimierung
+
+1. 
+   ```{sql, connection = "con1", tab.cap = "A2.1"}
+   select tu.real_name, tw.txt
+   from 
+      tweet tw, 
+      named_entity ne, 
+      named_entity_posting nep,
+      twitter_user tu
+   where tw.author_id = tu.id
+      and nep.tweet_id = tw.id
+      and nep.named_entity_id = ne.id
+      and tw.created_at > '2022-04-15'
+      and tw.like_count > 6000
+      and ne.txt like 'Berlin'
+      and tu.created_at < '2015-01-01'
+   ```
+
+2. 
+   \begin{align*}
+   & \pi_{\texttt{tu.real\_name, tw.txt}} \Biggl( \\
+   & \quad\quad\sigma_{\substack{\texttt{nep.tweet\_id = tw.id } \wedge \texttt{ tw.author\_id = tu.id} \wedge \\
+      \texttt{nep.named\_entity\_id = ne.id } \wedge \texttt{ tw.created\_at > '15.04.2022'} \wedge \\
+      \texttt{tw.like\_count } > 6000 \wedge \texttt{ ne.txt like 'Berlin'} \\ 
+      \texttt{tu.created\_at < '01.01.2015'}}} \\ 
+   & \quad\quad\quad \Bigl(\beta_\texttt{tw}(\texttt{tweet}) \times \beta_{\texttt{ne}}(\texttt{named\_entity}) \\
+   & \quad\quad\quad\quad\quad \times \beta_{\texttt{nep}}(\texttt{named\_entity\_posting}\times\beta_{\texttt{tu}}(\texttt{twitter\_user})
+      \Bigr) \\
+   &\Biggr)
+   \end{align*}
+
+3. Siehe @fig-a2-3
+4. Siehe @fig-a2-4
+
+::: {layout-ncol=2}
+![A2.3: nicht optimiert](imgs/A2.3.png){#fig-a2-3}
+
+![A2.4: optimiert](imgs/A2.4.png){#fig-a2-4}
+:::
+<!-- 
+3. A2.3 Operatorbaum nicht optimiert @fig-a2-3
+
+   ![A2.3](imgs/A2.3.png){#fig-a2-3}
+
+4. A2.4 Operatorbaum optimiert @fig-a2-4
+
+   ![A2.4](imgs/A2.4.png){#fig-a2-4} -->
+
+5. Operatorbaum mit pgadmin explain @fig-a2-5
+   
+   ![pgadmin explain](imgs/explain.png){#fig-a2-5}
+
+   Der Operatorbaum i.A. aehnlich zu dem Operatorbaum aus 4), in dem Sinne
+   das 1. Die Selektionen ebenfalls nach unten geschoben wurden und immer **vor**
+   den join-Operationen stehen. Denn wir haben hier ausserdem keine Krezuprodukte, 
+   sondern 2. alle Kreuzprodukte wurden durch joins ersetzt.
+
+   Spannend it ausserdem, dass hier ein richtiger Anfrageplan vorliegt, da joins/scans
+   genau definiert wurden (index-scan, hash inner join, ...). 
+
+   Darueber hinaus ist die join Reihenfolge anders: Da die Seletion ueber der Relation 
+   `named_entity` nur ein Ergebnis liefert, steht diese ganz unten und haelt alle
+   Folgeergebnisse schlank. (Alle joins machen nur einen loop. Steht wenn man auf die
+   joins klickt)
+
+## Feedback
+
+```text
+Punkte: 18.0/23.0
+- A1: 7.0/11.0
+- A2: 11.0/12.0
+
+Rose, Dimitrov, Barthelmes
+
+Aufgabe 1:
+
+3. Naja, es wird ja nicht nach dem optimalen Algorithmus *aus 1 oder 2* gefragt, sondern nach dem optimalen Algorithmus überhaupt
+4. Falsche Formeln, falsches Ergebnis
+
+7/11 Punkte
+
+Aufgabe 2:
+
+wo textdatei
+3. Es fehlen die Projektionen nach den notwendigen Attributen
+
+10/12 Punkte
+
+Insgesamt 17/23 Punkte
+```

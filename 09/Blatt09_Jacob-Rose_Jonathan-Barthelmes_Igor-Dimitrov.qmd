@@ -1,0 +1,132 @@
+---
+author: 
+  - Jonathan Barthelmes
+  - Igor Dimitrov
+  - Jacob Rose
+highlight-style: atom-one
+format:
+   pdf:
+      include-in-header: 
+         - text: |
+            \usepackage{fvextra} 
+            \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+# Blatt 9: Hashing, Indexzugriffe und Sortierung
+
+## Erweitarbares Hashing
+
+1. Einfuegen der Woerter des Limerick
+   a. 
+
+    | h   | bucket      |
+    | --- | ----------- |
+    | 00  | Who, feared |
+    | 10  | Man, said   |
+    | 01  | beard       |
+    | 11  | Old         |
+
+   b. 
+
+    | h   | bucket       |
+    | --- | ------------ |
+    | 000 | hen, four    |
+    | 001 | who, feared  |
+    | 10* | man, said    |
+    | 010 | beard, built |
+    | 011 | owls, wren   |
+    | 110 | larks, nests |
+    | 111 | old, two     |
+
+2. Loeschen der Woerter
+
+| h   | bucket      |
+| --- | ----------- |
+| 000 | hen, four   |
+| 001 | who, feared |
+| 10* | man, said   |
+| 010 | built       |
+| 011 | wren        |
+| 110 | larks       |
+| 111 | ---         |
+
+Der Bucket fuer 111 ist leer und 010 bis 110 sind nur halbvoll. 
+Somit wird die Spercherzelle vom Bucket 111 unnoetig reserviert / blockiert, 
+und die Tabelle ist unausgeglichen
+
+Eine Loesung waere \`\`Buckets zu verkleinern" also zwei Buckets der lokalen tiefe $t$
+zu einem bucket der tiefe $t - 1$ zusammenzufassen, wenn \`\`zu wenig" Elemente dort enthalten
+sind bzw. die Buckets leer sind.
+
+Ein Vorteil hiervon waere eine hoehere Speichereffizienz. 
+Ein Nachteil der erhoehte Aufwand durch pruefen der Fuellmenge, mehr Kopieren, etc.
+Ausserdem koennte es zu vielen Kopier-operationen kommen, bei unguenstigen
+Einfuege-/Loeschoperationen. (Wiederholtes loeschen \& einfuegen auf **einen** Bucket). 
+
+
+
+
+
+## Sortierung
+
+a. 25.000 Bloecke, 48 Bloecke im HS
+    1. $\frac{25000}{48} \approx 521$
+    2. $\lceil\log_{47}(521)\rceil \approx 1,625 \approx 2$
+    3. $2 \cdot 25000 \cdot (1 + 2) = 150000$
+    4. passt bereits. 
+
+b. 24,000,000 Bloecke Relation, 64 Bloecke im HS
+    1. Anzahl der Partitionen: $\frac{24 000 000}{64} = 375 000$
+    2. $\lceil\log_{63}{375 000}\rceil = 4$
+    3. 
+        \begin{align*}
+        2 \cdot 24.000.000 \cdot (1 + \lceil\log_{63}{375 000}) &= 2 \cdot 24.000.000\cdot (1 + 4) \\
+                                                                &= 5 \cdot 2 \cdot 24.000.000 \\
+                                                                &= 240.000.000
+        \end{align*}
+    4. 
+        \begin{align*}
+        \log_{x}{\frac{24 \cdot 10^6}{x}} = 2 \iff & x^2 = \frac{24 \cdot 10^6}{x} \\
+                                                   & x^3 = 24 \cdot 10^6 \tag{Mult $x$} \\
+                                                   & x = \sqrt[3]{24\cdot 10^6} \tag{$\sqrt[3]{\bullet}$} \\
+                                                   & x \approx 289
+        \end{align*}
+
+
+## Zugriffmethoden
+
+1. b\) ist effizienter. Nur Tupel mit $d \in [0, 500)$ Kommen fuer die Ergebnisrelation in Frage.
+   Dies laesst sich schnell mit $\text{B}^{+}\text{-Baum}$ ausgeben, schneller als 7,8 mill Tupel
+   zu scannen. 
+
+2. a\) ist effektiver, denn es werden auf jeden Fall alle Elemente ausgegeben ausser $d = 1000000$.
+   Fuer dieses muss gepreuft werden ob $y > 42 \wedge y < 50$. Aber weil eh so gut wie alle Elemente
+   ausgegeben werden macht Index-zugriff keinen Sinn.
+
+3. Gesuch sind mindestens alle Tupel $t$ mit $d \in [7100000, 7150000)$. Dies laesst sich gut mit
+   $\text{B}^{+}\text{-Baum}$ abfragen. Deshalb b\).
+
+4. Hier lohng es sich weider mit dem $\text{B}^{+}\text{-Baum}$ eine Vorauswahl an Elementen zu machen,
+   da $d \in I_{1}[0, 100] \vee d \in I_{2}[8800, 9000) \vee d\in I_{3}[7000000, 7001000)$ ein wesentlich
+   kleinerer Wertebereich ist als die komplette Relation. 
+
+## Feedback
+
+```text
+Punkte 24.0/28.0
+- A1: 10.0/10.0
+- A2: 8.0/10.0
+- A3: 6.0/10.0
+
+Zur Aufgabe 1:
+
+1.-2. Richtig
+
+Zur Aufgabe 2:
+
+1. Richtig 2. Richtig 3. Richtig 4. a) Trotzdem solltet ihr ausrechnen, wie viele Blöcke benötigt werden b) Es wird noch ein weiterer Block zum Sortieren benötigt => -2 P.
+
+Zur Aufgabe 3:
+
+1. Falsch, da Tupel bereits sortiert sind => -2 P. 2. Richtig 3. Richtig 4. Richtig
+```

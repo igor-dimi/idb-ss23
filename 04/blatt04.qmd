@@ -7,9 +7,9 @@ author:
 
 \newcommand{\ttt}[1]{\texttt{#1}}
 
-# Blatt 4
+# Blatt 4: Uebersetzung ER-Schema in Relationenschemata
 
-## Aufgabe 1
+## Uebersetzung eines ER-Schemas
 
 * $\texttt{Addresse}(\underline{\texttt{Ad\_ID}}\texttt{,}\, \texttt{PLZ, Stadt, Strasse, Hausnr})$
 * $\ttt{MusikerIn}(\underline{\texttt{M\_ID}}, \texttt{Name, Geb\_Datum, Ad\_ID \(\rightarrow\) Addresse)}$
@@ -21,7 +21,7 @@ author:
 * $\ttt{spielt\_mit}(\underline{\texttt{M\_ID\(\rightarrow\)MusikerIn, MS\_ID\(\rightarrow\)Musikstueck}})$
 
 
-## Aufgabe 2
+## Uebersetzung eines ER-Schemas mit Hierarchien
 
 
 1. *Relationales Schema*
@@ -44,3 +44,24 @@ iii) * **Vorteil**: Vermindernde Komplexitaet des Datenbanks durch kleinere Anza
      * **Nachteil**: Moegliche Inkonsitenzen durch den vielen Nullwerten, die von dem Nutzer bei Insertoperationen explizit als null gesetzt werden muessen.
 
 
+## Feedback
+
+```text
+Punkte: 26/28
+
+Zur Aufgabe 1:
+
+Bei Fremdschlüsselverweisen auf Relationen (z.B. in MusikerIn bitte sowas wie wohnt->Adresse) schreiben => -2P.
+
+Rest der 1. passt.
+
+Zur Aufgabe 2:
+
+Zur 1:
+
+Passt alles.
+
+Zur 2:
+
+Ebenfalls.
+```

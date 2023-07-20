@@ -16,9 +16,9 @@ format:
 \newcommand{\sk}[1] {\substack{#1}}
 \newcommand{\bwt}{\bowtie}
 
-# Blatt 2
+# Blatt 2: Relationale Algebra und SQL
 
-## Aufgabe 1
+## Relationale Algebra - Fortsetzung
 
 
 1. $\pi_{\sk{\tw{pid, Name}}}\bigl(\sigma_{\sk{\tw{Rolle="Pilot"},\\ \tw{Reichweite}\geq 15000}}(\tw{Personal} 
@@ -49,7 +49,7 @@ format:
 \Bigr)$ -->
 
 
-## Aufgabe 2
+## SQL-Anfragen
 
 
 
@@ -156,7 +156,7 @@ format:
                 {A: r, R1.B: gruen, R2.B: gelb,  C: 7}}
 
 
-## Aufgabe 3
+## Entsprechungen in SQL und der relationalen Algebra
 
 1. Die Anfragen entsprechen sich liefern jedoch nicht das gleiche Ergebniss, da der SQL-Ausdruck Duplikate zulaesst, waehrend bei der
    relationalen Abfrage die Duplikate entfernt werden. 
@@ -173,7 +173,7 @@ format:
    Somit sind die beiden Anfragen Aequivalent
 
 
-## Aufgabe 4
+## ER-Modell
 
 See the diagrams 
 

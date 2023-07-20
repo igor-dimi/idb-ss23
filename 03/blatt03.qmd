@@ -4,16 +4,16 @@ author:
     - Jacob Rose
     - Igor Dimitrov
 ---
-# Blatt 3
+# Blatt 3: ER-Modellierung
 
-## Aufgabe 1
+## ER-Modellierung: Staedte
 
 **ER-Schema: Stadt**
 
 ![ER-Schema: Stadt](imgs/dia/a1.png)
 
 
-## Aufgabe 2
+## ER-Modellierung: Filmstudio-Datenbank
 
 1. ER-Schema @fig-a2
 
@@ -31,3 +31,9 @@ author:
    b) Eine neue Entitaet "**Genre**" einfuehren, und "arbeitet-in" Beziehungen zwischen Regisseur-Genre, und zwischen Schauspieler-Genre modellieren:
 
    ![Alternative Modellierung](imgs/dia/a2-3.png){width=50%}
+
+## Feedback
+
+```text
+Punkte: 29.0/30
+```
