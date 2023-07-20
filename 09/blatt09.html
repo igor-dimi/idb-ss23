@@ -6,11 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jonathan Barthelmes">
 <meta name="author" content="Igor Dimitrov">
 <meta name="author" content="Jacob Rose">
-<meta name="author" content="Jonathan Barthelmes">
 
-<title>IDB SS23 Solutions &amp; Notes</title>
+<title>IDB SS23 Solutions &amp; Notes - 9&nbsp; Hashing, Indexzugriffe und Sortierung</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -26,23 +26,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./01/blatt01.html" rel="next">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../10/blatt10.html" rel="next">
+<link href="../08/blatt08.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -64,8 +65,10 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-sidebar floating">
@@ -77,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">IDB SS 23 Loesungen &amp; Notizen</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../01/blatt01.html">Loesungen</a></li><li class="breadcrumb-item"><a href="../09/blatt09.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hashing, Indexzugriffe und Sortierung</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -92,7 +95,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">IDB SS23 Solutions &amp; Notes</a> 
+      <a href="../">IDB SS23 Solutions &amp; Notes</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -104,7 +107,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">IDB SS 23 Loesungen &amp; Notizen</span></a>
   </div>
 </li>
@@ -119,61 +122,61 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01/blatt01.html" class="sidebar-item-text sidebar-link">
+  <a href="../01/blatt01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Grundlagen der Relationalen Algebra</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02/blatt02.html" class="sidebar-item-text sidebar-link">
+  <a href="../02/blatt02.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Relationale Algebra und SQL</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03/blatt03.html" class="sidebar-item-text sidebar-link">
+  <a href="../03/blatt03.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">ER-Modellierung</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04/blatt04.html" class="sidebar-item-text sidebar-link">
+  <a href="../04/blatt04.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Uebersetzung ER-Schema in Relationenschemata</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05/blatt05.html" class="sidebar-item-text sidebar-link">
+  <a href="../05/blatt05.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">SQL-Anfragen</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06/blatt06.html" class="sidebar-item-text sidebar-link">
+  <a href="../06/blatt06.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Rekursion, Relationale Algebra und SQL</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./07/blatt07.html" class="sidebar-item-text sidebar-link">
+  <a href="../07/blatt07.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">SQL und Anfragesprachen</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./08/blatt08.html" class="sidebar-item-text sidebar-link">
+  <a href="../08/blatt08.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Physiche Datenorganisation und Baeume</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./09/blatt09.html" class="sidebar-item-text sidebar-link">
+  <a href="../09/blatt09.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hashing, Indexzugriffe und Sortierung</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./10/blatt10.html" class="sidebar-item-text sidebar-link">
+  <a href="../10/blatt10.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Anfragebearbeitung</span></span></a>
   </div>
 </li>
@@ -193,7 +196,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#idb-ss-23-loesungen-notizen" id="toc-idb-ss-23-loesungen-notizen" class="nav-link active" data-scroll-target="#idb-ss-23-loesungen-notizen">IDB SS 23 Loesungen &amp; Notizen</a></li>
+  <li><a href="#erweitarbares-hashing" id="toc-erweitarbares-hashing" class="nav-link active" data-scroll-target="#erweitarbares-hashing"><span class="header-section-number">9.1</span> Erweitarbares Hashing</a></li>
+  <li><a href="#sortierung" id="toc-sortierung" class="nav-link" data-scroll-target="#sortierung"><span class="header-section-number">9.2</span> Sortierung</a></li>
+  <li><a href="#zugriffmethoden" id="toc-zugriffmethoden" class="nav-link" data-scroll-target="#zugriffmethoden"><span class="header-section-number">9.3</span> Zugriffmethoden</a></li>
+  <li><a href="#feedback" id="toc-feedback" class="nav-link" data-scroll-target="#feedback"><span class="header-section-number">9.4</span> Feedback</a></li>
   </ul>
 </nav>
     </div>
@@ -202,7 +208,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">IDB SS23 Solutions &amp; Notes</h1>
+<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hashing, Indexzugriffe und Sortierung</span></h1>
 </div>
 
 
@@ -212,9 +218,9 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Authors</div>
     <div class="quarto-title-meta-contents">
+             <p>Jonathan Barthelmes </p>
              <p>Igor Dimitrov </p>
              <p>Jacob Rose </p>
-             <p>Jonathan Barthelmes </p>
           </div>
   </div>
     
@@ -225,9 +231,179 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="idb-ss-23-loesungen-notizen" class="level1 unnumbered">
-<h1 class="unnumbered">IDB SS 23 Loesungen &amp; Notizen</h1>
-<p>IDB SS 23 Loesungen &amp; Notizen</p>
+<section id="erweitarbares-hashing" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="erweitarbares-hashing"><span class="header-section-number">9.1</span> Erweitarbares Hashing</h2>
+<ol type="1">
+<li>Einfuegen der Woerter des Limerick
+<ol type="a">
+<li></li>
+</ol>
+<table class="table">
+<thead>
+<tr class="header">
+<th>h</th>
+<th>bucket</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>00</td>
+<td>Who, feared</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Man, said</td>
+</tr>
+<tr class="odd">
+<td>01</td>
+<td>beard</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td>Old</td>
+</tr>
+</tbody>
+</table>
+<ol start="2" type="a">
+<li></li>
+</ol>
+<table class="table">
+<thead>
+<tr class="header">
+<th>h</th>
+<th>bucket</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>000</td>
+<td>hen, four</td>
+</tr>
+<tr class="even">
+<td>001</td>
+<td>who, feared</td>
+</tr>
+<tr class="odd">
+<td>10*</td>
+<td>man, said</td>
+</tr>
+<tr class="even">
+<td>010</td>
+<td>beard, built</td>
+</tr>
+<tr class="odd">
+<td>011</td>
+<td>owls, wren</td>
+</tr>
+<tr class="even">
+<td>110</td>
+<td>larks, nests</td>
+</tr>
+<tr class="odd">
+<td>111</td>
+<td>old, two</td>
+</tr>
+</tbody>
+</table></li>
+<li>Loeschen der Woerter</li>
+</ol>
+<table class="table">
+<thead>
+<tr class="header">
+<th>h</th>
+<th>bucket</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>000</td>
+<td>hen, four</td>
+</tr>
+<tr class="even">
+<td>001</td>
+<td>who, feared</td>
+</tr>
+<tr class="odd">
+<td>10*</td>
+<td>man, said</td>
+</tr>
+<tr class="even">
+<td>010</td>
+<td>built</td>
+</tr>
+<tr class="odd">
+<td>011</td>
+<td>wren</td>
+</tr>
+<tr class="even">
+<td>110</td>
+<td>larks</td>
+</tr>
+<tr class="odd">
+<td>111</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Der Bucket fuer 111 ist leer und 010 bis 110 sind nur halbvoll. Somit wird die Spercherzelle vom Bucket 111 unnoetig reserviert / blockiert, und die Tabelle ist unausgeglichen</p>
+<p>Eine Loesung waere ``Buckets zu verkleinern” also zwei Buckets der lokalen tiefe <span class="math inline">\(t\)</span> zu einem bucket der tiefe <span class="math inline">\(t - 1\)</span> zusammenzufassen, wenn ``zu wenig” Elemente dort enthalten sind bzw. die Buckets leer sind.</p>
+<p>Ein Vorteil hiervon waere eine hoehere Speichereffizienz. Ein Nachteil der erhoehte Aufwand durch pruefen der Fuellmenge, mehr Kopieren, etc. Ausserdem koennte es zu vielen Kopier-operationen kommen, bei unguenstigen Einfuege-/Loeschoperationen. (Wiederholtes loeschen &amp; einfuegen auf <strong>einen</strong> Bucket).</p>
+</section>
+<section id="sortierung" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="sortierung"><span class="header-section-number">9.2</span> Sortierung</h2>
+<ol type="a">
+<li>25.000 Bloecke, 48 Bloecke im HS
+<ol type="1">
+<li><span class="math inline">\(\frac{25000}{48} \approx 521\)</span></li>
+<li><span class="math inline">\(\lceil\log_{47}(521)\rceil \approx 1,625 \approx 2\)</span></li>
+<li><span class="math inline">\(2 \cdot 25000 \cdot (1 + 2) = 150000\)</span></li>
+<li>passt bereits.</li>
+</ol></li>
+<li>24,000,000 Bloecke Relation, 64 Bloecke im HS
+<ol type="1">
+<li>Anzahl der Partitionen: <span class="math inline">\(\frac{24 000 000}{64} = 375 000\)</span></li>
+<li><span class="math inline">\(\lceil\log_{63}{375 000}\rceil = 4\)</span></li>
+<li><span class="math display">\[\begin{align*}
+2 \cdot 24.000.000 \cdot (1 + \lceil\log_{63}{375 000}) &amp;= 2 \cdot 24.000.000\cdot (1 + 4) \\
+                                                         &amp;= 5 \cdot 2 \cdot 24.000.000 \\
+                                                         &amp;= 240.000.000
+\end{align*}\]</span></li>
+<li><span class="math display">\[\begin{align*}
+\log_{x}{\frac{24 \cdot 10^6}{x}} = 2 \iff &amp; x^2 = \frac{24 \cdot 10^6}{x} \\
+                                            &amp; x^3 = 24 \cdot 10^6 \tag{Mult $x$} \\
+                                            &amp; x = \sqrt[3]{24\cdot 10^6} \tag{$\sqrt[3]{\bullet}$} \\
+                                            &amp; x \approx 289
+\end{align*}\]</span></li>
+</ol></li>
+</ol>
+</section>
+<section id="zugriffmethoden" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="zugriffmethoden"><span class="header-section-number">9.3</span> Zugriffmethoden</h2>
+<ol type="1">
+<li><p>b) ist effizienter. Nur Tupel mit <span class="math inline">\(d \in [0, 500)\)</span> Kommen fuer die Ergebnisrelation in Frage. Dies laesst sich schnell mit <span class="math inline">\(\text{B}^{+}\text{-Baum}\)</span> ausgeben, schneller als 7,8 mill Tupel zu scannen.</p></li>
+<li><p>a) ist effektiver, denn es werden auf jeden Fall alle Elemente ausgegeben ausser <span class="math inline">\(d = 1000000\)</span>. Fuer dieses muss gepreuft werden ob <span class="math inline">\(y &gt; 42 \wedge y &lt; 50\)</span>. Aber weil eh so gut wie alle Elemente ausgegeben werden macht Index-zugriff keinen Sinn.</p></li>
+<li><p>Gesuch sind mindestens alle Tupel <span class="math inline">\(t\)</span> mit <span class="math inline">\(d \in [7100000, 7150000)\)</span>. Dies laesst sich gut mit <span class="math inline">\(\text{B}^{+}\text{-Baum}\)</span> abfragen. Deshalb b).</p></li>
+<li><p>Hier lohng es sich weider mit dem <span class="math inline">\(\text{B}^{+}\text{-Baum}\)</span> eine Vorauswahl an Elementen zu machen, da <span class="math inline">\(d \in I_{1}[0, 100] \vee d \in I_{2}[8800, 9000) \vee d\in I_{3}[7000000, 7001000)\)</span> ein wesentlich kleinerer Wertebereich ist als die komplette Relation.</p></li>
+</ol>
+</section>
+<section id="feedback" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="feedback"><span class="header-section-number">9.4</span> Feedback</h2>
+<pre class="text"><code>Punkte 24.0/28.0
+- A1: 10.0/10.0
+- A2: 8.0/10.0
+- A3: 6.0/10.0
+
+Zur Aufgabe 1:
+
+1.-2. Richtig
+
+Zur Aufgabe 2:
+
+1. Richtig 2. Richtig 3. Richtig 4. a) Trotzdem solltet ihr ausrechnen, wie viele Blöcke benötigt werden b) Es wird noch ein weiterer Block zum Sortieren benötigt =&gt; -2 P.
+
+Zur Aufgabe 3:
+
+1. Falsch, da Tupel bereits sortiert sind =&gt; -2 P. 2. Richtig 3. Richtig 4. Richtig</code></pre>
 
 
 </section>
@@ -468,10 +644,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../08/blatt08.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Physiche Datenorganisation und Baeume</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./01/blatt01.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Grundlagen der Relationalen Algebra</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../10/blatt10.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Anfragebearbeitung</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
