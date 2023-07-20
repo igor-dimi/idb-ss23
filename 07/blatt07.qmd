@@ -1,0 +1,131 @@
+---
+author: 
+  - Jonathan Barthelmes
+  - Igor Dimitrov
+  - Jacob Rose
+highlight-style: atom-one
+format:
+  html: default
+  #  pdf:
+  #     include-in-header: 
+  #        - text: |
+  #           \usepackage{fvextra} 
+  #           \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+```{r}
+#| echo: false
+library(RPostgres)
+con1 <- 
+    dbConnect(RPostgres::Postgres(),
+    dbname = "TwitterDB",
+    host = "localhost",
+    user = "igor")
+```
+
+# Blatt 7
+
+*note*: html [Version](https://igor-dimi.github.io/idb-blatt07) der Abgabe fuer leichtere Kopierung der Codeblocks.
+
+## Aufgabe 1
+1. 
+```{sql, connection = "con1", tab.cap = "A1.1"}
+select tu.real_name , tu.twitter_name 
+from twitter_user tu 
+where tu.typ = 'politician'
+and exists (
+	select *
+	from twitter_user tu2 
+	where tu2.twitter_name <> tu.twitter_name 
+	and tu2.real_name = tu.real_name 
+)
+```
+2. 
+```{sql, connection = "con1", tab.cap = "A1.2"}
+select 
+	tu.real_name real_name,
+	tu.twitter_name twitter_name,
+	tu.follower_count follower_count,
+	tu.tweet_count tweet_count,
+	array_length(c.tweets, 1) conversation_length
+from tweet t, conversation c, twitter_user tu 
+where t.id = c.id
+and tu.id = t.author_id 
+and array_length(c.tweets, 1) >= all (
+	select array_length(c2.tweets, 1)
+	from conversation c2
+)
+```
+3. 
+```{sql, connection = "con1", tab.cap = "A1.3"}
+select ne.txt, ne.id, count(*)
+from 
+	tweet t, 
+	hashtag_posting hp, 
+	hashtag h, 
+	named_entity ne,
+	named_entity_posting nep 
+where t.id = hp.tweet_id 
+and hp.hashtag_id = h.id 
+and h.txt ilike 'energie'
+and nep.tweet_id = t.id
+and nep.named_entity_id = ne.id
+group by ne.txt, ne.id
+having count(*) >= 4
+order by count(*) desc
+```
+
+4. 
+```{sql, connection = "con1", tab.cap = "A1.4"}
+select
+	ne.id entity_id,
+	ne.txt entity_txt,
+	date(t.created_at) datum,
+	count(*) anzahl
+from 
+	tweet t ,
+	named_entity_posting nep ,
+	named_entity ne 
+where t.id = nep.tweet_id 
+and ne.id =nep.named_entity_id 
+group by ne.id, ne.txt, date(t.created_at)
+order by count(*) desc 
+limit 5
+```
+
+## Aufgabe 2
+
+1. 
+  * **umg**: Was sind die echten Namen von allen Twitter Benutzern, die Lobbyisten sind, die einen Tweet mit ueber 2000 Likes veroeffentlicht haben, der die EU oder die USA erwaehnt? 
+  * **tup**: 
+  
+  \begin{align*}
+  \{\langle\texttt{tu.real\_name}\rangle \mid & \texttt{tu} \in \texttt{twitter\_user} \wedge \texttt{tu.typ='lobby'} \wedge \exists\texttt{t}\exists\texttt{ne}\exists\texttt{nep} (\\
+  &\quad\quad \texttt{t} \in \texttt{tweet}\, \wedge \\
+  &\quad\quad \texttt{ne} \in \texttt{named\_entity}\, \wedge \\ 
+  &\quad\quad \texttt{nep}\in\texttt{named\_entity\_posting}\, \wedge \\ 
+  &\quad\quad \texttt{t.id = nep.tweet\_id}\, \wedge \\
+  &\quad\quad \texttt{ne.id = nep.named\_entity\_id}\, \wedge \\
+  &\quad\quad \texttt{t.like\_count > 2000}\, \wedge \\ 
+  &\quad\quad \texttt{t.author\_id = tu.id}\, \wedge \\ 
+  &\quad\quad (\texttt{ne.txt = 'EU'} \vee \texttt{ne.txt = 'USA})) \}
+ \end{align*}
+  
+2. 
+  * **umg**: Was sind die IDs aller Authoren, die zwar einen Tweet mit dem Hashtag "openai" verfasst haben aber keinen mit dem Hashtag "chatgpt". 
+  * **tup**: 
+  
+  \begin{align*}
+  \{\langle\texttt{t.author\_id}\rangle \mid & \texttt{t} \in \texttt{tweet} \wedge\exists\texttt{h}\exists\texttt{hp} ( \\ 
+                     &\quad\quad \texttt{h} \in\texttt{hashtag}\, \wedge \\
+                     &\quad\quad \texttt{hp} \in\texttt{hashtag\_posting}\, \wedge \\
+                     &\quad\quad \texttt{h.id = hp.hashtag\_id}\, \wedge \\
+                     &\quad\quad \texttt{hp.tweet\_id = t.id}\, \wedge \\
+                     &\quad\quad \texttt{h.txt = 'openai'})\, \wedge \\
+                     &\quad\quad \neg\exists\texttt{h}\exists\texttt{hp}( \\ 
+                     &\quad\quad \texttt{h} \in\texttt{hashtag}\, \wedge \\
+                     &\quad\quad \texttt{hp} \in\texttt{hashtag\_posting}\, \wedge \\
+                     &\quad\quad \texttt{h.id = hp.hashtag\_id}\, \wedge \\
+                     &\quad\quad \texttt{hp.tweet\_id = t.id}\, \wedge \\
+                     &\quad\quad \texttt{h.txt = 'chatgpt'} )\}
+  \end{align*}

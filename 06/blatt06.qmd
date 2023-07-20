@@ -1,0 +1,197 @@
+---
+author: 
+  - Jonathan Barthelmes
+  - Igor Dimitrov
+  - Jacob Rose
+highlight-style: atom-one
+format:
+   html: default
+#    pdf:
+#       include-in-header: 
+#          - text: |
+#             \usepackage{fvextra} 
+#             \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+# Blatt 6
+
+```{r}
+#| echo: false
+library(RPostgres)
+con1 <- 
+    dbConnect(RPostgres::Postgres(),
+    dbname = "TwitterDB",
+    host = "localhost",
+    user = "igor")
+con2 <- 
+    dbConnect(RPostgres::Postgres(),
+    dbname = "TaxDB",
+    host = "localhost",
+    user = "igor")
+```
+
+*note*: html [Version](https://igor-dimi.github.io/idb-blatt06) der Abgabe (fuer die leichtere Kopierung der Code Blocks)
+
+## Aufgabe 1
+
+1. 
+```sql
+create table taxonomy(
+	id int,
+	name varchar,
+	primary key(id),
+	parent int,
+	foreign key (parent) references taxonomy(id)
+);
+
+insert into taxonomy
+values 
+	(0, 'animals', null),
+	(2, 'chordate', 0),
+	(1, 'athropod', 0),
+	(6, 'mammals', 2),
+	(5, 'reptiles', 2),
+	(3, 'insects', 1),
+	(4, 'crustacean', 1),
+	(9, 'carnivora', 6),
+	(8, 'scaled reptiles', 5),
+	(7, 'crocodiles', 5),
+	(10, 'cats', 9),
+	(11, 'pan-serpentes', 8);
+```
+
+2. 
+```{sql, connection = "con2", tab.cap = "A 1.2"}
+select name
+from taxonomy 
+where parent = 2
+  union
+select name 
+from taxonomy t1
+where exists (
+	select name
+	from taxonomy t2
+	where t1.parent = t2.id
+	and t2.parent = 2
+)
+```
+
+3. 
+```{sql, connection = "con2", tab.cap = "A 1.2"}
+with recursive subCatOfChordate(id, name) as (
+	select id, name
+	from taxonomy t
+	where t.parent = 2
+		union
+	select t.id, t.name
+	from taxonomy t, subCatOfChordate s
+	where t.parent = s.id
+) 
+select id
+from subcatofchordate 
+```
+
+## Aufgabe 2 
+
+1. 
+  - **rel**:   $\pi_{\texttt{real\_name, tweet\_count, follower\_count}}\Bigl( \\ \sigma_{\texttt{created\_at > 01.01.2019, follower\_count > 8000, tweet\_count > 1000, like\_count > 1000}} \\(\beta_{\texttt{author\_id} \leftarrow \texttt{id}}(\texttt{twitter\_user}) \bowtie \beta_{\texttt{ca}\leftarrow\texttt{created\_at}}(\texttt{tweet})) \Bigr)$
+
+  - **sql**:
+  
+```{sql, connection = "con1", tab.cap = "A 2.1"}
+select tu.real_name, tu.tweet_count, tu.follower_count
+from twitter_user tu 
+where tu.created_at > '2019-01-01'
+and tu.follower_count > 8000
+and tu.tweet_count > 1000
+and exists (
+	select *
+	from tweet t 
+	where t.author_id = tu.id 
+	and t.like_count > 1000
+)
+```
+
+2. 
+  - **rel**: 
+  $\pi_{\texttt{txt, author\_id, created\_at}}(\sigma_{\texttt{like\_count > 1000}}(\texttt{tweet}) - \\ \pi_{\texttt{txt, author\_id, created\_at}}\Bigl(\\ \sigma_{\texttt{created\_at > ca}}\bigl(\sigma_{\texttt{like\_count > 1000}}(\texttt{tweet}) \times \beta_{\texttt{ca} \leftarrow \texttt{created\_at}, \texttt{ai}\leftarrow \texttt{author\_id}, \texttt{t} \leftarrow \texttt{txt}}(\sigma_{\texttt{like\_count > 1000}}(\texttt{tweet}))\bigr)\Bigr)$
+
+ - **sql**:
+```{sql, connection = "con1", tab.cap = "A 2.3"}
+select t.txt, t.author_id, t.created_at 
+from tweet t
+where t.like_count >= 1000
+and t.created_at <= all (
+	select created_at 
+	from tweet
+	where like_count >= 1000
+)
+```
+
+3. 
+  - **rel**: 
+  $\pi_{\texttt{hi, hashtag\_id}}\Biggl(\sigma_{\texttt{ti < tweet\_id}}\Bigl(\\ \beta_{\texttt{ti} \leftarrow \texttt{tweet\_id}}\bigl( \sigma_{\texttt{hi < hashtag\_posting}}(\texttt{hashtag\_posting} \bowtie \beta_{\texttt{hi} \leftarrow \texttt{hashtag\_id}}(\texttt{hashtag\_posting}))\bigr) \\ \bowtie \\ \sigma_{\texttt{hi < hashtag\_posting}}(\texttt{hashtag\_posting} \bowtie \beta_{\texttt{hi} \leftarrow \texttt{hashtag\_id}}(\texttt{hashtag\_posting}))\Bigr)\Biggr)$
+
+  - **sql**:
+  
+```sql
+with hashtagpairs as (
+	select 
+		hp1.hashtag_id h1_id, 
+		h1.txt h1_txt, 
+		hp2.hashtag_id  h2_id, 
+		h2.txt h2_txt, 
+		hp1.tweet_id tid
+	from hashtag_posting hp1, hashtag_posting hp2, hashtag h1, hashtag h2
+	where hp1.tweet_id  = hp2.tweet_id
+	and h1.id = hp1.hashtag_id 
+	and h2.id = hp2.hashtag_id 
+	and hp1.hashtag_id  < hp2.hashtag_id 
+)
+select hpr1.h1_txt, hpr1.h2_txt
+from hashtagpairs hpr1
+where exists (
+	select *
+	from hashtagpairs hpr2
+	where hpr1.h1_id = hpr2.h1_id
+	and hpr1.h2_id = hpr2.h2_id
+	and hpr1.tid < hpr2.tid
+) 
+```
+```{sql, connection = "con1", tab.cap = "A 3.3 Anzahl der Ergebnisse", echo = FALSE}
+with hashtagpairs as (
+	select 
+		hp1.hashtag_id h1_id, 
+		h1.txt h1_txt, 
+		hp2.hashtag_id  h2_id, 
+		h2.txt h2_txt, 
+		hp1.tweet_id tid
+	from hashtag_posting hp1, hashtag_posting hp2, hashtag h1, hashtag h2
+	where hp1.tweet_id  = hp2.tweet_id
+	and h1.id = hp1.hashtag_id 
+	and h2.id = hp2.hashtag_id 
+	and hp1.hashtag_id  < hp2.hashtag_id 
+)
+select count(*)
+from hashtagpairs hpr1
+where exists (
+	select *
+	from hashtagpairs hpr2
+	where hpr1.h1_id = hpr2.h1_id
+	and hpr1.h2_id = hpr2.h2_id
+	and hpr1.tid < hpr2.tid
+) 
+```
+
+## Aufgabe 3
+
+```{sql, connection = "con1", tab.cap = "A 3"}
+select tu.real_name, regexp_count(t.txt, '\m[[:upper:]]{2,}\M') as cnt, t.txt
+from tweet t, twitter_user tu 
+where tu.typ = 'politician'
+and t.author_id  = tu.id
+and regexp_count(t.txt, '\m[[:upper:]]{2,}\M') >= all (
+	select regexp_count(txt, '\m[[:upper:]]{2,}\M')
+	from tweet
+)
+```

@@ -1,0 +1,57 @@
+project:
+  type: book
+
+book:
+  title: "IDB SS23 Solutions & Notes"
+  author:
+    - Igor Dimitrov
+    - Jacob Rose
+    - Jonathan Barthelmes
+  chapters:
+    - index.qmd
+    - part: "Loesungen"
+      chapters:
+        - 01/blatt01.qmd
+        - 02/blatt02.qmd
+        - 03/blatt03.qmd
+        - 04/blatt04.qmd
+        - 05/blatt05.qmd
+        - 06/blatt06.qmd
+        - 07/blatt07.qmd
+        - 08/blatt08.qmd
+    - part: "Notes"
+  
+
+# website:
+#   title: "IDB SS23 Solutions & Notes"
+#   sidebar:
+#     style: "floating"
+#     search: true
+#     contents:
+#       - section: "Loesungen"
+#         contents:
+#           - 01/blatt01.qmd
+#           - 02/blatt02.qmd
+#           - 03/blatt03.qmd
+#           - 04/blatt04.qmd
+#           - 05/blatt05.qmd
+#           - 06/blatt06.qmd
+#           - 07/blatt07.qmd
+#           - 08/blatt08.qmd
+#       - section: "Notes"
+
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+  pdf: 
+    include-in-header: 
+      - text: |
+          \usepackage{fvextra} 
+          \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+    
+
+
+

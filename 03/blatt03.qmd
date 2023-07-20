@@ -1,0 +1,33 @@
+---
+author:
+    - Jonathan Barthelmes
+    - Jacob Rose
+    - Igor Dimitrov
+---
+# Blatt 3
+
+## Aufgabe 1
+
+**ER-Schema: Stadt**
+
+![ER-Schema: Stadt](imgs/dia/a1.png)
+
+
+## Aufgabe 2
+
+1. ER-Schema @fig-a2
+
+![ER-Schema: NetMovie DB](imgs/dia/a2.png){#fig-a2}
+
+
+2. *Integriteatsbedingungen*
+   1. i.A. koennen die Wertebereiche der Attribute im ER-Diagram nicht spezifiert werden, z.B. wie
+      1. Erscheinungsjahr eines Films darf nicht in der Zukunft liegen oder ein sehr altes Datum wie 1776 sein. 
+      2. Gage eines Regissuers muss > 30,000 € sein
+      3. Globale Bedingungen  wie z.B. **Gesamtgehalt** aus mehreren Filmen darf nie ueber 1000000 € sein koennen auch nicht spezifiziert werden.
+   2. In der Spezifikation heisst es, dass in jedem Film genau zwei Hauptrollen gibt. In unserem ER-Schema haben wir Hauptrolle als eine optionale Attribute des Beziehungstyps "wirkt-mit" modelliert. Diese Kardinalitaet kann somit nicht in unsrem ER-Schema bestimmt werden. 
+3. *Alternative Modellierungen*
+   a) Gage als Attribute der Entitaet **Film** modellieren.
+   b) Eine neue Entitaet "**Genre**" einfuehren, und "arbeitet-in" Beziehungen zwischen Regisseur-Genre, und zwischen Schauspieler-Genre modellieren:
+
+   ![Alternative Modellierung](imgs/dia/a2-3.png){width=50%}

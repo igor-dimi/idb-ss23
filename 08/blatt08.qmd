@@ -1,0 +1,103 @@
+---
+author: 
+  - Jonathan Barthelmes
+  - Igor Dimitrov
+  - Jacob Rose
+highlight-style: atom-one
+format:
+   html: default
+   # pdf:
+   #    include-in-header: 
+   #       - text: |
+   #          \usepackage{fvextra} 
+   #          \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+```{r}
+#| echo: false
+library(RPostgres)
+con1 <- 
+    dbConnect(RPostgres::Postgres(),
+    dbname = "TwitterDB",
+    host = "localhost",
+    user = "igor")
+```
+
+# Blatt 8
+
+## Aufgabe 1
+
+1. Satzlaenge `twitter_user` 
+   
+   | Attribute        | Typ                                       | Satzlaenge                |
+   | ---------------- | ----------------------------------------- | ------------------------- |
+   | `id`             | `bigint`                                  | 8 byte                    |
+   | `follower_count` | `integer`                                 | 4 byte                    |
+   | `tweet_count`    | `integer`                                 | 4 byte                    |
+   | `typ`            | `char(11)`/`char(5)` "politician"/"lobby" | 12 byte (1 byte Overhead) |
+   | `created_at`     | `timestamp`                               | 8 byte                    |
+   | `twitter_name`   | `text`                                    | 12 byte                   |
+   | `real_name`      | `text`                                    | 18 byte                   |
+   | ---              | ---                                       | ---                       |
+   | $\sum$           |                                           | **54 byte**               |
+
+2. Speicherplatz der Header
+   * Jede **Page** hat 24 Byte Header
+   * Jedes **Tupel** hat 23 Byte Header
+   
+   D.h. jedes Tupel hat 54 Byte Nutzdaten + 23 Byte Header = 77 Byte.   
+
+3. Groesse der Bloecke im PostgreSQL:
+
+```{sql, connection = "con1", tab.cap = "block size"}
+select current_setting('block_size');
+```
+```{sql, connection = "con1", tab.cap = "Anzahl der Tupel in der Relation twitter user"}
+select count(*)
+from twitter_user
+```
+
+Anzahl der Tupel pro Seite ca.: 
+```{r}
+round(8192 / 77)
+```
+
+Somit ist die Anzahl der Seiten ungefaehr: 
+```{r}
+round(1825 / 106)
+```
+
+4. Anzahl der Seiten der Relation `twitter_user': 
+
+```{sql, connection = "con1", tab.cap = "Anzahl der Seiten fuer twitter user"}
+select relname, relpages 
+from pg_class
+where relname = 'twitter_user'
+```
+
+Also in Wirklichkeit werden 22 Seiten gebraucht statt 17 Seiten. D.h. mehr Speicher. Die Gruende dieser Abweichung sind u.a. mehr Speicher fuer:
+  
+  * Pageheader
+  * Zeiger auf die Tupel
+  * Special-/Free Space in Pages
+  * Optionalen Zusatzelementen wie Null Bitmap in den Tuples
+
+## Aufgabe 2
+
+1. B-Baum 1.1 @fig-a2-1
+
+![B-Baum: A2.1](imgs/A2.1.png){#fig-a2-1}
+
+2. B-Baum 1.2 @fig-a2-2
+
+![B-Baum: A2.1](imgs/A2.2.png){#fig-a2-2}
+
+## Aufgabe 3
+
+1. B+-Baum 3.1 @fig-a3-1
+
+![B-Baum: A2.1](imgs/A3.1.png){#fig-a3-1}
+
+2. Die Elemente in der sortierten Reihenfolge in den B+ Baum einfuegen, aber nicht durch ein normales Insert, sondern direkt an das
+Blatt ganz rechts einfuegen. Dadurch spart man sich die look-up Operation $\mathcal{O}(\log_m(n))$ des insert, die ein groeseres
+Element als die bisherigen sowieso ganz rechts in Baum ablegen wuerde. 

@@ -1,0 +1,4 @@
+# IDB SS 23 Loesungen & Notizen {.unnumbered}
+
+
+Loesungen der Uebungsaufgaben und Notizen von der Vorlesung Datenbanken Sommersemester 23 Uni Heidelberg.

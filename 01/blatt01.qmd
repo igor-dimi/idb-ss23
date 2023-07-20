@@ -1,0 +1,196 @@
+---
+author:
+   - Jacob Rose
+   - Igor Dimitrov
+   - Jonathan Barthelmes
+format:
+   html: default
+   # pdf:
+   #    include-in-header: 
+   #       - text: |
+   #          \usepackage{fvextra} 
+   #          \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+# Blatt 1
+
+## Grundlagen der Logik
+
+a) 
+
+1. Wenn zwei Tiere im selben Lebensraum leben, essen sie auch das selbe.
+       
+   **falsch**: $t_{1}$ (Gepard) und $t_{9}$ (Uganda-Grasantilope) haben den gleichen lebensraum "Regenwald" 
+   aber andere Ernaehrungen; Karnivore und bzw. Herbivore.
+
+   **erfuellbar**: Jede Datenbank, die ein einziges Tier enthaelt erfuellt
+   diese Aussage automatisch.
+
+2. Fuer jedes Zootier existier ein anderes Zootier, welches entweder die selbe Nahrung isst oder im selben
+   Lebensraum lebt. ***wahr***
+
+3. Es existieren drei Zootiere, so dass erstes und zweites 
+   ,sowie zweites und drittes den gleichen Lebensraum teilen aber erstes und drittes nicht.
+   
+
+   **falsch und nicht erfuellbar**: $l(x, y)$ ist eine Aequivalenzrelation. Somit gilt Transitivitaet:
+   $l(x, y) \wedge l(y, z) \rightarrow l(x, z)$
+
+4. Es gibt keine zwei unterschiedliche Tiere, die sowohl der gleichen Familie
+   zugehoerig sind als auch den gleichen Lebensraum teilen.
+
+    **falsch**: $t_{6}$ und $t_{10}$ sind beide Sakiaffen mit dem Lebensraum
+    Regenwald. 
+
+    **erfuellbar**: Jede Datenbank mit einem einzigen Element efuellt diese Aussage 
+    automatisch.
+
+b)
+
+1. $\forall x\in T \exists y \in T: x \neq y\wedge fam(x, y) \wedge \neg ls(x, y)$
+2. $\forall x\in T\forall y\in T: fam(x, y) \wedge le(x, y) \wedge er(x, y) \rightarrow x = y$
+3. $\forall x \in T \forall y\in T: fam(x, y) \rightarrow er(x, y)$
+
+## 1-2 Relationale Algebra
+
+1. Gebe die Modelle von Flugzeugen, die so heissen, wie einer aus dem Personal.
+
+   | **Modell** |
+   | ---------- |
+   | Quack      |
+
+2. Gebe die crew ID der Mitarbeiter, die nicht an den afugelisteten Fluegen beteiligt sind. 
+   
+   | **cid** |
+   | ------- |
+   | c090    |
+
+3. Gebe die Flugnummer der Fluege, die in Deutschland starten.
+
+   | **Flugnr** |
+   | ------ |
+   | DB2013 |
+   | DB2341 |
+
+4. Gebe alle Modelle aus, fuer die eine Crew-Mitglied zugelassen ist.
+
+   | **Zulassung** |
+   | --------- |
+   | A320      |
+   | B787      |
+   | A380      |
+   | A340      |
+   | B747      |
+
+
+5. Gebe alle Namen von Piloten aus, die fuer eine Maschine zugelassen sind mit Reichweite $\leq 10000$.
+   
+   | **Name**    |
+   | ------- |
+   | Pan     |
+   | Schmitt |
+
+6. Gebe Start, Ziel und Modell fuer alle Modelle aus, die ungeiegnet fuer einen Flug sind, weil sie die 
+   Strecke nicht fliegen koennen. 
+
+   | **Start** | **Ziel** | **Modell** |
+   | --------- | -------- | ---------- |
+   | FRA       | JFK      | A320       |
+   | JFK       | FRA      | A320       |
+   | CDG       | LAX      | A320       |
+
+
+7. Waehle aus Fluegen die gleichen Flugnummern, die an unterschiedlichen Tagen fliegen, 
+   d.h gebe Flugnummern der Fluegen, die Rundfahrten sind.
+   
+   | Flugnr |
+   | ------ |
+   | DB2013 |
+
+8. Gebe die Laender aus, aus denen keine Flugzeuge starten.
+   
+   | **Land**    |
+   | ----------- |
+   | Deutschland |
+
+
+## 1-3 Datenmanagementsysteme
+
+a) XML und HTML basieren sich beide auf **SGML** - eine Metasprache, mit deren Hilfe man verschiedene Markup-sprachen fuer
+   Dokumente definieren kann. 
+
+   XML ist eine erweiterbare Markup-sprache, die zur
+   Darstellung & Speicherung hierarchisch strukturierter Daten
+   und zur Definition & Entwicklung neuer Markup-sprachen verwendet wird.
+   XML Dokumente haben eine Baumstruktur und bestehen aus **Elemente**, die durch **Tags** 
+   Ausgezeichnet werden. XML hat keinen vordifienerten Satz von Tags, wobei die genaue
+   Struktur eines XML-Dokuments durch den **Dokumenttypdefinition** festgelegt werden kann.
+
+   HTML beschreibt die semantische Struktur und Formattierung der Inhalte von Webseiten 
+   und war urspruenglich eine Anwendung von SGML. Im Gegensatz zu XML hat HTML einen festen
+   Satz von Tags, die fuer die Auszeichnung der Elementen verwendet werden koennen.
+   Streng genommen ist HTML kein XML hat aber im wesentlichen die gleiche Struktur wie ein XML-Dokument.
+   (Hierarchische Baumstruktur, Elemente, Tags, DOM). 
+
+   Fuer XML gibt es viele standarte Werkzeuge,
+   die XML Dokumente auf Wohlgeformtheit pruefen und porgrammatsich verarbeiten koennen, 
+   z.B. wie
+
+   * XML-Prozessor/Parser, 
+   * **XQuery**: die standarde XML Abfrage- und Transformationssprache, 
+   * **XPath**: Untersprache von XQuery, die XQuery unterstuetzt,
+   * **XSLT**: Sprache die speziell dazu geiegnet ist, XML Dokumente in andere Formate umzuwandeln.
+
+   Diese Tools stehen in XML Datenbanken zur verfuegung und XML Datenbanken sind fuer die Arbeit mit XML-Dokumenten
+   optimiert. Somit koennen HTML-Dokumente mit den etablierten zahlreichen XML Tools optimal verarbeitet werden,
+   wenn sie in einer XML Datenbank gespeichert werden.  
+
+   <!-- die bei einer XML-Datenbank zur Verfuegung stehen aber nicht bei einer relationalen Datenbank.      -->
+
+   Ein weiterer Vorteil ist, dass eine XML-Datenbank kein oder
+   nur ein vereinfachtes Datenschema (Beziehungsschema/Tabellen) braucht, 
+   da die Daten schon durch das Dateiformat strukturiert werden. 
+   Bei einer relationael Datenbank muss das Schema explizit definiert werden. 
+   D.h. um ein HTML-Dokument in einer RDB zu speichern, oder um ein Dokument 
+   aus einer RDB zu exportieren muss jedes mal eine Transformation 
+   zwischen der HTML-Darstellung und relationalen Darstellung des Dokuments durchgefuehrt werden.
+   Weiterhin funktioniert die Abbildung zwischen den Dokument-orientierten und relationalen Modellen
+   nicht immer gut und wird als **object-relational impedence mismatch**  bezeichnet. 
+
+b) **Vorteile**:
+   * Man benoetigt kein vordefiniertes Schema
+   * Kommt gut mit vielen Lese- und Schreibzugriffen zurecht.
+
+   **Nachteile**:
+   * Geringe konsistenzt/Gueltigkeit der Daten.  
+   * Weil es weniger Einschraenkungen gibt, koennen die Abfragen nicht so gut optimiert werden
+     wie bei den relationalen DBen.
+
+
+## Feedback
+
+```text
+Rose, Dimitrov, Barthelmes
+
+Aufgabe 1:
+	a) Ja, technisch gesehen erfüllen Datenbanken, die nur ein Tier enthalten, die 1 und 4, wäre halt nur besser gewesen, wenn ihr ein "normales" Beispiel mit mindestens 2 Tieren gewählt hättet :D
+
+9/9 Punkte
+
+Aufgabe 2:
+	1. Es wird das MODELL gesucht, nicht der NAME :D Also A380
+	5. Nicht ganz, es sind eher alle Personen, die nicht für ein Flugzeug mit Reichweite >10000 zugelassen sind.
+	6. "Ungeeignet"? Habt ihr nie von technischen Zwischenstopps gehört? :p
+	7. Nicht unbedingt Rundfahrten
+	8. "... Länder aus, die einen Flughafen haben, aus dem..."
+
+8/11 Punkte
+
+Aufgabe 3:
+
+Habt ihr ChatGPT verwendet? Das sieht sehr nach ChatGPT aus...
+
+4/4 Punkte
+
+Insgesamt 21/24 Punkte
+```

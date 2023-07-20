@@ -1,0 +1,221 @@
+---
+author:
+    - Jonathan Barthelmes
+    - Jacob Rose
+    - Igor Dimitrov
+format:
+   html: default
+   # pdf:
+   #    include-in-header: 
+   #       - text: |
+   #          \usepackage{fvextra} 
+   #          \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+\newcommand{\tw}[1] {\texttt{#1}}
+\newcommand{\sk}[1] {\substack{#1}}
+\newcommand{\bwt}{\bowtie}
+
+# Blatt 2
+
+## Aufgabe 1
+
+
+1. $\pi_{\sk{\tw{pid, Name}}}\bigl(\sigma_{\sk{\tw{Rolle="Pilot"},\\ \tw{Reichweite}\geq 15000}}(\tw{Personal} 
+            \bowtie \tw{Zulassung}
+            \bowtie \tw{Modell})\bigr)$
+2. $\pi_{\tw{Name}}\bigl(
+    \sigma_{\tw{Land='USA'}}(
+        \beta_{\tw{Code} \leftarrow \tw{Ziel}}(\tw{Flug}) \bowtie \tw{Flughafen} \bowtie \tw{Flugzeug}
+    )
+   \bigr)$
+
+3. $\pi_{\tw{Code, Land}} \Biggl(
+        \sigma_{\tw{Name='F. Kohl'}}\biggl(\tw{Flugzeug}
+        \bowtie \\
+        \Bigl(\beta_{\tw{Code} \leftarrow \tw{Start}}(\pi_{\tw{Start, fid}}(\tw{Flug})) 
+        \cup 
+        \beta_{\tw{Code} \leftarrow \tw{Ziel}}(\pi_{\tw{Ziel, fid}}(\tw{Flug}))\Bigr)\biggr)
+   \biggr)$
+
+4. $\pi_{\tw{pid, Name}}(\tw{Personal}) - \\
+    \pi_{\tw{pid, Name}}(\tw{Personal} \bowtie \tw{Crew} \bowtie \sigma_{\tw{Datum} < \tw{07.04.2013}}(\tw{Flug}))$
+
+<!-- 4. $\pi_{\substack{\tw{pid, Name}, \\ \tw{Rolle}}}\Bigl(
+        \tw{Flug} \bowtie \tw{Crew} \bowtie \tw{Personal} -
+        \sigma_{\substack{\tw{Datum} \\ < \\ \tw{07.04.2013}}} (
+            \tw{Flug} \bwt \tw{Crew} \bwt \tw{Personal}
+        )
+\Bigr)$ -->
+
+
+## Aufgabe 2
+
+
+
+1. 
+     **SQL**:
+
+    ```sql
+    select distinct C from R3
+    ```   
+                
+      **Ergebniss**:     
+
+              {{C: 7}, 
+               {C: 8}}
+
+
+1. 
+     **SQL**:
+
+    ```sql
+    select distinct * from R2
+    where B = rot
+    ```
+     **Ergebniss:**:
+
+                {{B: rot, C: 9}}
+                {{B: blau, C: 8}}
+    
+1. 
+     **SQL**:
+
+    ```sql
+    select distinct * from R2
+    intersect
+    select distinct * from R3;
+    ```
+
+     **Ergebniss**:
+
+                {{B: blau}, {C: 7}}
+
+
+1. 
+
+     **SQL**:
+
+    ```sql
+    select * from R2
+    union
+    select * from R3
+    ```
+     **Ergebniss**:
+
+                {{B: blau,  C: 7}, 
+                {B: rot,   C: 8}, 
+                {B: rot,   C: 9}, 
+                {B: gruen, C: 8}, 
+                {B: gelb,  C: 7}}
+
+
+1. 
+     **SQL**:
+
+    ```sql
+    select * from R3 except (
+        select * from R2
+    );
+    ```
+     **Ergebniss**:
+
+                {{B: gruen, C: 8}, 
+                {B: gelb,  C: 7}}
+    
+
+
+1. 
+     **SQL**:
+
+    ```sql
+    select distinct * from
+    R1 natural jo R2
+    ```
+     **Ergebniss**:
+
+                {{A: q, B: rot, C: 8}, 
+                {A: q, B: rot, C: 9}}
+
+1.  
+
+     **SQL**:
+
+    ```sql
+    select distinct * from
+    R1, R2
+    ```
+
+    **Ergebniss**:
+
+                {{A: q, R1.B: rot,   R2.B: blau,  C: 7 },
+                {A: q, R1.B: rot,   R2.B: gruen, C: 8},
+                {A: q, R1.B: rot,   R2.B: gelb,  C: 7},
+                {A: r, R1.B: gruen, R2.B: gelb,  C: 7},
+                {A: r, R1.B: gruen, R2.B: gruen, C: 8},
+                {A: r, R1.B: gruen, R2.B: gelb,  C: 7}}
+
+
+## Aufgabe 3
+
+1. Die Anfragen entsprechen sich liefern jedoch nicht das gleiche Ergebniss, da der SQL-Ausdruck Duplikate zulaesst, waehrend bei der
+   relationalen Abfrage die Duplikate entfernt werden. 
+2. 
+   1. Die SQL-Anfrage liefert die **Bezeichnung** der Modelle, die nach Flughafen 'CDG' fliegen/geflogen haben. 
+   2. Der relationale Ausdruck liefert die Sitzplatzkapazitaeten der selben Modelle aus der SQL-Anfrage.
+
+   Somit sind die Ausdrucke nicht Aequivalent und sie entpsrechen sich nicht.
+3. 
+   1. Die erste SQL-Anrage gibt die ID's der Co-Pilote und die Bezeichnungen der Modelle aus, dafuer sie zugelassen sind.
+   2. Die zweite SQL-Anfrage gibt genau das gleiche Ergebniss wie die erste Anfrage. Man beachte, dass natural join in SQL
+      immer von einem Kreuzprodukt und Selektionsoperationen simuliert werden kann.
+
+   Somit sind die beiden Anfragen Aequivalent
+
+
+## Aufgabe 4
+
+See the diagrams 
+
+::: {layout-ncol=2}
+![Zeile 1](imgs/a4/png/4-1.png){width=110%}
+
+![Zeile 2](imgs/a4/png/4-2.png){widht=110%}
+
+![Zeile 3](imgs/a4/png/4-3.png){widht=110%}
+
+![Zeile 4](imgs/a4/png/4-4.png){widht=110%}
+
+![Zeile 5](imgs/a4/png/4-5.png){widht=110%}
+:::
+
+
+## Feedback
+
+```text
+Zur Aufgabe 1.
+
+1. Richtig, wenn auch > statt >= gemeint 
+
+2. Richtig 3. Sollte passen 4. Richtig
+
+Zur Aufgabe 2:
+
+1. Richtig 2. Ergebnis: Wieso B: Blau wenn ihr nach rot selektiert => - 0.25 P.
+
+3.-7. Richtig
+
+Zur Aufgabe 3:
+
+1. Richtig unter der Annahme, dass Tabelle mehr als die abgedruckten Beispieldaten enthält (Stichwort Distinct)
+
+2. Ebenfalls richtig
+
+3. Dito
+
+Zur Aufgab 4:
+
+1. Richtig 2. Verlage sollen laut ML bitte mindestens ein Buch verlegen => - 0.25P. 3. Laut ML bitte [1,*] => - 0.25 P.
+
+4. Richtig 5. Ebenfalls
+```
