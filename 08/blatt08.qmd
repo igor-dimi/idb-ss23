@@ -23,7 +23,7 @@ con1 <-
     user = "igor")
 ```
 
-# Blatt 8: Physiche Datenorganisation und Baeume
+# Physiche Datenorganisation und Baeume
 
 ## Seiten und Saetze
 

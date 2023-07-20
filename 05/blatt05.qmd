@@ -14,7 +14,7 @@ format:
 
 ---
 
-# Blatt 5: SQL-Anfragen
+# SQL-Anfragen
 
 ```{r}
 #| echo: false

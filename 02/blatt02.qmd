@@ -16,7 +16,7 @@ format:
 \newcommand{\sk}[1] {\substack{#1}}
 \newcommand{\bwt}{\bowtie}
 
-# Blatt 2: Relationale Algebra und SQL
+# Relationale Algebra und SQL
 
 ## Relationale Algebra - Fortsetzung
 

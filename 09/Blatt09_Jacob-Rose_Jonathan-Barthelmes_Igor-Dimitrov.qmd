@@ -12,7 +12,7 @@ format:
             \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
 ---
 
-# Blatt 9: Hashing, Indexzugriffe und Sortierung
+# Hashing, Indexzugriffe und Sortierung
 
 ## Erweitarbares Hashing
 

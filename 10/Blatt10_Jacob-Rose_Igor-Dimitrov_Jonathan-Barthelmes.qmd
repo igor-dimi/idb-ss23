@@ -22,7 +22,7 @@ con1 <-
     user = "igor")
 ```
 
-# Blatt 10: Anfragebearbeitung
+# Anfragebearbeitung
 
 ## Join-Strategien
 

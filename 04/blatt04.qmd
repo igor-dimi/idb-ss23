@@ -7,7 +7,7 @@ author:
 
 \newcommand{\ttt}[1]{\texttt{#1}}
 
-# Blatt 4: Uebersetzung ER-Schema in Relationenschemata
+# Uebersetzung ER-Schema in Relationenschemata
 
 ## Uebersetzung eines ER-Schemas
 

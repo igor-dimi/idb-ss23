@@ -10,7 +10,7 @@
 <meta name="author" content="Jacob Rose">
 <meta name="author" content="Igor Dimitrov">
 
-<title>IDB SS23 Solutions &amp; Notes - 3&nbsp; Blatt 3</title>
+<title>IDB SS23 Solutions &amp; Notes - 3&nbsp; Blatt 3: ER-Modellierung</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -78,7 +78,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../01/blatt01.html">Loesungen</a></li><li class="breadcrumb-item"><a href="../03/blatt03.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Blatt 3</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../01/blatt01.html">Loesungen</a></li><li class="breadcrumb-item"><a href="../03/blatt03.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Blatt 3: ER-Modellierung</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -121,49 +121,49 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../01/blatt01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Blatt 1</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Blatt 1: Grundlagen der Relationalen Algebra</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../02/blatt02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Blatt 2</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Blatt 2: Relationale Algebra und SQL</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../03/blatt03.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Blatt 3</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Blatt 3: ER-Modellierung</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../04/blatt04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Blatt 4</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Blatt 4: Uebersetzung ER-Schema in Relationenschemata</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../05/blatt05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Blatt 5</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Blatt 5: SQL-Anfragen</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../06/blatt06.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Blatt 6</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Blatt 6: Rekursion, Relationale Algebra und SQL</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../07/blatt07.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Blatt 7</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Blatt 7: SQL und Anfragesprachen</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../08/blatt08.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Blatt 8</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Blatt 8: Physiche Datenorganisation und Baeume</span></span></a>
   </div>
 </li>
       </ul>
@@ -182,8 +182,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#aufgabe-1" id="toc-aufgabe-1" class="nav-link active" data-scroll-target="#aufgabe-1"><span class="header-section-number">3.1</span> Aufgabe 1</a></li>
-  <li><a href="#aufgabe-2" id="toc-aufgabe-2" class="nav-link" data-scroll-target="#aufgabe-2"><span class="header-section-number">3.2</span> Aufgabe 2</a></li>
+  <li><a href="#er-modellierung-staedte" id="toc-er-modellierung-staedte" class="nav-link active" data-scroll-target="#er-modellierung-staedte"><span class="header-section-number">3.1</span> ER-Modellierung: Staedte</a></li>
+  <li><a href="#er-modellierung-filmstudio-datenbank" id="toc-er-modellierung-filmstudio-datenbank" class="nav-link" data-scroll-target="#er-modellierung-filmstudio-datenbank"><span class="header-section-number">3.2</span> ER-Modellierung: Filmstudio-Datenbank</a></li>
+  <li><a href="#feedback" id="toc-feedback" class="nav-link" data-scroll-target="#feedback"><span class="header-section-number">3.3</span> Feedback</a></li>
   </ul>
 </nav>
     </div>
@@ -192,7 +193,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Blatt 3</span></h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Blatt 3: ER-Modellierung</span></h1>
 </div>
 
 
@@ -215,8 +216,8 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="aufgabe-1" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="aufgabe-1"><span class="header-section-number">3.1</span> Aufgabe 1</h2>
+<section id="er-modellierung-staedte" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="er-modellierung-staedte"><span class="header-section-number">3.1</span> ER-Modellierung: Staedte</h2>
 <p><strong>ER-Schema: Stadt</strong></p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -225,8 +226,8 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 </section>
-<section id="aufgabe-2" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="aufgabe-2"><span class="header-section-number">3.2</span> Aufgabe 2</h2>
+<section id="er-modellierung-filmstudio-datenbank" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="er-modellierung-filmstudio-datenbank"><span class="header-section-number">3.2</span> ER-Modellierung: Filmstudio-Datenbank</h2>
 <ol type="1">
 <li>ER-Schema <a href="#fig-a2">Figure&nbsp;<span>3.1</span></a></li>
 </ol>
@@ -254,6 +255,10 @@ ul.task-list li input[type="checkbox"] {
 </ol>
 <img src="imgs/dia/a2-3.png" class="img-fluid" style="width:50.0%" alt="Alternative Modellierung"></li>
 </ol>
+</section>
+<section id="feedback" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="feedback"><span class="header-section-number">3.3</span> Feedback</h2>
+<pre class="text"><code>Punkte: 29.0/30</code></pre>
 
 
 </section>
@@ -495,12 +500,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../02/blatt02.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Blatt 2</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Blatt 2: Relationale Algebra und SQL</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../04/blatt04.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Blatt 4</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Blatt 4: Uebersetzung ER-Schema in Relationenschemata</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -12,7 +12,7 @@ format:
    #          \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
 ---
 
-# Blatt 1: Grundlagen der Relationalen Algebra
+# Grundlagen der Relationalen Algebra
 
 ## Grundlagen der Logik
 

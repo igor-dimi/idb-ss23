@@ -13,7 +13,7 @@ format:
 #             \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
 ---
 
-# Blatt 6: Rekursion, Relationale Algebra und SQL
+# Rekursion, Relationale Algebra und SQL
 
 ```{r}
 #| echo: false

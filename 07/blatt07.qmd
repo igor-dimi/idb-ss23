@@ -23,7 +23,7 @@ con1 <-
     user = "igor")
 ```
 
-# Blatt 7: SQL und Anfragesprachen
+# SQL und Anfragesprachen
 
 *note*: html [Version](https://igor-dimi.github.io/idb-blatt07) der Abgabe fuer leichtere Kopierung der Codeblocks.
 
