@@ -1,0 +1,207 @@
+```{r}
+#| echo: false
+library(RPostgres)
+con1 <- 
+    dbConnect(RPostgres::Postgres(),
+    dbname = "UniDB",
+    host = "localhost",
+    user = "igord")
+```
+
+# Introduction to Relational Model and Relational Algebra
+
+
+## Relational Model Uni DB
+
+* $\texttt{intstructor}(\underline{\texttt{ID}}, \texttt{name}, \texttt{dept\_name}\rightarrow
+  \texttt{department}, \texttt{salary})$
+* $\textbf{\ttt{course}}(\underline{\ttt{id}}, \ttt{ title}, \ttt{ dept\_name} \rightarrow \ttt{ department}, \ttt{  credits})$
+* $\textbf{\ttt{prereq}}(\underline{\ttt{course\_id} \rightarrow \ttt{ course}, \ttt{ prereq\_id} \rightarrow \ttt{ course}})$
+* $\textbf{\ttt{department}}(\underline{\ttt{name}} , \ttt{ building, } \ttt{ budget})$
+* $\textbf{\ttt{section}}(\udl{\ttt{course\_id}, \ttt{id}, \ttt{ semester}, \ttt{ year, }}(\ttt{building}, \ttt{ room\_number}) \rightarrow \ttt{classroom}, \ttt{ time\_slot\_id})$
+* $\textbf{\ttt{teaches}}(\udl{\ttt{instructor\_ID}\rightarrow \ttt{ instructor}, (\ttt{ course\_id, sec\_id, semester, year}) \rightarrow \ttt{ section}})$
+* $\textbf{\ttt{student}}(\udl{\ttt{ID}}, \ttt{ name}, \ttt{ dept\_name}\rightarrow \ttt{ department}, \ttt{ total\_credit})$
+* $\textbf{\ttt{takes}}(\udl{\ttt{student\_ID} \rightarrow \ttt{student}, (\ttt{course\_id, section\_id, semester, year}) \rightarrow \ttt{section}}, \ttt{grade})$
+* $\textbf{\ttt{advisor}}(\udl{\ttt{student\_id} \rightarrow \ttt{ student}, \ttt{ instructor\_id} \rightarrow \ttt{ instructor}})$
+* $\textbf{\ttt{classroom}}(\udl{\ttt{building, room\_number}}, \ttt{ capacity})$
+* $\textbf{\ttt{time\_slot}}(\udl{\ttt{id}, \ttt{  day}, \ttt{  start\_time}}, \ttt{ end\_time})$
+
+## Relational Algebra
+
+### Select Operation
+
+* Information of all instructors from the physics department:
+$$\sigma_\texttt{dept\_name="Physics"}(\texttt{instructor})$$
+
+```{sql, connection = "con1"}
+select *
+from instructor
+where dept_name = 'Physics'
+```
+
+* Information of all instructors with salaries greater than 90,000 $:
+
+$$\sigma_{\texttt{salary > 90000}}(\texttt{instructor})$$
+
+```{sql, connection = "con1"}
+select *
+from instructor
+where salary > 90000
+```
+
+* Information about all instructors from the physics department with salaries greater than 90000:
+
+$$\sigma_{\texttt{dept\_name = 'Physics'} \wedge \texttt{salary > 90000}}(\texttt{instructor})$$
+
+```{sql, connection = "con1"}
+select *
+from instructor
+where salary > 90000 and dept_name = 'Physics'
+```
+
+* comparison of two different attributes of the **same** relation is possible, e.g. all departments whose name is the same as their building name:
+
+$$\sigma_{\texttt{dept\_name = building}}(\texttt{department})$$
+
+```{sql, connection = "con1"}
+select *
+from department
+where name = building
+```
+
+### Project Operation
+
+* list ID, name and salary information of all instructors:
+
+$$\Pi_{\texttt{ID, name, salary}}(\texttt{instructor})$$
+
+```{sql, connection = "con1"}
+select i.id, i.name, i.salary
+from instructor i
+```
+
+* expressions of attributes are allowed, e.g. montly salaries: 
+$$\Pi_{\texttt{ID, name, salary/12}}(\texttt{instructor})$$
+
+```{sql, connection = "con1"}
+select id, name, salary / 12 as month_salary
+from instructor
+```
+
+### Composition of Relational Operations 
+
+* find the names of all instructors in the Physics department
+
+$$\Pi_{\texttt{name}}(\sigma_{\texttt{dept\_name = 'Physics'}}(\texttt{instructor}))$$
+
+```{sql, connection = "con1"}
+select name
+from instructor
+where dept_name = 'Physics'
+```
+
+### Cartesian (Cross) Product
+
+let $r[R]$ and $s[S]$. If $R \cap S = \emptyset$, then $r \times s$ is simply:
+
+$$(r\times s)[R \cup S] := \{t[R \cup S] \mid t[R] \in r \wedge t[S] \in s\}$$
+
+If $R \cap S \neq \emptyset$, equally named attributes must be distinguished. Let 
+
+$$R \tilde{+} S := R \oplus S \bigcup_{x \in R \cap S}\{R.x, S.x\} $$ 
+Then, 
+
+$$(r \times s)[R \tilde{+} S] := \{t[R \tilde{+} S] \mid t[(R\setminus S) \cup \bigcup_{x\in R \cap S}\{R.x\}] \in t[R] \wedge t[(S\setminus R) \cup \bigcup_{x\in R \cap S}\{S.x\}] \in t[S] \}$$
+
+Problem when $r \times r$. We must use rename.  
+
+### Rename Operation
+
+A whole relation can be renamed: 
+
+$$\beta_{s}(r)$$
+
+Attributes of a relation can be renamed: 
+
+$$\beta_{b_1 \leftarrow a_1, b_2 \leftarrow a_2}(r)$$
+
+Above the attributes $a_1$ and $a_2$ of $r$ are renamed to $b_1$ and $b_2$. 
+
+Using rename we can perform cross product of a relation with itself:
+
+$$\beta_{s}(r) \times r$$
+
+sql version:
+
+```sql
+select *
+from r, r as s
+```
+
+Example illustrating rename:
+
+* Find the ID and name of all instructors who earn more than the instructor whose ID is 12121:
+
+$$\Pi_{\texttt{i.ID, i.name}}\Bigl( \sigma_{\texttt{i.salary > wu.salary}} (\\\beta_{\texttt{i}}(\texttt{instructor} \times \beta_{\texttt{wu}}(\sigma_{\texttt{id = 12121}}(\texttt{instructor})))) \Bigr)$$
+
+
+### Join Operation
+
+#### Natural Join 
+
+for $r[R]$ and $s[S]$ natural join is defined as:
+
+$$r \bowtie s := \{t[R \cup S] \mid t[R] \in r \wedge t[S] \in s\}$$ 
+
+e.g. $\texttt{instructor} \bowtie \texttt{teaches}$ gives all information about instructors and courses they teach:
+
+
+#### $\theta$-Join
+
+General $\theta$-join for a predicate $\theta$ is defined as:
+
+$$r \bowtie_{\theta} s := \sigma_{\theta}(r \times s)$$
+join can be expressed in terms $\theta$-join with appropriate rename and projection operations. 
+
+### Set Operations
+
+for relations $r$ and $s$ with compatible schemes $R$ and $S$ (compatible means same arities and corresponding domains) simply
+
+* $\texttt{r} \cup \texttt{s}$ 
+* $\texttt{r} \cap \texttt{s}$ 
+* $\texttt{r} \setminus \texttt{s}$ 
+
+examples:
+
+* courses offered in 2017 fall semester **or** in 2018 spring semester:
+
+\begin{align*}
+&\Pi_{\texttt{course\_id}}(\sigma_{\texttt{semester = 'Fall'}\wedge\texttt{year = 2017}}(\texttt{section})) \cup\\
+&\Pi_{\texttt{course\_id}}(\sigma_{\texttt{semester = 'Spring'}\wedge\texttt{year = 2018}}(\texttt{section})) 
+\end{align*}
+
+* courses offered in 2017 fall semester **and** in 2018 spring semester:
+
+\begin{align*}
+&\Pi_{\texttt{course\_id}}(\sigma_{\texttt{semester = 'Fall'}\wedge\texttt{year = 2017}}(\texttt{section})) \cap\\
+&\Pi_{\texttt{course\_id}}(\sigma_{\texttt{semester = 'Spring'}\wedge\texttt{year = 2018}}(\texttt{section})) 
+\end{align*}
+
+* courses offered in 2017 fall semester **but not** in 2018 spring semester:
+
+\begin{align*}
+&\Pi_{\texttt{course\_id}}(\sigma_{\texttt{semester = 'Fall'}\wedge\texttt{year = 2017}}(\texttt{section})) \setminus\\
+&\Pi_{\texttt{course\_id}}(\sigma_{\texttt{semester = 'Spring'}\wedge\texttt{year = 2018}}(\texttt{section})) 
+\end{align*}
+
+
+### Asssignment 
+
+For convenience we can name intermediate results of relational algebraic operations, by assigning them
+variable names:
+
+\begin{align*}
+& \texttt{r} := \Pi_{\texttt{course\_id}}(\sigma_{\texttt{semester = 'Fall'}\wedge\texttt{year = 2017}}(\texttt{section})) \\
+& \texttt{s} := \Pi_{\texttt{course\_id}}(\sigma_{\texttt{semester = 'Spring'}\wedge\texttt{year = 2018}}(\texttt{section})) \\
+& \texttt{r} \cup \texttt{s}
+\end{align*}

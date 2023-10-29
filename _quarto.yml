@@ -22,6 +22,12 @@ book:
         - 09/blatt09.qmd
         - 10/blatt10.qmd
     - part: "Notes"
+      chapters:
+        - notes/01intro/intro.qmd
+        - notes/02introrel/rel.qmd
+        - notes/03introSQL/introsql.qmd
+        - notes/04interSQL/intersql.qmd
+        - notes/UniDB/unidb.qmd
   
 
 # website:
@@ -53,6 +59,8 @@ format:
       - text: |
           \usepackage{fvextra} 
           \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+          \newcommand{\ttt}[1]{\texttt{#1}}
+          \newcommand{\udl}[1]{\underline{#1}}
     
 
 

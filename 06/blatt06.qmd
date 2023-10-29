@@ -22,12 +22,12 @@ con1 <-
     dbConnect(RPostgres::Postgres(),
     dbname = "TwitterDB",
     host = "localhost",
-    user = "igor")
+    user = "igord")
 con2 <- 
     dbConnect(RPostgres::Postgres(),
     dbname = "TaxDB",
     host = "localhost",
-    user = "igor")
+    user = "igord")
 ```
 
 *note*: html [Version](https://igor-dimi.github.io/idb-blatt06) der Abgabe (fuer die leichtere Kopierung der Code Blocks)

@@ -5,8 +5,6 @@ author:
     - Jacob Rose
 ---
 
-\newcommand{\ttt}[1]{\texttt{#1}}
-
 # Uebersetzung ER-Schema in Relationenschemata
 
 ## Uebersetzung eines ER-Schemas

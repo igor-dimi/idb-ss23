@@ -1,0 +1,1543 @@
+---
+highlight-style: atom-one
+format:
+   pdf:
+      include-in-header: 
+         - text: |
+            \usepackage{fvextra} 
+            \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+
+```{r}
+#| echo: false
+library(RPostgres)
+con1 <- 
+    dbConnect(RPostgres::Postgres(),
+    dbname = "UniDB",
+    host = "localhost",
+    user = "igord")
+```
+
+
+# Introduction to SQL
+
+## Overview
+
+* **Data-definition language (DDL)**: 
+  * defining and modifying relation schemas
+  * integrity constrains
+  * view definition
+  * authorization: access rights to relations and views.
+* **Data-manipulation language (DML)**: querry information from and modify tuples in relations
+* **Transaction Control**: Specifying beginning and end points of transactions. 
+* **Embedded/dynamic SQL**: how SQL is embedded in general-purpose programmig languages. 
+
+## SQL DDL
+
+following can be specified:
+
+* schema for each relation
+* set of indices to be maintained for each relation
+* security and authorization information for each relation
+* physical storage structure of each relation on disk
+
+### Basic Types
+
+* **char(n)**: fixed n-long string. (full form: **character(n)** )
+* **varchar(n)**: variable-length character string with max length n. (full form **character varying(n)**)
+* **int** (full form: **integer**)
+* **smallint**
+* **numeric(p, d)**: p digits in total, d of the digits after decimal point.
+* **real**, **double precision**: floating-point / double precision floating point.
+* **float(n)**: Floating-point with precision of at least n digits.  
+
+### Basic Schema Definition
+
+```sql
+create table department (
+    dept_name   varchar(20),
+    building    varchar(15),
+    budget      numeric(12,2),
+    primary key (dept_name) --primary key integrity constraint
+);
+```
+general form:
+
+```sql
+create table r(
+    a1 domain1,
+    a2 domain2,
+    ...
+    a_n domain_n
+    [integrity constraint 1],
+    ...
+    [integrity constraing 2] -- these are optional
+)
+```
+
+### Basic Constraints:
+
+* **primary key**: a1, ..., a_n together form the primary key of the relation:
+  ```sql
+  primary key(a1, a2, ..., a_n)
+  ```
+* **foreign key**: a1, ..., a_n together form a foreign key over a relation s, i.e. a1, ..., a_n must be a primary key of some tuple in s (existence: referential integrity) 
+  ```sql
+  foreign key (a1, a2, ..., a_n) references s
+  ```
+* **not null**: 
+  ```sql
+  name varchar(20) not null, --name can not be null
+  ```
+
+concrete example:
+
+  ```sql
+  create table instructor(
+    ID          varchar(5),
+    name        varchar(20) not null, --name can not be null
+    dept_name   varchar(20),
+    salary      numeric(8,2),
+    primary key (ID),
+    foreign key (dept_name) references department
+  )
+  ```
+Note that explicitly specifying the primary key of the referenced relation
+```sql
+foreign key (dept_name) references department(dept_name)
+```
+is also possible but not required. 
+
+### Altering the Schema
+
+* remove a relation completely from the database schema:
+
+  ```sql
+  drop table r; --not to be confused with 'delete from'
+  ```
+
+* modify a relation schema:
+  
+  ```sql
+  alter table r add a1 a2; -- add the attributes a1, a2 to the relation r
+  ```
+
+  ```sql
+  alter table r drop a; -- drop/remove attribute a from the relation r
+  ```
+
+  some dbs' don't support dropping single attributes but only whole tables.
+
+## Basic SQL Querries
+
+A typical sql querry has the form
+
+```sql
+select a1, ..., a_n
+from r1, ..., r_m
+where P -- P is a predicate/condition
+```
+
+```{sql, connection = "con1"}
+select name
+from instructor
+```
+
+```{sql, connection = "con1"}
+select dept_name
+from instructor
+```
+
+```{sql, connection = "con1"}
+select distinct dept_name --removes duplicates
+from instructor
+```
+
+Select allows arbitrary expressions of attributes. we can output 10% salary raise for instructors 
+
+```{sql, connection = "con1"}
+select id, name, dept_name, salary * 1.1
+from instructor
+```
+
+### Where clause.
+
+* Names of all instructors in the CS department who have salary greater than $70,000:
+
+```{sql, connection = "con1"}
+select name
+from instructor
+where dept_name = 'Comp. Sci.'
+and salary > 70000
+```
+
+### Joining Tables 
+
+* names of instructors, names of their departments and the names of the buildings where departments are located:
+
+```{sql, connection = "con1"}
+select i.name, d.name as dept_name, building
+from instructor i, department d
+where i.dept_name = d.name
+```
+
+* names of instructors and identifiers of courses they have tought:
+
+```{sql, connection = "con1"}
+select i.name, t.course_id
+from instructor i, teaches t
+where i.id = t.instructor_id
+```
+
+* names of instructors from the CS department and identifiers of courses that they have tought:
+
+```{sql, connection = "con1"}
+select i.name, t.course_id
+from instructor i, teaches t
+where i.id = t.instructor_id and i.dept_name = 'Comp. Sci.'
+```
+### Renaming
+
+```{sql, connection = "con1"}
+select i.name as instructor_name, t.course_id -- as can be omitted
+from instructor as i, teaches as t -- as can be ommited
+where i.id = t.instructor_id
+```
+
+Renaming useful when comparing tuples in the same relation:
+
+* names of instructors whose salary is greater than at least one instructor in the biology department $\approx$ names of all instructors who earn more than the lowest paid instructor in the Biology department:
+
+```{sql, connection = "con1"}
+select distinct i.name
+from instructor i , instructor i2 
+where i.salary > i2.salary and i2.dept_name = 'Biology'
+```
+
+* **correlation name** = **table alias** = **tuple variable**
+
+### String Operations 
+
+* concatenation with `||`
+  
+```{sql, connection = "con1"}
+values 
+('hey' || ' there!')
+```
+  
+* `upper()` and `lower()`
+
+```{sql, connection = "con1"}
+values 
+(upper('hey there')),
+(lower('HEY THERE'))
+```
+
+* removing spaces with `trim()`
+
+```{sql, connection = "con1"}
+values 
+(trim('hey   ' ) || ' there!')
+```
+
+### Pattern Matching 
+
+* `%`: matches any string
+* `_`: matches any character
+* examples:
+  * `intro%`: any string beginning with 'Intro'
+  * `%Comp%`: any string containing 'Comp' as a substring
+  * `___`: any string of exactly three characters
+  * `___%`: any string of at least three characters
+  
+* concrete example; information of  courses that have 'comp' as a substring in their title:
+
+```{sql, connection = "con1"}
+select *
+from course c
+where c.title ilike '%comp%' --ilike is case insensitive like
+```
+
+*Escaping special characters like "%" with "\":
+
+```{sql, connection = "con1"}
+select *
+from (
+	values
+	('%15')
+) r(a)
+where a like '\%%'  
+``` 
+
+* Defining custom escape characters other than "\":
+
+```{sql, connection = "con1"}
+select *
+from (
+	values
+	('%15')
+) r(a)
+where a like '^%%' escape '^' -- '^' is defined as the escape character
+``` 
+
+### Ordering Display of Tuples
+
+* ordering
+
+```{sql, connection = "con1"}
+select name
+from instructor
+where dept_name  = 'Physics'
+order by name;
+``` 
+
+* ordering order, multiple attributes
+
+```{sql, connection = "con1"}
+select *
+from instructor
+order by salary desc, name asc
+```
+
+### Between
+
+```{sql, connection = "con1"}
+SELECT name
+from instructor i
+where i.salary BETWEEN 90000 and 100000
+```
+
+### Tuples in Where Predicates
+
+```sql
+SELECT i.name, t.course_id
+from instructor i, teaches t
+where i.id = t.instructor_id and i.dept_name = 'Biology' 
+```
+is equivalent to
+
+```{sql, connection = "con1"}
+SELECT i.name, t.course_id
+from instructor i, teaches t
+where (i.id, i.dept_name) = (t.instructor_id, 'Biology')
+```
+
+## Set Operations
+
+Set operations eliminate duplicates by default. Duplicates retained by `all` keyword.
+
+### Union
+
+corresponds to $\cup$.
+
+* courses offered in 2017 Fall **or** 2018 Spring:
+
+```{sql, connection = "con1"}
+(
+    select  course_id
+    from section
+    where semester = 'Fall' and year = 2017
+)
+UNION
+(
+    select course_id
+    from section
+    where semester = 'Spring' and year = 2018
+)
+```
+
+### Intersect
+
+Corresponds to $\cap$.
+
+* Courses offered in **both** Fall 2017 and Spring 2018:
+
+```{sql, connection = "con1"}
+(
+    select  course_id
+    from section
+    where semester = 'Fall' and year = 2017
+)
+intersect
+(
+    select course_id
+    from section
+    where semester = 'Spring' and year = 2018
+)
+```
+
+### Except
+
+Corresponds to $\backslash$.
+
+* courses offered in the Fall 2017 but not in Spring 2018:
+
+```{sql, connection = "con1"}
+(
+    select  course_id
+    from section
+    where semester = 'Fall' and year = 2017
+)
+except
+(
+    select course_id
+    from section
+    where semester = 'Spring' and year = 2018
+)
+```
+
+* Illustrating how `all` works:
+  
+`union all`: 
+
+```{sql, connection = "con1"}
+with r(a) as (
+    values
+    (1),
+    (1)
+), s(a) as (
+    values
+    (1)
+)
+(select *
+from r )
+union  all
+(select *
+from s)
+```
+
+`intersect all`:
+
+```{sql, connection = "con1"}
+with r(a) as (
+    values
+    (1),
+    (1),
+    (1)
+), s(a) as (
+    values
+    (1),
+    (1)
+)
+(select *
+from r )
+INTERSECT all
+(select *
+from s)
+```
+
+`except all`:
+
+```{sql, connection = "con1"}
+with r(a) as (
+    values
+    (1),
+    (1)
+), s(a) as (
+    values
+    (1)
+)
+(select *
+from r )
+except  all
+(select *
+from s)
+```
+
+```{sql, connection = "con1"}
+with r(a) as (
+    values
+    (1),
+    (1)
+), s(a) as (
+    values
+    (1)
+)
+(select *
+from s )
+except  all
+(select *
+from r)
+```
+
+## Null
+
+* `null` represents values that are not known. (can be anything). 
+* arithmetic expressions involving `null` produce `null`:
+
+```{sql, connection = "con1"}
+values
+(1 + null)
+```
+
+* boolean expressions and predicates involving `null` (other than `is [not] null`) have a special truth value `unknown`. 
+  * e.g. `(1 < unknown) = uknown`
+* truth tables for `unknown`:
+
+| p       | q         | p and q   |
+| ------- | --------- | --------- |
+| `false` | `unknown` | `false`   |
+| `true`  | `unknown` | `unknown` |
+
+| p       | q         | p or q    |
+| ------- | --------- | --------- |
+| `false` | `unknown` | `unknown` |
+| `true`  | `unknown` | `true`    |
+
+`not unknown = uknown`
+
+* tuples that evaluate to `uknown` in the `where` clause are not included in the result (just like the ones that evaluate to `false`)
+
+* we can test if a value is or isn't null: 
+
+```{sql, connection = "con1"}
+select a
+from (
+	values 
+	(1, 3),
+	(2, null)
+) r(a, b)
+where b is null
+```
+
+```{sql, connection = "con1"}
+select a
+from (
+	values 
+	(1, 3),
+	(2, null)
+) r(a, b)
+where b is not null
+```
+
+* we can test whether the result of a predicate is or isn't `uknown`
+
+```{sql, connection = "con1"}
+select a
+from (
+	values 
+	(1, 3),
+	(2, null)
+) r(a, b)
+where b > 2 is unknown
+```
+
+```{sql, connection = "con1"}
+select a
+from (
+	values 
+	(1, 3),
+	(2, null)
+) r(a, b)
+where b > 2 is not unknown
+```
+
+## Aggregate Functions
+
+* Take collection (i.e. aggregate, multiset) of values as input and return a **single** value. 
+* Built in aggregate functions in sql:
+  * `avg`: input must be numeric
+  * `min`
+  * `max`
+  * `sum`: computes the total sum of the values in the aggregate, input must be numeric
+  * `count`
+
+### Basic Aggregation
+
+* Average salary of instructors in the CS department:
+
+```{sql, connection = "con1"}
+select avg(salary) as avg_salary
+from instructor 
+where dept_name = 'Comp. Sci.'
+```
+
+Duplicates are retained. Retention of duplicates is obviously important for calculating averages. But sometimes we may want to
+eliminate duplicates:
+
+* Find the total number of instructors that teach a course in the Spring 2018 semester:
+
+```{sql, connection = "con1"}
+select count(distinct t.instructor_id)
+from teaches t
+where semester = 'Spring' and year = 2018
+```
+
+as opposed to 
+
+```{sql, connection = "con1"}
+select count(t.instructor_id)
+from teaches t
+where semester = 'Spring' and year = 2018
+```
+
+* counting all attributes with `count(*):`
+
+```{sql, connection = "con1"}
+select count(*)
+from course
+```
+
+`count(*)` retains `null` values. It is the only aggregate function that does so. All other aggregate functions ignore `null` values, including count functions applied on a single attribute. That is `count(*)` and `count(attr)` are different:
+
+```{sql, connection = "con1"}
+select count(*) as count_star, count(a) as count_attribute
+from (
+	values 
+	(1),
+	(null)
+) r(a)
+```
+
+### Aggregation with Grouping
+
+Instead of applying the aggregate function to a single aggregate (collection), we can apply it to multiple aggregates/collections, that consist of tuples grouped together w.r.t certain grouping attributes:
+
+* find the average salary in each department:
+
+```{sql, connection = "con1"}
+select dept_name, avg(salary) as avg_dept_salary
+from instructor  
+group by dept_name
+order by avg(salary) desc
+```
+
+* find number of instructors working in each department:
+
+```{sql, connection = "con1"}
+select dept_name, count(*) cnt
+from instructor 
+group by dept_name 
+order by dept_name
+```
+
+* find the number of instructors in each department who teach a course in the Spring 2018 semester:
+
+```{sql, connection = "con1"}
+select i.dept_name, count(distinct i.id) as instr_count
+from instructor i , teaches t 
+where i.id = t.instructor_id 
+and t.semester = 'Spring' and t.year = 2018
+group by i.dept_name
+``` 
+
+::: {.callout-warning}
+Note that only attributes allowed to appear in the select clause (other than the attribute being aggregated) are the attributes used in the `group by` clause. Thus
+
+```sql
+select a, X, avg(b) -- X doesn't appear in the group by clause below
+from r -- some relation r
+where P -- some predicate
+group by a
+```
+
+it not legal.
+:::
+
+### Having Clause
+
+Specifies a condition that applies to **groups** rather than to tuples. 
+
+* departments where average salayr is morethan $42,000:
+
+```{sql, connection = "con1"}
+select i.dept_name, avg(i.salary)
+from instructor i 
+group by dept_name
+having avg(i.salary) > 42000
+order by avg(i.salary) desc
+```
+
+Like with `select` the attributes that are allowed in the `having` clause are either present in the `group by` clause, it is the attribute that is being aggregated.  
+
+### Semantics of Group by and Having
+
+Can be understood roughly as:
+
+1. `from` is evaluated to get a relation
+2. `where` predicate is applied on each tupel to get a new relation
+3. tupels that agree on values of those attributes listed in the `group by` clause are placed into groups. 
+4. `having` clause applied to each group, the ones that satisfy it are retianed to obtain a new relation
+5. `select` clause is applied to the relation to obtain the resulting relation. 
+
+
+A query with both `where` and `having`:
+
+* for each course section offered in 2017, find the average total credits (`tot_cred`) of all students enrolled in the section, if the section has at least 2 students:
+
+```{sql, connection = "con1"}
+select t.course_id, t.sec_id, t.semester, avg(s.tot_cred)
+from takes t, student s 
+where t.student_id = s.id 
+and t."year" = 2017
+group by course_id, sec_id, semester
+having count(s.id) > 1;
+```
+
+:::{.callout-tip title="Aggregation with null"}
+All aggregate functions except of `count(*)` ignore `null` values
+:::
+
+:::{.callout-tip title="Aggregation of Boolean Values"}
+* the aggregate function `some()` can be applied to an aggregate consisting of boolean values to compute the disjunction of these values
+* the aggregate function `every()` can be applied to an aggregate consisting of boolean values to compute the conjunction of the values:
+```{sql, connection = "con1"}
+select every(a)
+from (
+	values 
+	(true),
+	(true)
+) r(a)
+```
+:::
+
+## Nested Subqueries 
+
+Nested subqueries are used for:
+
+* test for set membership with `[not] in`
+* make set comparisons
+* determine set cardinality by nesting queries in the `where` clause
+
+Queries can be nested in the
+
+* `where` clause
+* `from` clause
+
+Simple example for a subquery:
+
+```{sql, connection = "con1"}
+-- names of departments and the average pay
+-- where average pay in that department is above the overall average pay
+select dept_name, avg(i.salary) as avg_dep_pay
+from instructor i 
+group by i.dept_name 
+having avg(i.salary) > (
+	select avg(i2.salary)
+	from instructor i2 
+)
+order by avg(i.salary) desc
+```
+
+### Testing for Set Membership
+
+Reconsider the queries
+
+* Find all the courses taught in **both** Fall 2017 **and** Spring 2018 semesters
+* Find all the courses taught in Fall 2017 **but not** in Spring 2018
+
+Previously we used set operations. Now we can use `in`:
+
+```{sql, connection = "con1"}
+select distinct s.course_id  
+from "section" s 
+where s.semester = 'Fall' and s."year" = 2017 
+and s.course_id in (
+	select s.course_id
+	from "section" s 
+	where s.semester = 'Spring' and s."year" = 2018
+)
+```
+
+```{sql, connection = "con1"}
+select distinct s.course_id  
+from "section" s 
+where s.semester = 'Fall' and s."year" = 2017 
+and s.course_id not in (
+	select s.course_id
+	from "section" s 
+	where s.semester = 'Spring' and s."year" = 2018
+)
+```
+
+where 
+
+```sql
+select course_id
+from section
+where semester = 'Spring' and year = 2018
+```
+
+is a nested subquery.
+
+::: {.collout-note}
+`distinct` is used since set operations remove duplicates by default.
+:::
+
+### Enumerated Sets 
+
+`[not] in` can be used on enumerated sets:
+
+* Names of al instructors other than Mozart and Einstein:
+
+```{sql, connection = "con1"}
+select distinct name
+from instructor i 
+where name not in ('Mozart', 'Einstein')
+```
+
+:::{ .callout-warning}
+enumerated sets shouldn't be confused with tupels 
+:::
+
+### Set Comparison
+
+Reconsider the query: 
+
+* Names of all instructors whose salary is grater than at least one instructor in the Biology department:
+
+Previously we used the somewhat awkward solution: 
+
+```sql
+select i.name
+from instructor i , instructor i2 
+where i2.dept_name = 'Biology'
+and i.salary > i2.salary 
+```
+
+Now we can express this much more similar to natural language:
+
+```{sql, connection = "con1"}
+select i.name
+from instructor i 
+where i.salary > some(
+	select salary 
+	from instructor
+	where dept_name = 'Biology'
+)
+```
+
+Contrast:
+
++------------------------------------+---------------------------------+
+| with cross product                 | with set comparison             |
++====================================+=================================+
+| ```sql                             | ```sql                          |
+| select i.name                      | select i.name                   |
+| from instructor i , instructor i2  | from instructor i               |
+| where i2.dept_name = 'Biology'     | where i.salary > some(          |
+| and i.salary > i2.salary           |     select salary               |
+| ```                                |     from instructor             |
+|                                    |     where dept_name = 'Biology' |
+|                                    | )                               |
+|                                    | ```                             |
++------------------------------------+---------------------------------+
+
+Consider another query:
+
+* Names of instructors that have a salary greater than that of any/each instructor in the Biology department:
+
+```{sql, connection = "con1"}
+select i."name"
+from instructor i 
+where i.salary > all (
+	select salary 
+	from instructor 
+	where dept_name = 'Biology'
+)
+```
+
+:::{.callout-warning}
+* `= some (...)` is identical to `in (...)`
+* `<> some (...)` is **not** identical to `not in (...)`
+* `<> all (...)` is identical to `not in (...)`
+* `= all(...)` is **not** identical to `in (...)`
+:::
+
+* name of the department with the highest average salary:
+
+```{sql, connection = "con1"}
+select dept_name
+from instructor i 
+group by i.dept_name
+having avg(i.salary) >= all (
+	select avg(salary)
+	from instructor 
+	group by dept_name 
+)
+```
+
+
+### Testing for Empty Relations 
+
+We can test whether a query has any tuples in its result (whether if it's non-empty) with `exists`. Reconsider
+the query 
+
+* All courses taught both in the Fall 2017 and Spring 2018:
+
+```{sql, connection = "con1"}
+select course_id 
+from "section" s
+where s.semester = 'Fall' and s."year" = 2017
+and exists (
+	select *
+	from "section" s2
+	where s2.semester = 'Spring' and s2."year" = 2018
+	and s.course_id = s2.course_id 
+)
+```
+
+Above a **correlation name** from the outer querry has been used in the inner querry. This can equivalently be achieved with a
+usual join operation:
+
+```sql
+select s.course_id
+from "section" s , "section" s2
+where s.semester = 'Fall' and s."year" = 2017
+and s2.semester = 'Spring' and s2."year" = 2018
+and s.course_id = s2.course_id 
+```
+
+Non-existence can be queried with `not exists`. For example we can use it to simulate **set containment**.
+
+ $$ B \subseteq A \equiv \texttt{not exists (B except A)} $$
+
+* All students who have taken all courses offered in the Biology department:
+
+```{sql, connection = "con1"}
+select s.id, s."name" 
+from student s 
+where not exists (
+	(select c.id
+	from course c
+	where c.dept_name = 'Biology')
+		except
+	(select t.course_id 
+	from takes t 
+	where s.id = t.course_id)
+)
+```
+
+The subquerry
+
+```sql
+select c.id
+from course c
+where c.dept_name = 'Biology'
+```
+finds all courses offered in the Biology department. The subquerry:
+
+```sql
+select t.course_id 
+from takes t 
+where s.id = t.course_id
+```
+
+finds all courses that the student 's' has taken. 
+
+Consider the query:
+
+* How many students have taken a course by instructor with the ID '10101'
+
+We can construct this query in three different ways: 
+
+* With the usual join operation:
+
+```sql
+select count(distinct t.student_id)
+from takes t, teaches t2 
+where t.course_id = t2.course_id 
+	and t.sec_id = t2.sec_id 
+	and t.semester = t2.semester 
+	and t."year" = t2."year" 
+	and t2.instructor_id = '10101'
+``` 
+
+* With set membership test using `in` with a tuple instead of a single attribute
+
+```sql
+select count(distinct t.student_id)
+from takes t 
+where (t.course_id, t.sec_id, t.semester, t."year") in ( 
+	select t2.course_id , t2.sec_id , t2.semester , t2."year" 
+	from teaches t2 
+	where t2.instructor_id = '10101'
+)
+```
+
+* with the `exists` construct
+
+```{sql, connection = "con1"}
+select count(distinct t.student_id)
+from takes t 
+where exists (
+	select t2.course_id , t2.sec_id , t2.semester , t2."year" 
+	from teaches t2 
+	where t.course_id = t2.course_id 
+	and t.sec_id = t2.sec_id 
+	and t.semester = t2.semester 
+	and t."year" = t2."year" 
+	and t2.instructor_id = '10101'
+)
+```
+
+### Test for Absence of Duplicates / Test for Uniqueness
+
+Testing if subquery has duplicate tuples with `unique`:
+
+* courses that were offered at most once in 2017:
+
+```sql
+select c.id 
+from course c 
+where unique (
+	select 
+	from "section" s 
+	where c.id = s.course_id 
+	and s."year" = 2017
+)
+```
+
+Since `unique` not implemented in Postgresql, we can simulate it as follows:
+
+```{sql, connection = "con1"}
+select c.id 
+from course c 
+where 1 >= (
+	select count(s.course_id)
+	from "section" s 
+	where s."year" = 2017
+	and c.id = s.course_id
+)
+```
+
+(For some reason this delivers a different result than two solutions below. Why?)
+
+Another solution using aggregate functions: 
+
+```{sql, connection = "con1"}
+select c.id 
+from course c , "section" s 
+where c.id = s.course_id 
+and s."year" = 2017
+group by c.id
+having count(*) <= 1
+```
+
+Yet another far less elegant solution:
+
+* First we find courses offered more than once in 2017:
+
+```{sql, connection = "con1"}
+select course_id
+from "section" s 
+where s."year" = 2017
+	except all
+select distinct course_id 
+from "section" s 
+where s."year" = 2017
+```
+
+* Than courses offered at most once in 2017:
+
+```{sql, connection = "con1"}
+select distinct course_id
+from "section" s 
+where s."year" = 2017
+and course_id not in (
+	select course_id
+from "section" s 
+where s."year" = 2017
+	except all
+select distinct course_id 
+from "section" s 
+where s."year" = 2017
+)
+```
+
+### Subqueries in the From Clause 
+
+Since relations appear in the `from` clause, there is nothing preventing them being subqueries. Reconsider the query
+
+* Average instructor salaries per department, where the average salary in that department is greater than 42000:
+
+Previously we solved using `group by` and `having` - which is the natural way:
+
+```sql
+select i.dept_name, avg(i.salary) avg_salary
+from instructor i 
+group by i.dept_name 
+having avg(i.salary) > 42000
+```
+
+We can re-write it without `having` using subquery in the `from` clause:
+
+```{sql, connection = "con1"}
+select dept_name, avg_salary
+from (
+	select i.dept_name, avg(i.salary)
+	from instructor i 
+	group by i.dept_name 
+) dep_salaries(dept_name, avg_salary) --table alias 
+where avg_salary > 42000
+```
+
+Contrast: 
+
++----------------------------------------------+------------------------------------------------------+
+| with `having`                                | with nested query in `from` clause                   |
++----------------------------------------------+------------------------------------------------------+
+| ```sql                                       | ```sql                                               |
+| select i.dept_name, avg(i.salary) avg_salary | select dept_name, avg_salary                         |
+| from instructor i                            | from (                                               |
+| group by i.dept_name                         |     select i.dept_name, avg(i.salary)                |
+| having avg(i.salary) > 42000                 |     from instructor i                                |
+| ```                                          |     group by i.dept_name                             |
+|                                              | ) dep_salaries(dept_name, avg_salary) --table alias  |
+|                                              | where avg_salary > 42000                             |
+|                                              | ```                                                  |
++----------------------------------------------+------------------------------------------------------+
+
+
+Another example:
+
+* max total salary in a department across all departments:
+
+```{sql, connection = "con1"}
+select max(tot_sal) as max_tot_sal
+from (
+	select sum(i.salary)
+	from instructor i 
+	group by i.dept_name 
+) r(tot_sal) -- table alias
+```
+
+:::{.callout-note}
+**Correlation variables** are allowed in a `from` subquery using the `lateral` keyword. 
+
+* names of instructors, their salaries, alongside with the average salary of their department:
+
+```{sql, connection = "con1"}
+select i.name, i.salary , i.dept_name, avg_dep_salary
+from instructor i , lateral (
+	select avg(i2.salary)
+	from instructor i2 
+	where i.dept_name = i2.dept_name 
+) r(avg_dep_salary)
+```
+:::
+
+
+### With Clause 
+
+Defines temporary relations whose definition is available only in the query in which `with` clause occurs.
+
+* Departments with maximum budget
+
+```{sql, connection = "con1"}
+with max_budget(value) as (
+	select max(d.budget)
+	from department d 
+)
+select d."name" , d.budget as budget
+from department d, max_budget mb
+where d.budget = mb.value 
+```
+
+Alternatively we can use nested subquerries in the `with` clause or in the `from` clause:
+
+* as a simple subquery in `where` clause:
+
+```sql
+select d."name" , d.budget 
+from department d 
+where d.budget = (
+	select max(d2.budget)
+	from department d2 
+)
+```
+
+* using `all` with a `where`-clause subquery: 
+
+```sql
+select d.name, d.budget  
+from department d 
+where d.budget >= all (
+	select budget 
+	from department d2 
+)
+```
+
+* as `from`-clause subquery:
+
+```sql
+select d.name, d.budget 
+from department d, (
+	select max(d2.budget)
+	from department d2 
+) bd(val)
+where d.budget = bd.val
+```
+Using with improves readability. Consider another example:
+
+* departments where total salary greater than the average of the total salary of all departments:
+
+```{sql, connection = "con1"}
+with dep_tot_salary(d_name, t_salary) as (
+	select i.dept_name, sum(i.salary)
+	from instructor i 
+	group by i.dept_name 	
+)
+select *
+from dep_tot_salary
+where t_salary > (
+	select avg(t_salary)
+	from dep_tot_salary
+)
+```
+
+### Scalar Subqueries 
+
+Queries returning one single tuple with one attribute are called **scalar**. Such queries can be used in place of 
+values as **scalar subquerries**, even in `select`-clause:
+
+* all departments along with number of instructors in each department
+
+```{sql, connection = "con1"}
+select d."name" , 
+	   ( -- scalare unteranfragen duerfen innerhalb select eingesetzt werden
+	   	select count(*)
+	   	from instructor i 
+	   	where d."name" = i.dept_name --d is a correlatin variable
+	   ) cnt
+from department d 
+order by cnt desc
+```
+
+Of course this can simply be achieved with grouping:
+
+```{sql, connection = "con1"}
+select i.dept_name , count(*)
+from instructor i 
+group by i.dept_name 
+order by count(*) desc
+```
+
+Alternatively as subquery of `from` with `lateral`:
+
+```sql
+select d."name", res.val as cnt
+from department d , lateral (
+	select count(*)
+	from instructor i 
+	where i.dept_name = d."name" 
+) res(val)
+order by cnt desc
+```
+Scalar subqueries can occur in `select`, `where` and `having` clauses.
+
+### Queries Without From 
+
+* with `values`
+
+```{sql, connection = "con1"}
+values
+(1, 'a'),
+(2, 'b')
+```
+
+* with `select`
+
+```{sql, connection = "con1"}
+select 
+(1), ('a')
+  union all
+select 
+(2), ('b')
+```
+
+## Modifying the Database
+
+* adding - `insert into R`
+* removing - `delete from R`
+* changing - `update R set`
+
+infromation from the database as opposed to querying.
+
+### Deletion
+
+Expressed just like a query,
+
+* delete tuples from r satisfying condition P: 
+
+```sql
+delete from r -- relation
+where P -- predicate
+```
+
+* delete all tuples from instructor:
+
+```sql
+delete from instructor;
+```
+
+or equivalently
+
+```sql
+delete from instructor
+where true
+```
+
+The predicate can be arbitrarily complex, 
+
+* Delete all instructors that work in the Watson building:
+
+```sql
+delete from instructor
+where dept_name in (
+  select dept_name
+  from department
+  where building = 'Watson'
+)
+```
+
+`delete` deletes tupels from a single relation, but we can still reference any number of relations nested in 
+`select`, `from` and `where`, including the one that we are deleting from. Consider:
+
+* delete all instructors that earn less than the overall average instructor salary
+
+```sql
+delete from instructor
+where salary < (
+  select avg(salary)
+  from instructor
+)
+```
+
+* delete(which is anoter way of saying 'fire') all instructors that haven't taught in the year 2018
+
+```sql
+delete from instructor i
+where i.id not in (
+  select t.instructor_id
+  from teaches t 
+  where t."year" = 2018
+)
+```
+
+above a relation other than the one being deleted was referenced in the nested subquery in the `where` clause, demonstrating
+we can reference arbitrary relations.  
+
+:::{.callout-note}
+deletions are performed **after** the tupels are filtered (the ones that pass the test). 
+Otherwise the result could be influenced. 
+:::
+
+### Insertion
+
+Any query result delivering a collection of tuples can be inserted into a relation, as long as they agree with the cardinality
+and domains of the attributes of the relation:
+
+* providing tuples explicitetly using `values`:
+
+```sql
+insert into course
+values 
+('CS-437', 'Database Systems', 'Comp. Sci.', 4),
+('PHY-201', 'Intro. Theo. Phys.', 'Physics', 6)
+```
+
+* or using `select`:
+
+```sql
+insert into course
+select 
+('CS-437'), ('Database Systems'), ('Comp. Sci.'), (4)
+  union
+select 
+('PHY-201'), ('Intro. Theo. Phys.'), ('Physics'), (6)
+```
+
+* we can explicitely specify the order of the attributes:
+
+```sql
+insert into course(title, id, credits, dept_name)
+  values ('Database Systems', 'CS-437', 4, 'Comp. Sci.')
+```
+
+* even omit some of the attributes from the specification (ommited attributes are set automatically as `null`):
+
+```sql
+insert into course (title, id)
+  values ('Baking Cakes', 'BK-101')
+```
+
+Above `dept_name` and `credit` are set automatically as `null`. 
+
+More generally, results of an arbitary query can be inserted as well. Consider:
+
+* make each student in the Music department who has earned more than 144 credit hours an instructor in the Music department
+  with a salary of $18,000. 
+
+```sql
+insert into instructor 
+  select s.id, s."name", s.dept_name, 18000
+  from student s
+  where s.dept_name = 'Music' and tot_cred > 144;
+```
+
+* insert a copy of a relation to itself:
+
+```sql
+insert into s
+  select *
+  from s
+```
+
+
+:::{.callout-note}
+Importantly in the above example:
+```sql
+insert into s
+  select *
+  from s
+```
+the query is evaluated before the insertion is performed. Otherwise we could face infinite loops. 
+Also note that this operation is only possible if the relation s has no primary key defined. 
+Otherwise duplicates are not allowed.
+:::
+
+### Updates
+
+Changing some values of tuples is possible with `update`. Consider:
+
+* Increase the salaries of all instructors by 5%
+
+```sql
+update instructor
+set salary = salary * 1.05
+```
+
+* Raise the salary only of those instructors with pay less than $70,000
+
+```sql
+update instructor
+set salary = salary * 1.05
+where salary < 70000
+```
+
+Nested subqueries are allowed in the `where` clause, referencing the relation being updated or other arbitrary relations.
+Consider:
+
+* give a 5% salary raise to instructors whose salary is less than overall average salary:
+
+```sql
+update instructor
+set salary = salary * 1.05
+where salary < (
+  select avg(salary)
+  from instructor 
+)
+```
+
+* give a 5% salary raise to instructors that have taugh more than 1 course in 2018:
+
+```sql
+update instructor i
+set i.salary = i.salary * 1.05
+where 1 < (
+	select count(*)
+	from teaches t 
+	where t.instructor_id = i.id
+	and  t."year" = 2018
+)
+```
+
+* give 3% raise to instructors with salary over $100,000, 5% to others. 
+
+One solution is to write to update statements:
+
+```sql
+update instructor 
+set salary = salary * 1.03
+where salary > 100000
+```
+
+```sql
+update instructor 
+set salary = salary * 1.05
+where salary <= 100000
+```
+
+:::{.callout-warning}
+in the above solution the order of statements is important, otherwise we could
+end up giving a 8% raise to instructors whose salary is 100000 or just below it.
+:::
+
+Alternatively use `case` statement. Then the order won't be important.
+
+
+
+```sql
+update instructor
+set salary = 
+  case
+    when salary <= 100000 then salary * 1.05
+    else salary * 1.03
+  end 
+```
+
+:::{.callout-note}
+General syntax of case statement:
+
+```sql
+case 
+  when P1 then res1 -- P1 is a predicate 
+  when P2 then res2 
+  ...
+  when Pn then res_n
+  else res0
+end
+```
+
+since case statement is an expression that is evaluated to a value, it can be used any place where a value is used.
+:::
+
+Complex subqueries can follow after `set` clause: 
+
+* set total credit of each student to the sum of the credits of courses successfully completed by the student. (Grade is not an 'F' or `null`)
+
+```sql
+update student
+set tot_cred = (
+	select sum(c.credits)
+	from takes t, course c
+	where t.course_id = c.id 
+		and t.student_id = student.id 
+		and t.grade is not null 
+		and t.grade not like 'F'
+)
+```
+
+For student that haven't successfully completed a course, total credit will be set to null. Instead we may set it to
+0 using `case`:
+
+```sql
+update student
+set tot_cred = (
+  case
+    when select sum(c.credits) is not null then sum(credits)
+    else 0
+	from takes t, course c
+	where t.course_id = c.id 
+		and t.student_id = student.id 
+		and t.grade is not null 
+		and t.grade not like 'F'
+)
+```
+
+Equivalently, this can be ahieved by `coalesce` provided by some DBs.
+
+```sql
+update student
+set tot_cred = (
+	select coalesce(sum(c.credits), 0)
+	from takes t, course c
+	where t.course_id = c.id 
+		and t.student_id = student.id 
+		and t.grade is not null 
+		and t.grade not like 'F'
+)
+```
+where `coalesce(x, y)` evaluates to x, if x is not `null`, and to y otherwise.

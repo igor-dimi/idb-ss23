@@ -20,7 +20,7 @@ con1 <-
     dbConnect(RPostgres::Postgres(),
     dbname = "TwitterDB",
     host = "localhost",
-    user = "igor")
+    user = "igord")
 ```
 
 # SQL und Anfragesprachen
