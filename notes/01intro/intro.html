@@ -6,11 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Jonathan Barthelmes">
-<meta name="author" content="Jacob Rose">
-<meta name="author" content="Igor Dimitrov">
 
-<title>IDB SS23 Solutions &amp; Notes - 2&nbsp; Relationale Algebra und SQL</title>
+<title>IDB SS23 Solutions &amp; Notes - 11&nbsp; Intro</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -60,24 +57,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../03/blatt03.html" rel="next">
-<link href="../01/blatt01.html" rel="prev">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../notes/02introrel/rel.html" rel="next">
+<link href="../../10/blatt10.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -99,10 +96,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-sidebar floating">
@@ -114,7 +109,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../01/blatt01.html">Loesungen</a></li><li class="breadcrumb-item"><a href="../02/blatt02.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Relationale Algebra und SQL</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../notes/01intro/intro.html">Notes</a></li><li class="breadcrumb-item"><a href="../../notes/01intro/intro.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Intro</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -129,7 +124,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="../">IDB SS23 Solutions &amp; Notes</a> 
+      <a href="../../">IDB SS23 Solutions &amp; Notes</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -141,7 +136,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../index.html" class="sidebar-item-text sidebar-link">
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">IDB SS 23 Loesungen &amp; Notizen</span></a>
   </div>
 </li>
@@ -156,61 +151,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../01/blatt01.html" class="sidebar-item-text sidebar-link">
+  <a href="../../01/blatt01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Grundlagen der Relationalen Algebra</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../02/blatt02.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../02/blatt02.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Relationale Algebra und SQL</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../03/blatt03.html" class="sidebar-item-text sidebar-link">
+  <a href="../../03/blatt03.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">ER-Modellierung</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../04/blatt04.html" class="sidebar-item-text sidebar-link">
+  <a href="../../04/blatt04.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Uebersetzung ER-Schema in Relationenschemata</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../05/blatt05.html" class="sidebar-item-text sidebar-link">
+  <a href="../../05/blatt05.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">SQL-Anfragen</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../06/blatt06.html" class="sidebar-item-text sidebar-link">
+  <a href="../../06/blatt06.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Rekursion, Relationale Algebra und SQL</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../07/blatt07.html" class="sidebar-item-text sidebar-link">
+  <a href="../../07/blatt07.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">SQL und Anfragesprachen</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../08/blatt08.html" class="sidebar-item-text sidebar-link">
+  <a href="../../08/blatt08.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Physiche Datenorganisation und Baeume</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../09/blatt09.html" class="sidebar-item-text sidebar-link">
+  <a href="../../09/blatt09.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hashing, Indexzugriffe und Sortierung</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../10/blatt10.html" class="sidebar-item-text sidebar-link">
+  <a href="../../10/blatt10.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Anfragebearbeitung</span></span></a>
   </div>
 </li>
@@ -227,31 +222,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../notes/01intro/intro.html" class="sidebar-item-text sidebar-link">
+  <a href="../../notes/01intro/intro.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Intro</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../notes/02introrel/rel.html" class="sidebar-item-text sidebar-link">
+  <a href="../../notes/02introrel/rel.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Introduction to Relational Model and Relational Algebra</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../notes/03introSQL/introsql.html" class="sidebar-item-text sidebar-link">
+  <a href="../../notes/03introSQL/introsql.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to SQL</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../notes/04interSQL/intersql.html" class="sidebar-item-text sidebar-link">
+  <a href="../../notes/04interSQL/intersql.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Intermediate SQL</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../notes/UniDB/unidb.html" class="sidebar-item-text sidebar-link">
+  <a href="../../notes/UniDB/unidb.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Uni DB</span></span></a>
   </div>
 </li>
@@ -267,11 +262,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#relationale-algebra---fortsetzung" id="toc-relationale-algebra---fortsetzung" class="nav-link active" data-scroll-target="#relationale-algebra---fortsetzung"><span class="header-section-number">2.1</span> Relationale Algebra - Fortsetzung</a></li>
-  <li><a href="#sql-anfragen" id="toc-sql-anfragen" class="nav-link" data-scroll-target="#sql-anfragen"><span class="header-section-number">2.2</span> SQL-Anfragen</a></li>
-  <li><a href="#entsprechungen-in-sql-und-der-relationalen-algebra" id="toc-entsprechungen-in-sql-und-der-relationalen-algebra" class="nav-link" data-scroll-target="#entsprechungen-in-sql-und-der-relationalen-algebra"><span class="header-section-number">2.3</span> Entsprechungen in SQL und der relationalen Algebra</a></li>
-  <li><a href="#er-modell" id="toc-er-modell" class="nav-link" data-scroll-target="#er-modell"><span class="header-section-number">2.4</span> ER-Modell</a></li>
-  <li><a href="#feedback" id="toc-feedback" class="nav-link" data-scroll-target="#feedback"><span class="header-section-number">2.5</span> Feedback</a></li>
+  <li><a href="#purposes-of-db" id="toc-purposes-of-db" class="nav-link active" data-scroll-target="#purposes-of-db"><span class="header-section-number">11.1</span> Purposes of DB</a></li>
+  <li><a href="#sql-ddl" id="toc-sql-ddl" class="nav-link" data-scroll-target="#sql-ddl"><span class="header-section-number">11.2</span> SQL DDL</a></li>
+  <li><a href="#sql-dml" id="toc-sql-dml" class="nav-link" data-scroll-target="#sql-dml"><span class="header-section-number">11.3</span> SQL DML</a></li>
+  <li><a href="#steps-to-db-design" id="toc-steps-to-db-design" class="nav-link" data-scroll-target="#steps-to-db-design"><span class="header-section-number">11.4</span> Steps to DB Design</a></li>
+  <li><a href="#dbms-architecture" id="toc-dbms-architecture" class="nav-link" data-scroll-target="#dbms-architecture"><span class="header-section-number">11.5</span> DBMS architecture</a>
+  <ul class="collapse">
+  <li><a href="#querry-processor" id="toc-querry-processor" class="nav-link" data-scroll-target="#querry-processor"><span class="header-section-number">11.5.1</span> Querry processor</a></li>
+  <li><a href="#storage-manager" id="toc-storage-manager" class="nav-link" data-scroll-target="#storage-manager"><span class="header-section-number">11.5.2</span> Storage Manager</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -280,21 +279,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Relationale Algebra und SQL</span></h1>
+<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Intro</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Authors</div>
-    <div class="quarto-title-meta-contents">
-             <p>Jonathan Barthelmes </p>
-             <p>Jacob Rose </p>
-             <p>Igor Dimitrov </p>
-          </div>
-  </div>
     
   
     
@@ -303,173 +294,101 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="relationale-algebra---fortsetzung" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="relationale-algebra---fortsetzung"><span class="header-section-number">2.1</span> Relationale Algebra - Fortsetzung</h2>
+<p><strong>DBMS</strong>:</p>
+<section id="purposes-of-db" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="purposes-of-db"><span class="header-section-number">11.1</span> Purposes of DB</h2>
+<p>Two main uses of databases:</p>
+<ul>
+<li><strong>online transaction processing</strong>: large numer of users use the database, each user retrieving small amounts of data and performing small updates.</li>
+<li><strong>data analytics</strong>: processing of data to draw conclusions, infer rules or decision procedures.</li>
+</ul>
+</section>
+<section id="sql-ddl" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="sql-ddl"><span class="header-section-number">11.2</span> SQL DDL</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">table</span> department </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  (dept_name  <span class="dt">char</span>(<span class="dv">20</span>),</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>   building   <span class="dt">char</span>(<span class="dv">15</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>   budget     <span class="dt">numeric</span>(<span class="dv">12</span>, <span class="dv">2</span>));</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>SQL DDL supports integrity constraints</p>
+</section>
+<section id="sql-dml" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="sql-dml"><span class="header-section-number">11.3</span> SQL DML</h2>
+<p>sql is declarative. Input several tables, output always a single table. Example:</p>
+<p>single table input:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> instructor.name</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> instructor</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> instroctur.dept_name <span class="op">=</span> <span class="st">'History'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>two tables as input:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> instructor.<span class="kw">ID</span>, department.dept_name</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> instructor, department</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  instructor.dept_name <span class="op">=</span> department.dept_name <span class="kw">and</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  department.budget <span class="op">&gt;</span> <span class="dv">95000</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="steps-to-db-design" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="steps-to-db-design"><span class="header-section-number">11.4</span> Steps to DB Design</h2>
+<p>Computer representation of some real world or imaginary complex system involves mainly two tasks:</p>
+<ul>
+<li>modelling the data aspect of the system (data requirements)</li>
+<li>modelling the behavior aspect of the system (functional requirements)</li>
+</ul>
+<p>Modelling the data aspect falls under the domain of DBs design. Primary objects and their interrelationships must be determined according to the needs of the users of the system. Modelling behavior is a software design task. These tasks are interrelated and can reinforce/influence each other.</p>
+<p>Steps of DB design:</p>
 <ol type="1">
-<li><p><span class="math inline">\(\pi_{\substack{\texttt{pid, Name}}}\bigl(\sigma_{\substack{\texttt{Rolle="Pilot"},\\ \texttt{Reichweite}\geq 15000}}(\texttt{Personal}  \bowtie \texttt{Zulassung}  \bowtie \texttt{Modell})\bigr)\)</span></p></li>
-<li><p><span class="math inline">\(\pi_{\texttt{Name}}\bigl(  \sigma_{\texttt{Land='USA'}}(  \beta_{\texttt{Code} \leftarrow \texttt{Ziel}}(\texttt{Flug}) \bowtie \texttt{Flughafen} \bowtie \texttt{Flugzeug}  ) \bigr)\)</span></p></li>
-<li><p><span class="math inline">\(\pi_{\texttt{Code, Land}} \Biggl(  \sigma_{\texttt{Name='F. Kohl'}}\biggl(\texttt{Flugzeug}  \bowtie \\  \Bigl(\beta_{\texttt{Code} \leftarrow \texttt{Start}}(\pi_{\texttt{Start, fid}}(\texttt{Flug}))  \cup  \beta_{\texttt{Code} \leftarrow \texttt{Ziel}}(\pi_{\texttt{Ziel, fid}}(\texttt{Flug}))\Bigr)\biggr) \biggr)\)</span></p></li>
-<li><p><span class="math inline">\(\pi_{\texttt{pid, Name}}(\texttt{Personal}) - \\  \pi_{\texttt{pid, Name}}(\texttt{Personal} \bowtie \texttt{Crew} \bowtie \sigma_{\texttt{Datum} &lt; \texttt{07.04.2013}}(\texttt{Flug}))\)</span></p></li>
+<li><p><strong>requirements analysis</strong>: precise specification of client requirements (what data needs to be modelled) by consulting with domain experts and prospective clients.</p></li>
+<li><p><strong>conceptual design</strong>: a data model is chosen and the requirements are translated to the concepts of the data model (usually ER).</p>
+<p>the resulting schema is reviewed to confirm that all data requirements are satisfied and that there are no conflicts. Redundant features can be removed too.</p>
+<p>basically all necessary attributes to be captured are determined in this step. alternative to ER an automatic generation of tables can be achieved via a method called <strong>normalization</strong>.</p></li>
+<li><p><strong>specification of functional requirements</strong>: A precise conceptual schema facilitates determining the behavioral requirements. These in turn can reinforce and alter the data schema.</p></li>
+<li><p><strong>logical-design phase</strong>. Higher-level conceptual schema is mapped to the implementation data model of the database system (usually relational).</p></li>
+<li><p><strong>physical-design phase</strong>. The logical schema is automatically compiled to a physical implementation by the DBMS but the designer can manually refine and fine-tune the physical design.</p></li>
 </ol>
-<!-- 4. $\pi_{\substack{\tw{pid, Name}, \\ \tw{Rolle}}}\Bigl(
-        \tw{Flug} \bowtie \tw{Crew} \bowtie \tw{Personal} -
-        \sigma_{\substack{\tw{Datum} \\ < \\ \tw{07.04.2013}}} (
-            \tw{Flug} \bwt \tw{Crew} \bwt \tw{Personal}
-        )
-\Bigr)$ -->
+<p><img src="imgs/desig-phases.png" class="img-fluid" style="width:50.0%"></p>
 </section>
-<section id="sql-anfragen" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="sql-anfragen"><span class="header-section-number">2.2</span> SQL-Anfragen</h2>
+<section id="dbms-architecture" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="dbms-architecture"><span class="header-section-number">11.5</span> DBMS architecture</h2>
+<p>The general architecture of a DBMS can be broadly regarded as consisting of <strong>three</strong> main components:</p>
+<ul>
+<li><strong>querry processor</strong></li>
+<li><strong>storage manager</strong></li>
+<li><strong>disk storage</strong></li>
+</ul>
+<section id="querry-processor" class="level3" data-number="11.5.1">
+<h3 data-number="11.5.1" class="anchored" data-anchor-id="querry-processor"><span class="header-section-number">11.5.1</span> Querry processor</h3>
+<p>The querry processor realizes an easiy access to data via a querry language: users don’t have to specify <em>how</em> to access the data but only <em>what</em> data to access. The particular algorithm/plan needed to access the data specified by the querry is automatically compiled by the querry processor. Querry processors try to optimize these algorithms as much as possible.</p>
 <ol type="1">
-<li><p><strong>SQL</strong>:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="kw">distinct</span> C <span class="kw">from</span> R3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Ergebniss</strong>:</p>
-<pre><code>       {{C: 7}, 
-        {C: 8}}</code></pre></li>
-<li><p><strong>SQL</strong>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="kw">distinct</span> <span class="op">*</span> <span class="kw">from</span> R2</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> B <span class="op">=</span> rot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Ergebniss:</strong>:</p>
-<pre><code>         {{B: rot, C: 9}}
-         {{B: blau, C: 8}}</code></pre></li>
-<li><p><strong>SQL</strong>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="kw">distinct</span> <span class="op">*</span> <span class="kw">from</span> R2</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">intersect</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="kw">distinct</span> <span class="op">*</span> <span class="kw">from</span> R3;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Ergebniss</strong>:</p>
-<pre><code>         {{B: blau}, {C: 7}}</code></pre></li>
-<li><p><strong>SQL</strong>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span> <span class="kw">from</span> R2</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">union</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span> <span class="kw">from</span> R3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Ergebniss</strong>:</p>
-<pre><code>         {{B: blau,  C: 7}, 
-         {B: rot,   C: 8}, 
-         {B: rot,   C: 9}, 
-         {B: gruen, C: 8}, 
-         {B: gelb,  C: 7}}</code></pre></li>
-<li><p><strong>SQL</strong>:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span> <span class="kw">from</span> R3 <span class="kw">except</span> (</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> <span class="op">*</span> <span class="kw">from</span> R2</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Ergebniss</strong>:</p>
-<pre><code>         {{B: gruen, C: 8}, 
-         {B: gelb,  C: 7}}</code></pre></li>
-<li><p><strong>SQL</strong>:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="kw">distinct</span> <span class="op">*</span> <span class="kw">from</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>R1 <span class="kw">natural</span> jo R2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Ergebniss</strong>:</p>
-<pre><code>         {{A: q, B: rot, C: 8}, 
-         {A: q, B: rot, C: 9}}</code></pre></li>
-<li><p><strong>SQL</strong>:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="kw">distinct</span> <span class="op">*</span> <span class="kw">from</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>R1, R2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Ergebniss</strong>:</p>
-<pre><code>        {{A: q, R1.B: rot,   R2.B: blau,  C: 7 },
-        {A: q, R1.B: rot,   R2.B: gruen, C: 8},
-        {A: q, R1.B: rot,   R2.B: gelb,  C: 7},
-        {A: r, R1.B: gruen, R2.B: gelb,  C: 7},
-        {A: r, R1.B: gruen, R2.B: gruen, C: 8},
-        {A: r, R1.B: gruen, R2.B: gelb,  C: 7}}</code></pre></li>
+<li><strong>DDL interpreter</strong></li>
+<li><strong>DML compiler</strong>: (query optimization)</li>
+<li><strong>querry evaluation engine</strong>: executes low-level instrocution generated by the DML compiler.</li>
 </ol>
 </section>
-<section id="entsprechungen-in-sql-und-der-relationalen-algebra" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="entsprechungen-in-sql-und-der-relationalen-algebra"><span class="header-section-number">2.3</span> Entsprechungen in SQL und der relationalen Algebra</h2>
+<section id="storage-manager" class="level3" data-number="11.5.2">
+<h3 data-number="11.5.2" class="anchored" data-anchor-id="storage-manager"><span class="header-section-number">11.5.2</span> Storage Manager</h3>
+<p>DB are very large and cannot be stored entirely in the main memory. Also since persistent storage of data is always wanted, DB are stored on secomdary memory, usually disks.</p>
+<p>Movement of data from secondary memory is much slower than movement from main memory to CPU registers. Therefore the DB tries to structure the data in a way that movement from secondary memory to main memory is minimized. This can be fine-tuned by the DB designer.</p>
+<p><strong>Storage Manager</strong> is responsible with the interaction with the file manager of the underlying OS. The raw data is ultimately stored on the disk using the file system of the OS. The storage manager translates the DML statements into low-level file-system commands.</p>
+<p>Components of the storage manager:</p>
 <ol type="1">
-<li>Die Anfragen entsprechen sich liefern jedoch nicht das gleiche Ergebniss, da der SQL-Ausdruck Duplikate zulaesst, waehrend bei der relationalen Abfrage die Duplikate entfernt werden.</li>
-<li><ol type="1">
-<li>Die SQL-Anfrage liefert die <strong>Bezeichnung</strong> der Modelle, die nach Flughafen ‘CDG’ fliegen/geflogen haben.</li>
-<li>Der relationale Ausdruck liefert die Sitzplatzkapazitaeten der selben Modelle aus der SQL-Anfrage.</li>
+<li><strong>authorization and integrity manager</strong></li>
+<li><strong>transaction manager</strong>: Realizes concurrent and parallel access to data as well as the grouping sequences of db access querries as single atomic units (transactions). Ensures that DB state is consistent after such operations but also in case of failures. The transaction manager thus realizes
+<ol type="1">
+<li><strong>atomicity</strong>:</li>
+<li><strong>consistency</strong></li>
+<li><strong>durability</strong></li>
+</ol></li>
+<li><strong>file manager</strong>: allocation of space on disk and data structures used to represent information stored on disk</li>
+<li><strong>buffer manager</strong>: critical part of the DBS, since it is responsible for fetching data from disk storage into main memory and what data to cache in main memory. Enables the db to handle data sized much larger than the size of main memory.</li>
 </ol>
-Somit sind die Ausdrucke nicht Aequivalent und sie entpsrechen sich nicht.</li>
-<li><ol type="1">
-<li>Die erste SQL-Anrage gibt die ID’s der Co-Pilote und die Bezeichnungen der Modelle aus, dafuer sie zugelassen sind.</li>
-<li>Die zweite SQL-Anfrage gibt genau das gleiche Ergebniss wie die erste Anfrage. Man beachte, dass natural join in SQL immer von einem Kreuzprodukt und Selektionsoperationen simuliert werden kann.</li>
-</ol>
-Somit sind die beiden Anfragen Aequivalent</li>
-</ol>
+<p>Storage manager also implements several data structures as part of the physical system implementation:</p>
+<ul>
+<li><strong>data files</strong>: store the DB itself.</li>
+<li><strong>data dictionary</strong>: metadata about the structure of the db, i.e.&nbsp;the schema. Used by many other components like the querry processor</li>
+<li><strong>indices</strong>: Just like an index of a book can provide fast access to data by storing actualy physical address of data items having some particular value on some attribute or multiple attributes.</li>
+</ul>
+<p><img src="imgs/dbms-architecture.png" class="img-fluid" style="width:75.0%"></p>
+
+
 </section>
-<section id="er-modell" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="er-modell"><span class="header-section-number">2.4</span> ER-Modell</h2>
-<p>See the diagrams</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="imgs/a4/png/4-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Zeile 1</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="imgs/a4/png/4-2.png" class="img-fluid figure-img" data-widht="110%"></p>
-<figcaption class="figure-caption">Zeile 2</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="imgs/a4/png/4-3.png" class="img-fluid figure-img" data-widht="110%"></p>
-<figcaption class="figure-caption">Zeile 3</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="imgs/a4/png/4-4.png" class="img-fluid figure-img" data-widht="110%"></p>
-<figcaption class="figure-caption">Zeile 4</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="imgs/a4/png/4-5.png" class="img-fluid figure-img" data-widht="110%"></p>
-<figcaption class="figure-caption">Zeile 5</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="feedback" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="feedback"><span class="header-section-number">2.5</span> Feedback</h2>
-<pre class="text"><code>Zur Aufgabe 1.
-
-1. Richtig, wenn auch &gt; statt &gt;= gemeint 
-
-2. Richtig 3. Sollte passen 4. Richtig
-
-Zur Aufgabe 2:
-
-1. Richtig 2. Ergebnis: Wieso B: Blau wenn ihr nach rot selektiert =&gt; - 0.25 P.
-
-3.-7. Richtig
-
-Zur Aufgabe 3:
-
-1. Richtig unter der Annahme, dass Tabelle mehr als die abgedruckten Beispieldaten enthält (Stichwort Distinct)
-
-2. Ebenfalls richtig
-
-3. Dito
-
-Zur Aufgab 4:
-
-1. Richtig 2. Verlage sollen laut ML bitte mindestens ein Buch verlegen =&gt; - 0.25P. 3. Laut ML bitte [1,*] =&gt; - 0.25 P.
-
-4. Richtig 5. Ebenfalls</code></pre>
-
-
 </section>
 
 </main> <!-- /main -->
@@ -708,13 +627,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../01/blatt01.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Grundlagen der Relationalen Algebra</span></span>
+      <a href="../../10/blatt10.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Anfragebearbeitung</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../03/blatt03.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">ER-Modellierung</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../notes/02introrel/rel.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Introduction to Relational Model and Relational Algebra</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

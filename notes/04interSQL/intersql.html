@@ -1,0 +1,2698 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>IDB SS23 Solutions &amp; Notes - 14&nbsp; Intermediate SQL</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../notes/UniDB/unidb.html" rel="next">
+<link href="../../notes/03introSQL/introsql.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../notes/01intro/intro.html">Notes</a></li><li class="breadcrumb-item"><a href="../../notes/04interSQL/intersql.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Intermediate SQL</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">IDB SS23 Solutions &amp; Notes</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">IDB SS 23 Loesungen &amp; Notizen</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Loesungen</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../01/blatt01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Grundlagen der Relationalen Algebra</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../02/blatt02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Relationale Algebra und SQL</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../03/blatt03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">ER-Modellierung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../04/blatt04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Uebersetzung ER-Schema in Relationenschemata</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../05/blatt05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">SQL-Anfragen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../06/blatt06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Rekursion, Relationale Algebra und SQL</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../07/blatt07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">SQL und Anfragesprachen</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../08/blatt08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Physiche Datenorganisation und Baeume</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../09/blatt09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hashing, Indexzugriffe und Sortierung</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../10/blatt10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Anfragebearbeitung</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Notes</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notes/01intro/intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Intro</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notes/02introrel/rel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Introduction to Relational Model and Relational Algebra</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notes/03introSQL/introsql.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to SQL</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notes/04interSQL/intersql.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Intermediate SQL</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notes/UniDB/unidb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Uni DB</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#join-expressions" id="toc-join-expressions" class="nav-link active" data-scroll-target="#join-expressions"><span class="header-section-number">14.1</span> Join Expressions</a>
+  <ul class="collapse">
+  <li><a href="#natural-join" id="toc-natural-join" class="nav-link" data-scroll-target="#natural-join"><span class="header-section-number">14.1.1</span> Natural join</a></li>
+  <li><a href="#join-using" id="toc-join-using" class="nav-link" data-scroll-target="#join-using"><span class="header-section-number">14.1.2</span> Join Using</a></li>
+  <li><a href="#join-on" id="toc-join-on" class="nav-link" data-scroll-target="#join-on"><span class="header-section-number">14.1.3</span> Join on</a></li>
+  <li><a href="#outer-joins" id="toc-outer-joins" class="nav-link" data-scroll-target="#outer-joins"><span class="header-section-number">14.1.4</span> Outer Joins</a></li>
+  </ul></li>
+  <li><a href="#views" id="toc-views" class="nav-link" data-scroll-target="#views"><span class="header-section-number">14.2</span> Views</a>
+  <ul class="collapse">
+  <li><a href="#view-definition-and-usage" id="toc-view-definition-and-usage" class="nav-link" data-scroll-target="#view-definition-and-usage"><span class="header-section-number">14.2.1</span> View Definition and Usage</a></li>
+  <li><a href="#materialized-views" id="toc-materialized-views" class="nav-link" data-scroll-target="#materialized-views"><span class="header-section-number">14.2.2</span> Materialized Views</a></li>
+  <li><a href="#update-of-a-view" id="toc-update-of-a-view" class="nav-link" data-scroll-target="#update-of-a-view"><span class="header-section-number">14.2.3</span> Update of a View</a></li>
+  </ul></li>
+  <li><a href="#transactions" id="toc-transactions" class="nav-link" data-scroll-target="#transactions"><span class="header-section-number">14.3</span> Transactions</a></li>
+  <li><a href="#integrity-constraints" id="toc-integrity-constraints" class="nav-link" data-scroll-target="#integrity-constraints"><span class="header-section-number">14.4</span> Integrity Constraints</a>
+  <ul class="collapse">
+  <li><a href="#constraints-on-a-single-relation" id="toc-constraints-on-a-single-relation" class="nav-link" data-scroll-target="#constraints-on-a-single-relation"><span class="header-section-number">14.4.1</span> Constraints on a Single Relation</a></li>
+  <li><a href="#not-null" id="toc-not-null" class="nav-link" data-scroll-target="#not-null"><span class="header-section-number">14.4.2</span> Not Null</a></li>
+  <li><a href="#unique" id="toc-unique" class="nav-link" data-scroll-target="#unique"><span class="header-section-number">14.4.3</span> Unique</a></li>
+  <li><a href="#check-clause" id="toc-check-clause" class="nav-link" data-scroll-target="#check-clause"><span class="header-section-number">14.4.4</span> Check Clause</a></li>
+  <li><a href="#referential-integrity" id="toc-referential-integrity" class="nav-link" data-scroll-target="#referential-integrity"><span class="header-section-number">14.4.5</span> Referential Integrity</a></li>
+  <li><a href="#naming-constraints" id="toc-naming-constraints" class="nav-link" data-scroll-target="#naming-constraints"><span class="header-section-number">14.4.6</span> Naming Constraints</a></li>
+  <li><a href="#complex-checks-and-assertions" id="toc-complex-checks-and-assertions" class="nav-link" data-scroll-target="#complex-checks-and-assertions"><span class="header-section-number">14.4.7</span> Complex Checks and Assertions</a></li>
+  </ul></li>
+  <li><a href="#sql-data-types-and-schemas" id="toc-sql-data-types-and-schemas" class="nav-link" data-scroll-target="#sql-data-types-and-schemas"><span class="header-section-number">14.5</span> SQL Data Types and Schemas</a>
+  <ul class="collapse">
+  <li><a href="#date-and-time" id="toc-date-and-time" class="nav-link" data-scroll-target="#date-and-time"><span class="header-section-number">14.5.1</span> Date and Time</a></li>
+  <li><a href="#type-conversion-and-formatting-functions" id="toc-type-conversion-and-formatting-functions" class="nav-link" data-scroll-target="#type-conversion-and-formatting-functions"><span class="header-section-number">14.5.2</span> Type Conversion and Formatting Functions</a></li>
+  <li><a href="#default-values" id="toc-default-values" class="nav-link" data-scroll-target="#default-values"><span class="header-section-number">14.5.3</span> Default Values</a></li>
+  <li><a href="#user-defined-types" id="toc-user-defined-types" class="nav-link" data-scroll-target="#user-defined-types"><span class="header-section-number">14.5.4</span> User-Defined Types</a></li>
+  <li><a href="#generating-unique-key-values" id="toc-generating-unique-key-values" class="nav-link" data-scroll-target="#generating-unique-key-values"><span class="header-section-number">14.5.5</span> Generating Unique Key Values</a></li>
+  <li><a href="#create-table-extensions" id="toc-create-table-extensions" class="nav-link" data-scroll-target="#create-table-extensions"><span class="header-section-number">14.5.6</span> Create Table Extensions</a></li>
+  </ul></li>
+  <li><a href="#index-definition-in-sql" id="toc-index-definition-in-sql" class="nav-link" data-scroll-target="#index-definition-in-sql"><span class="header-section-number">14.6</span> Index Definition in SQL</a></li>
+  <li><a href="#authorization" id="toc-authorization" class="nav-link" data-scroll-target="#authorization"><span class="header-section-number">14.7</span> Authorization</a>
+  <ul class="collapse">
+  <li><a href="#granting-and-revoking-privileges" id="toc-granting-and-revoking-privileges" class="nav-link" data-scroll-target="#granting-and-revoking-privileges"><span class="header-section-number">14.7.1</span> Granting and Revoking Privileges</a></li>
+  <li><a href="#roles" id="toc-roles" class="nav-link" data-scroll-target="#roles"><span class="header-section-number">14.7.2</span> Roles</a></li>
+  <li><a href="#authorization-on-views" id="toc-authorization-on-views" class="nav-link" data-scroll-target="#authorization-on-views"><span class="header-section-number">14.7.3</span> Authorization on Views</a></li>
+  <li><a href="#transfer-of-privileges" id="toc-transfer-of-privileges" class="nav-link" data-scroll-target="#transfer-of-privileges"><span class="header-section-number">14.7.4</span> Transfer of Privileges</a></li>
+  <li><a href="#revoking-of-privileges" id="toc-revoking-of-privileges" class="nav-link" data-scroll-target="#revoking-of-privileges"><span class="header-section-number">14.7.5</span> Revoking of Privileges</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Intermediate SQL</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<ul>
+<li><code>join</code> Expressions</li>
+<li>view definition</li>
+<li>integrity constraints</li>
+<li>more details regarding data definition</li>
+<li>authorization</li>
+</ul>
+<section id="join-expressions" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="join-expressions"><span class="header-section-number">14.1</span> Join Expressions</h2>
+<section id="natural-join" class="level3" data-number="14.1.1">
+<h3 data-number="14.1.1" class="anchored" data-anchor-id="natural-join"><span class="header-section-number">14.1.1</span> Natural join</h3>
+<p>corresponds to <span class="math inline">\(\bowtie\)</span>. Consider:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> (</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span> </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">3</span>, <span class="dv">2</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>) r(a, b) <span class="kw">natural</span> <span class="kw">join</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span> </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">4</span>),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span>, <span class="dv">10</span>),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">5</span>, <span class="dv">8</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>) s(b, c)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>4 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">b</th>
+<th style="text-align: right;">a</th>
+<th style="text-align: right;">c</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="join-using" class="level3" data-number="14.1.2">
+<h3 data-number="14.1.2" class="anchored" data-anchor-id="join-using"><span class="header-section-number">14.1.2</span> Join Using</h3>
+<p>Possible to explicitely list attributes on which it is to be joined:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> (</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">7</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>) r(a, b, c) <span class="kw">join</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span> </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">4</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span>, <span class="dv">10</span>),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">5</span>, <span class="dv">8</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>) s(b, c) <span class="kw">using</span> (b)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>4 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">b</th>
+<th style="text-align: right;">a</th>
+<th style="text-align: right;">c</th>
+<th style="text-align: right;">c..4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>same as</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> r, s</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> r.b <span class="op">=</span> s.b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="join-on" class="level3" data-number="14.1.3">
+<h3 data-number="14.1.3" class="anchored" data-anchor-id="join-on"><span class="header-section-number">14.1.3</span> Join on</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> student <span class="kw">join</span> takes <span class="kw">on</span> student.<span class="kw">id</span> <span class="op">=</span> takes.student_id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<colgroup>
+<col style="width: 7%">
+<col style="width: 9%">
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 13%">
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 6%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">dept_name</th>
+<th style="text-align: right;">tot_cred</th>
+<th style="text-align: left;">student_id</th>
+<th style="text-align: left;">course_id</th>
+<th style="text-align: left;">sec_id</th>
+<th style="text-align: left;">semester</th>
+<th style="text-align: right;">year</th>
+<th style="text-align: left;">grade</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">00128</td>
+<td style="text-align: left;">Zhang</td>
+<td style="text-align: left;">Comp. Sci.</td>
+<td style="text-align: right;">102</td>
+<td style="text-align: left;">00128</td>
+<td style="text-align: left;">CS-101</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">A</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">00128</td>
+<td style="text-align: left;">Zhang</td>
+<td style="text-align: left;">Comp. Sci.</td>
+<td style="text-align: right;">102</td>
+<td style="text-align: left;">00128</td>
+<td style="text-align: left;">CS-347</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">A-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">12345</td>
+<td style="text-align: left;">Shankar</td>
+<td style="text-align: left;">Comp. Sci.</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: left;">12345</td>
+<td style="text-align: left;">CS-101</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">C</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12345</td>
+<td style="text-align: left;">Shankar</td>
+<td style="text-align: left;">Comp. Sci.</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: left;">12345</td>
+<td style="text-align: left;">CS-190</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">A</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">12345</td>
+<td style="text-align: left;">Shankar</td>
+<td style="text-align: left;">Comp. Sci.</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: left;">12345</td>
+<td style="text-align: left;">CS-315</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: left;">A</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12345</td>
+<td style="text-align: left;">Shankar</td>
+<td style="text-align: left;">Comp. Sci.</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: left;">12345</td>
+<td style="text-align: left;">CS-347</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">A</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">19991</td>
+<td style="text-align: left;">Brandt</td>
+<td style="text-align: left;">History</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: left;">19991</td>
+<td style="text-align: left;">HIS-351</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: left;">B</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">23121</td>
+<td style="text-align: left;">Chavez</td>
+<td style="text-align: left;">Finance</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: left;">23121</td>
+<td style="text-align: left;">FIN-201</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: left;">C+</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">44553</td>
+<td style="text-align: left;">Peltier</td>
+<td style="text-align: left;">Physics</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: left;">44553</td>
+<td style="text-align: left;">PHY-101</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">B-</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">45678</td>
+<td style="text-align: left;">Levy</td>
+<td style="text-align: left;">Physics</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: left;">45678</td>
+<td style="text-align: left;">CS-101</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">F</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Exactly the same as</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> student, takes</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> student.<span class="kw">id</span> <span class="op">=</span> takes.student_id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Advantages:</p>
+<ul>
+<li>readability in separating join conditions from other <code>where</code>-clause conditions</li>
+<li><strong>necessary</strong> for outer joins.</li>
+</ul>
+</section>
+<section id="outer-joins" class="level3" data-number="14.1.4">
+<h3 data-number="14.1.4" class="anchored" data-anchor-id="outer-joins"><span class="header-section-number">14.1.4</span> Outer Joins</h3>
+<p>According to the definition of usual join operation</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> student <span class="kw">join</span> takes</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">on</span> student.<span class="kw">id</span> <span class="op">=</span> takes.student_id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>non-matched tuples don’t appear in the resulting relation. But sometimes we might nevertheless wich to include such tuples in the result.</p>
+<p>This can be achieved by</p>
+<ul>
+<li><code>left outer join</code></li>
+<li><code>right outer join</code></li>
+<li><code>full outer join</code></li>
+</ul>
+<p>First of all, notice that there is one student who hasn’t taken any courses:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> student s </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> s.<span class="kw">id</span> <span class="kw">not</span> <span class="kw">in</span> (</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> t.student_id </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> takes t </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>2 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">dept_name</th>
+<th style="text-align: right;">tot_cred</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">70557</td>
+<td style="text-align: left;">Snow</td>
+<td style="text-align: left;">Physics</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12789</td>
+<td style="text-align: left;">Newman</td>
+<td style="text-align: left;">Comp. Sci.</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>An he doesn’t appear in the previous join operation. We can include this student in the final result using <code>left outer join</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> student s <span class="kw">left</span> <span class="kw">outer</span> <span class="kw">join</span> takes t </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">on</span> s.<span class="kw">id</span> <span class="op">=</span> t.student_id </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span> s.<span class="kw">id</span> <span class="kw">desc</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<colgroup>
+<col style="width: 7%">
+<col style="width: 10%">
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 13%">
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 6%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">dept_name</th>
+<th style="text-align: right;">tot_cred</th>
+<th style="text-align: left;">student_id</th>
+<th style="text-align: left;">course_id</th>
+<th style="text-align: left;">sec_id</th>
+<th style="text-align: left;">semester</th>
+<th style="text-align: right;">year</th>
+<th style="text-align: left;">grade</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">98988</td>
+<td style="text-align: left;">Tanaka</td>
+<td style="text-align: left;">Biology</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: left;">98988</td>
+<td style="text-align: left;">BIO-301</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">98988</td>
+<td style="text-align: left;">Tanaka</td>
+<td style="text-align: left;">Biology</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: left;">98988</td>
+<td style="text-align: left;">BIO-101</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">A</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">98765</td>
+<td style="text-align: left;">Bourikas</td>
+<td style="text-align: left;">Elec. Eng.</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: left;">98765</td>
+<td style="text-align: left;">CS-101</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">C-</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">98765</td>
+<td style="text-align: left;">Bourikas</td>
+<td style="text-align: left;">Elec. Eng.</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: left;">98765</td>
+<td style="text-align: left;">CS-315</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: left;">B</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">76653</td>
+<td style="text-align: left;">Aoi</td>
+<td style="text-align: left;">Elec. Eng.</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: left;">76653</td>
+<td style="text-align: left;">EE-181</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">C</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">76543</td>
+<td style="text-align: left;">Brown</td>
+<td style="text-align: left;">Comp. Sci.</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: left;">76543</td>
+<td style="text-align: left;">CS-319</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: left;">A</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">76543</td>
+<td style="text-align: left;">Brown</td>
+<td style="text-align: left;">Comp. Sci.</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: left;">76543</td>
+<td style="text-align: left;">CS-101</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">A</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">70557</td>
+<td style="text-align: left;">Snow</td>
+<td style="text-align: left;">Physics</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">55739</td>
+<td style="text-align: left;">Sanchez</td>
+<td style="text-align: left;">Music</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: left;">55739</td>
+<td style="text-align: left;">MU-199</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: left;">A-</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">54321</td>
+<td style="text-align: left;">Williams</td>
+<td style="text-align: left;">Comp. Sci.</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: left;">54321</td>
+<td style="text-align: left;">CS-101</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">A-</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Notice how the tuple corresponding to student Snow who hasn’t taken any courses has <code>null</code> values for all attributes that come from the <code>takes</code> relation.</p>
+<p>Consider a simpler exampe. Consider tables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> r(a, b) <span class="kw">as</span> (</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">5</span>, <span class="dv">3</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>), s(b, c) <span class="kw">as</span> (</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">4</span>),</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">5</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>) </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> r <span class="kw">natural</span> <span class="kw">join</span> s </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>4 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">b</th>
+<th style="text-align: right;">a</th>
+<th style="text-align: right;">c</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Above <code>natural join</code> didn’t include the tuple <code>(5, 3)</code> from <code>r</code>, since it didn’t match with anything from s. But</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> r(a, b) <span class="kw">as</span> (</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">5</span>, <span class="dv">3</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>), s(b, c) <span class="kw">as</span> (</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">4</span>),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">5</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>) </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> r.a a, r.b b, s.c c</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> r <span class="kw">natural</span> <span class="kw">left</span> <span class="kw">outer</span> <span class="kw">join</span> s</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>5 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">a</th>
+<th style="text-align: right;">b</th>
+<th style="text-align: right;">c</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>contains tuple <code>(5, 3, null)</code>.</p>
+<p><code>inner join</code> is just another name for all other default joins that don’t include nonmatched tuples.</p>
+<p>Alternative way to find students that haven’t taken a course using <code>outer join</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> student s <span class="kw">left</span> <span class="kw">outer</span> <span class="kw">join</span> takes t </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">on</span> s.<span class="kw">id</span> <span class="op">=</span> t.student_id </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> t.course_id <span class="kw">is</span> <span class="kw">null</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>2 records</caption>
+<colgroup>
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 13%">
+<col style="width: 11%">
+<col style="width: 13%">
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 6%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">dept_name</th>
+<th style="text-align: right;">tot_cred</th>
+<th style="text-align: left;">student_id</th>
+<th style="text-align: left;">course_id</th>
+<th style="text-align: left;">sec_id</th>
+<th style="text-align: left;">semester</th>
+<th style="text-align: right;">year</th>
+<th style="text-align: left;">grade</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">70557</td>
+<td style="text-align: left;">Snow</td>
+<td style="text-align: left;">Physics</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12789</td>
+<td style="text-align: left;">Newman</td>
+<td style="text-align: left;">Comp. Sci.</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><code>right outer join</code> is symmetric to <code>left outer join</code>. Adding <code>(4, 7)</code> to s in the previous simple example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> r(a, b) <span class="kw">as</span> (</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">5</span>, <span class="dv">3</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>), s(b, c) <span class="kw">as</span> (</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">4</span>),</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">5</span>),</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">4</span>, <span class="dv">7</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>) </span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> r <span class="kw">natural</span> <span class="kw">right</span> <span class="kw">outer</span> <span class="kw">join</span> s</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>5 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">b</th>
+<th style="text-align: right;">a</th>
+<th style="text-align: right;">c</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><code>(4, 7)</code> didn’t match with any tuple from <code>r</code> but was still included in the result with <code>a</code> set <code>null</code>.</p>
+<p><code>full outer join</code> is a combination of left and right outer joins. Again the previous example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> r(a, b) <span class="kw">as</span> (</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">5</span>, <span class="dv">3</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>), s(b, c) <span class="kw">as</span> (</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">4</span>),</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">5</span>),</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">4</span>, <span class="dv">7</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>) </span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> r <span class="kw">natural</span> <span class="kw">full</span> <span class="kw">outer</span> <span class="kw">join</span> s</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>6 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">b</th>
+<th style="text-align: right;">a</th>
+<th style="text-align: right;">c</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Anotheer <code>full outer join</code> exmaple:</p>
+<ul>
+<li>all students from the Comp. Sci. department, along with course sections, if any that they have taken in Spring 2017; all course sections from Spring 2017 must be displayed even if no student from the Comp. Sci department has taken the course:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> s.<span class="kw">id</span>, t.course_id</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> ( <span class="co">-- subquery computing relation containing students from CS department</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> s.<span class="kw">id</span>, s.name</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> student s </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> s.dept_name <span class="op">=</span> <span class="st">'Comp. Sci.'</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>) s(<span class="kw">id</span>, name) <span class="kw">right</span> <span class="kw">outer</span> <span class="kw">join</span> </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>( <span class="co">-- subquery computing relation of section taken in Spring 2017</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> t.student_id, t.course_id, t.sec_id, t.semester, t.<span class="ot">"year"</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> takes t </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> t.semester <span class="op">=</span> <span class="st">'Spring'</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> t.<span class="dt">year</span> <span class="op">=</span> <span class="dv">2017</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>) t(<span class="kw">id</span>, course_id, sec_id, semester, <span class="dt">year</span>) <span class="kw">on</span> s.<span class="kw">id</span> <span class="op">=</span> t.<span class="kw">id</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>3 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">course_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">12345</td>
+<td style="text-align: left;">CS-190</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">54321</td>
+<td style="text-align: left;">CS-190</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">EE-181</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>or an equivalent alternative formulation using <code>with</code> to factor the subqueries:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> s(<span class="kw">id</span>) <span class="kw">as</span> (</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> s.<span class="kw">id</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> student s </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> s.dept_name <span class="op">=</span> <span class="st">'Comp. Sci.'</span> </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>), t(<span class="kw">id</span>, sec_id, course_id, semester, <span class="dt">year</span>) <span class="kw">as</span> (</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> t.student_id, t.sec_id, t.course_id , t.semester, t.<span class="ot">"year"</span> </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> takes t </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> t.semester <span class="op">=</span> <span class="st">'Spring'</span> <span class="kw">and</span> t.<span class="ot">"year"</span> <span class="op">=</span> <span class="dv">2017</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> s.<span class="kw">id</span>, t.course_id </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> s <span class="kw">right</span> <span class="kw">outer</span> <span class="kw">join</span> t <span class="kw">on</span> s.<span class="kw">id</span> <span class="op">=</span> t.<span class="kw">id</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> s.<span class="kw">id</span>, t.course_id</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> student s <span class="kw">right</span> <span class="kw">outer</span> <span class="kw">join</span> takes t</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">on</span> s.<span class="kw">id</span> <span class="op">=</span> t.student_id </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> s.dept_name <span class="op">=</span> <span class="st">'Comp. Sci.'</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">and</span> t.semester <span class="op">=</span> <span class="st">'Spring'</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">and</span> t.<span class="ot">"year"</span> <span class="op">=</span> <span class="dv">2017</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>2 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">course_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">12345</td>
+<td style="text-align: left;">CS-190</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">54321</td>
+<td style="text-align: left;">CS-190</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>would be a <strong>wrong</strong> solution, since <code>right outer join</code> is performed before the <code>where</code> clause on the full student relation and not on the student relation restricted to the CS department.</p>
+</div>
+</div>
+<p>To verify previous solution compute sections offered in Spring 2017:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> section </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> <span class="dt">year</span> <span class="op">=</span> <span class="dv">2017</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">and</span> semester <span class="op">=</span> <span class="st">'Spring'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>3 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">course_id</th>
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">semester</th>
+<th style="text-align: right;">year</th>
+<th style="text-align: left;">building</th>
+<th style="text-align: left;">room_number</th>
+<th style="text-align: left;">time_slot_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CS-190</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">Taylor</td>
+<td style="text-align: left;">3128</td>
+<td style="text-align: left;">E</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CS-190</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">Taylor</td>
+<td style="text-align: left;">3128</td>
+<td style="text-align: left;">A</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">EE-181</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">Taylor</td>
+<td style="text-align: left;">3128</td>
+<td style="text-align: left;">C</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Indeed, course ‘EE-181’ hasn’t been taken by any student from the CS department.</p>
+<!-- +-----------------------------------------+---------------------------------------------+
+| wrong                                   | correct                                     |
++=========================================+=============================================+
+| ```sql                                  | ```sql                                      |
+|                                         | select s.id, t.course_id                    |
+| select s.id, t.course_id                | from (                                      |
+| from student s right outer join takes t |     select s.id, s.name                     |
+| on s.id = t.student_id                  |     from student s                          |
+| where s.dept_name = 'Comp. Sci.'        |     where s.dept_name = 'Comp. Sci.'        |
+|     and t.semester = 'Spring'           | ) s(id, name) right outer join              |
+|     and t."year" = 2017                 | (                                           |
+| ```                                     |     select                                  |
+|                                         |         t.student_id,                       |
+|                                         |         t.course_id,                        |
+|                                         |         t.sec_id,                           |
+|                                         |         t.semester,                         |
+|                                         |         t."year"                            |
+|                                         |     from takes t                            |
+|                                         |     where t.semester = 'Spring'             |
+|                                         |         and t.year = 2017                   |
+|                                         | ) t(id, course_id, sec_id, semester, year)  |
+|                                         |   on s.id = t.id                            |
+|                                         | ```                                         |
++-----------------------------------------+---------------------------------------------+ -->
+</section>
+</section>
+<section id="views" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="views"><span class="header-section-number">14.2</span> Views</h2>
+<p>Two reasons:</p>
+<ul>
+<li>Security; restricting what users can see</li>
+<li>Virtual tables that better correspond to the intuition of the user</li>
+</ul>
+<p><code>view</code> can be thought of extending <code>with</code> beyond use in a single query. It is possible to define arbitrarily many views on top of existing relations.</p>
+<section id="view-definition-and-usage" class="level3" data-number="14.2.1">
+<h3 data-number="14.2.1" class="anchored" data-anchor-id="view-definition-and-usage"><span class="header-section-number">14.2.1</span> View Definition and Usage</h3>
+<p>Syntax:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">view</span> v <span class="kw">as</span> <span class="op">&lt;</span><span class="kw">query</span> expression<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Examples:</p>
+<ul>
+<li>restricted access to instuctor relation without salary information:</li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">view</span> faculty <span class="kw">as</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> i.<span class="kw">id</span>, i.<span class="ot">"name"</span> , i.dept_name </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> instructor i </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then, we can access <code>faculty</code> as if it were a regular relation:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> faculty f</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">dept_name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">10101</td>
+<td style="text-align: left;">Srinivasan</td>
+<td style="text-align: left;">Comp. Sci.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12121</td>
+<td style="text-align: left;">Wu</td>
+<td style="text-align: left;">Finance</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">15151</td>
+<td style="text-align: left;">Mozart</td>
+<td style="text-align: left;">Music</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">22222</td>
+<td style="text-align: left;">Einstein</td>
+<td style="text-align: left;">Physics</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">32343</td>
+<td style="text-align: left;">El Said</td>
+<td style="text-align: left;">History</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">33456</td>
+<td style="text-align: left;">Gold</td>
+<td style="text-align: left;">Physics</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">45565</td>
+<td style="text-align: left;">Katz</td>
+<td style="text-align: left;">Comp. Sci.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">58583</td>
+<td style="text-align: left;">Califieri</td>
+<td style="text-align: left;">History</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">76543</td>
+<td style="text-align: left;">Singh</td>
+<td style="text-align: left;">Finance</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">76766</td>
+<td style="text-align: left;">Crick</td>
+<td style="text-align: left;">Biology</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>In <strong>authorization</strong> section we can see how users can be given access to views instead of or in addition to relations.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>view relations are not pre-computed and stored; they are computed dynamically.</p>
+</div>
+</div>
+<ul>
+<li>view of all course section offered by the physics department in fall 2017:</li>
+</ul>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">view</span> physics_fall_2017 <span class="kw">as</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> c.<span class="kw">id</span> <span class="kw">as</span> course_id, s.<span class="kw">id</span> <span class="kw">as</span> section_id, s.building , s.room_number </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> course c , <span class="ot">"section"</span> s </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> c.<span class="kw">id</span> <span class="op">=</span> s.course_id </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> c.dept_name <span class="op">=</span> <span class="st">'Physics'</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> s.<span class="ot">"year"</span> <span class="op">=</span> <span class="dv">2017</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> s.semester <span class="op">=</span> <span class="st">'Fall'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Views remain available until explicitly dropped.</p>
+<p>Examples for usage of views:</p>
+<ul>
+<li>id of physics courses offered in Fall 2017 semester, Watson building:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> course_id</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> physics_fall_2017 </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> building <span class="op">=</span> <span class="st">'Watson'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">course_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">PHY-101</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Attribute names can be specified explicitly:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">view</span> departments_total_salary(dept_name, total_salary) <span class="kw">as</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> i.dept_name, <span class="fu">sum</span>(i.salary)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> instructor i </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> i.dept_name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then we can use it:</p>
+<ul>
+<li>departments with corresponding total salaries where total salary is less than the average total salary across departments:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> departments_total_salary dts</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> dts.total_salary <span class="op">&lt;</span> (</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> <span class="fu">avg</span>(total_salary)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> departments_total_salary</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>3 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">dept_name</th>
+<th style="text-align: right;">total_salary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Biology</td>
+<td style="text-align: right;">145120</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Elec. Eng.</td>
+<td style="text-align: right;">80000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Music</td>
+<td style="text-align: right;">40000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>One view may be used in defining another view.</p>
+<ul>
+<li>view listing id and room number of all physics courses offered in fall 2018 in the Watson building, using the previous view <code>physics_fall_2017</code></li>
+</ul>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">view</span> physics_fall_2017_watson <span class="kw">as</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> course_id, room_number</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> physics_fall_2017 </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> building <span class="op">=</span> <span class="st">'Watson'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="materialized-views" class="level3" data-number="14.2.2">
+<h3 data-number="14.2.2" class="anchored" data-anchor-id="materialized-views"><span class="header-section-number">14.2.2</span> Materialized Views</h3>
+<p>We learned that results of views are not pre-computed and stored, i.e.&nbsp;they are simply virtual relations that are computed on demand. But some DBs allow storing pre-computed views, that are automatically updated when the relations used in the definition of the view change.</p>
+<p>Such views are called <strong>materialized views</strong>.</p>
+<p>Some DB’s only periodically update materialized views, some perform updates when they are accessed. Some DBMS allow specifying which method is to be used.</p>
+<p>Advantages of materialized views is avoiding recomputing the relation defined by the view each time it is accessed. It can be beneficial if the relations used in view definition are very large.</p>
+</section>
+<section id="update-of-a-view" class="level3" data-number="14.2.3">
+<h3 data-number="14.2.3" class="anchored" data-anchor-id="update-of-a-view"><span class="header-section-number">14.2.3</span> Update of a View</h3>
+<p>Modifications are generally not allowed on views, since views usually represent partial information and inserting tuples into views would require inserting <code>null</code> values into original relations. Which is not guaranteed to work when the view is defined by joining multiple relations and the joined attribute is omitted form the final view definition.</p>
+<p>Following works in postgresql:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">insert</span> <span class="kw">into</span> faculty</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span> (<span class="st">'30765'</span>, <span class="st">'Green'</span>, <span class="st">'Music'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then we see that a new tuple has been inserted into <code>instructor</code> with salary set to <code>null</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> instructor i </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> dept_name <span class="op">=</span> <span class="st">'Music'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>2 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">dept_name</th>
+<th style="text-align: right;">salary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">15151</td>
+<td style="text-align: left;">Mozart</td>
+<td style="text-align: left;">Music</td>
+<td style="text-align: right;">40000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">30765</td>
+<td style="text-align: left;">Green</td>
+<td style="text-align: left;">Music</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>But in case we define a view listing ID, name and building name of instructors:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">view</span> instructor_info <span class="kw">as</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> i.<span class="kw">id</span>, i.<span class="ot">"name"</span> , d.building </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> instructor i , department d </span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> i.dept_name <span class="op">=</span> d.name </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This view is created by joining instuctor and department over the attributes <code>instructor.dept_name</code> and <code>d.name</code>. Trying to insert into this view raises and error along the lines of:</p>
+<pre class="text"><code>SQL Error [55000]: ERROR: cannot insert into view "instructor_info"
+Detail: Views that do not select from a single table or view are not automatically updatable.</code></pre>
+<p>A view is in general <strong>updatable</strong>:</p>
+<ul>
+<li><code>from</code> clause has one DB relation.</li>
+<li><code>select</code> clause contains only attribute names of the relation and does not have
+<ul>
+<li>expressions</li>
+<li>aggregates</li>
+<li><code>distinct</code></li>
+</ul></li>
+<li>Attributes not listed in the <code>select</code> clause are not <code>not null</code> or <code>primary key</code></li>
+<li>query does not have a <code>group by</code> or <code>having</code> clause.</li>
+</ul>
+<p>So, the view:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">view</span> history_instructors <span class="kw">as</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> instructor i </span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> dept_name <span class="op">=</span> <span class="st">'History'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>would be updatable:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">insert</span> <span class="kw">into</span> history_instructors </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="kw">values</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>(<span class="st">'14532'</span>, <span class="st">'Roznicki'</span>, <span class="st">'History'</span>, <span class="dv">57000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We can still insert a non-history tuple to the <code>history_instructors</code> view:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">insert</span> <span class="kw">into</span> history_instructors</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="kw">values</span> </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>(<span class="st">'10032'</span>, <span class="st">'Nishimoto'</span>, <span class="st">'Biology'</span>, <span class="dv">73120</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This tuple will be simply inserted into <code>instructor</code> relation and won’t appear in <code>history_instructor</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> history_instructors </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>3 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">dept_name</th>
+<th style="text-align: right;">salary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">32343</td>
+<td style="text-align: left;">El Said</td>
+<td style="text-align: left;">History</td>
+<td style="text-align: right;">60000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">58583</td>
+<td style="text-align: left;">Califieri</td>
+<td style="text-align: left;">History</td>
+<td style="text-align: right;">62000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">14532</td>
+<td style="text-align: left;">Roznicki</td>
+<td style="text-align: left;">History</td>
+<td style="text-align: right;">57000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> instructor</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> <span class="kw">id</span> <span class="op">=</span> <span class="st">'10032'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">dept_name</th>
+<th style="text-align: right;">salary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">10032</td>
+<td style="text-align: left;">Nishimoto</td>
+<td style="text-align: left;">Biology</td>
+<td style="text-align: right;">73120</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<p>However views can be defined with a <code>with check option</code> clause at the end of the definition:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">view</span> biology_instructors <span class="kw">as</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> instructor i</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> i.dept_name <span class="op">=</span> <span class="st">'Biology'</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> <span class="kw">check</span> <span class="kw">option</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">insert</span> <span class="kw">into</span> biology_instructors </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="kw">values</span> </span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>(<span class="st">'10311'</span>, <span class="st">'Schmidt'</span>, <span class="st">'Physics'</span>, <span class="dv">105000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Won’t be possible.</p>
+<p>Preferable altarnative to modifying views with default insert, update and delete is the <code>instead of</code> feature found in <strong>trigger</strong> declarations, that allow actions designed specifically for each case.</p>
+</section>
+</section>
+<section id="transactions" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="transactions"><span class="header-section-number">14.3</span> Transactions</h2>
+<p><strong>Transaction</strong> is a sequence of query and/or update statements. A transaction begins implicitly when an sql statement is executed. One of follwoing statements must end a transaction:</p>
+<ul>
+<li><code>commit [work]</code>: The updates are made permanent. Afterwars transaction is automatically started.</li>
+<li><code>rollback [work]</code>: undoes all the updates performed by during the transaction. DB is restored to the state before transaction started.</li>
+</ul>
+<p><code>commit</code> and <code>rollback</code> allow transactions to be <strong>atomic</strong>.</p>
+</section>
+<section id="integrity-constraints" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="integrity-constraints"><span class="header-section-number">14.4</span> Integrity Constraints</h2>
+<p>Examples:</p>
+<ul>
+<li>Instructor name cannot be <code>null</code></li>
+<li>Different instructors cannot have the same ID (primary key)</li>
+<li>Every department name in <code>course</code> relation must have matching name in the <code>department</code> relation (referential integrity)</li>
+<li>The budget of a department must be greater than $0,0</li>
+</ul>
+<p>In general arbitrary predicates (that can be realistically tested by the DBMS).</p>
+<p>Usually part of the <code>create table</code> command but can also be added to an existing relation with <code>alter table R add &lt;constraint&gt;</code></p>
+<section id="constraints-on-a-single-relation" class="level3" data-number="14.4.1">
+<h3 data-number="14.4.1" class="anchored" data-anchor-id="constraints-on-a-single-relation"><span class="header-section-number">14.4.1</span> Constraints on a Single Relation</h3>
+<p><code>create table</code> may include integrity-constraint statements in addition to <code>primary key</code> and <code>foreign key</code>:</p>
+<ul>
+<li><code>not null</code></li>
+<li><code>unique</code></li>
+<li><code>check (&lt;predicate&gt;)</code></li>
+</ul>
+</section>
+<section id="not-null" class="level3" data-number="14.4.2">
+<h3 data-number="14.4.2" class="anchored" data-anchor-id="not-null"><span class="header-section-number">14.4.2</span> Not Null</h3>
+<p>Remember that null value is a member of all domains, therefore it is a legal value for every attribute in SQL by default, but it may me inapropriate for some attributes s.a.:</p>
+<ul>
+<li>student name</li>
+<li>department budget</li>
+</ul>
+<p>declared as follows:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>name <span class="dt">varchar</span>(<span class="dv">20</span>) <span class="kw">not</span> <span class="kw">null</span>;</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>budget <span class="dt">numeric</span>(<span class="dv">12</span>, <span class="dv">2</span>) <span class="kw">not</span> <span class="kw">null</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This prohibits insertion of a null value and is an example of a <strong>domain constraint</strong>. Primary keys are implicitly not null.</p>
+</section>
+<section id="unique" class="level3" data-number="14.4.3">
+<h3 data-number="14.4.3" class="anchored" data-anchor-id="unique"><span class="header-section-number">14.4.3</span> Unique</h3>
+<p>sql supports the integrity constraint:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">unique</span>(a1, <span class="op">..</span>., a_n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>which specifies that attributs <code>a1, ..., a_n</code> form a superkey. However they are allowed to be null unless explicitly declared not null.</p>
+</section>
+<section id="check-clause" class="level3" data-number="14.4.4">
+<h3 data-number="14.4.4" class="anchored" data-anchor-id="check-clause"><span class="header-section-number">14.4.4</span> Check Clause</h3>
+<p>In a relation declaration <code>check (&lt;Predicate&gt;)</code> specified that <code>&lt;Predicate&gt;</code> must be satisfied by every tuple in the relation, which creates a powerful type system.</p>
+<p>Exmaples:</p>
+<ul>
+<li><p><code>check(budget &gt; 0)</code> in the declaration of <code>department</code>:</p></li>
+<li><p>values <code>semester</code> attribute can take in the declaration of <code>section</code>:</p></li>
+</ul>
+<div class="sourceCode" id="cb39"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">create</span> <span class="kw">table</span> section(</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    course_id <span class="dt">varchar</span>(<span class="dv">8</span>),</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    sec_id <span class="dt">varchar</span>(<span class="dv">8</span>),</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    semester <span class="dt">varchar</span>(<span class="dv">6</span>),</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">year</span> <span class="dt">numeric</span>(<span class="dv">4</span>, <span class="dv">0</span>),</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    building <span class="dt">varchar</span>(<span class="dv">15</span>),</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>    room_number <span class="dt">varchar</span>(<span class="dv">7</span>),</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>    time_slot_id <span class="dt">varchar</span>(<span class="dv">4</span>),</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">primary</span> <span class="kw">key</span> (course_id, sec_id, semester, <span class="dt">year</span>),</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">check</span>( semester <span class="kw">in</span> (<span class="st">'Fall'</span>, <span class="st">'Winter'</span>, <span class="st">'Spring'</span>, <span class="st">'Summer'</span>))</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In the above declaration if semester value is <code>null</code> it still does not violate the check condition, eventhough null is not one of specified values, because a check condition is violated only if it explicitly evaluates to <code>false</code>. <code>unknown</code> does not violate the check condition (comparisons with <code>null</code>). In order the avoid nulls <code>not null</code> must be explicitly specified.</p>
+</div>
+</div>
+<p><code>check()</code> can be placed anywhere in the declaration. Often it is placed right after the attribute , if it effects a single attribute. More complex <code>check()</code> clauses are listed at the end of the declaration.</p>
+<p>According to the SQL standard arbitrary predicates and subqueries are allowed in check. But none of the current DBMS support subqueries.</p>
+<p>Further <code>check()</code> examples:</p>
+<ul>
+<li><code>course</code>:</li>
+</ul>
+<div class="sourceCode" id="cb40"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">table</span> course (</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">..</span>.</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    credits <span class="dt">numeric</span>(<span class="dv">2</span>, <span class="dv">0</span>) <span class="kw">check</span> (credits <span class="op">&gt;</span> <span class="dv">0</span>) <span class="co">-- credit is numeric with two digits, must </span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>                                              <span class="co">-- be greater than 0</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>instructor</code>:</li>
+</ul>
+<div class="sourceCode" id="cb41"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">table</span> instructor (</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">..</span>.</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    salary <span class="dt">numeric</span>(<span class="dv">8</span>, <span class="dv">2</span>) <span class="kw">check</span> (salary <span class="op">&gt;</span> <span class="dv">29000</span>) <span class="co">-- salary less than $1 mil, greater than $29k</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="referential-integrity" class="level3" data-number="14.4.5">
+<h3 data-number="14.4.5" class="anchored" data-anchor-id="referential-integrity"><span class="header-section-number">14.4.5</span> Referential Integrity</h3>
+<p><strong>Referential Integrity</strong>: Often it is needed that a value that appears in a <em>referencing relation</em> for a given set of attributes also appears in a <em>referenced relation</em>.</p>
+<p><strong>Foreign keys</strong> is an example of a referential integrity constraint, reminder:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">foreign</span> <span class="kw">key</span> (dept_name) <span class="kw">references</span> department <span class="co">--part of create table course (...)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For each tuple in <code>course</code>, value of <code>dept_name</code> must appear in <code>name</code> in <code>department</code> relation.</p>
+<p>By default foreing-key references the primary-key attributes of the referenced relation but a list of attributes of the referenced relation can be specified explicitly. This list of attributes must either be <code>primary key</code> or <code>unique</code>:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">foreign</span> <span class="kw">key</span> (dept_name) <span class="kw">references</span> department(name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>More general referential integrity, where referenced attributes do not form a candiate key is not supported by SQL. But there are alternative construct in SQL that can achieve this, eventhough none of them are supported by current SQL DBMS implementations.</p>
+</div>
+</div>
+<p>Foreign key must reference a compatible set of attributes. (Cardinality and data type/domain)</p>
+<section id="cascade" class="level4" data-number="14.4.5.1">
+<h4 data-number="14.4.5.1" class="anchored" data-anchor-id="cascade"><span class="header-section-number">14.4.5.1</span> Cascade</h4>
+<p>Default behaviour is to reject a transaction that violates a referential integriy constraint. But this can changed with <code>cascade</code>.</p>
+<p>With <code>cascade</code> instead of rejecting a <strong>delete</strong> or <strong>update</strong> that violates the constraint, the tuple in the <strong>referencing</strong> relation is changed. (updated or deleted)</p>
+<p>For example in <code>course</code> relation</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">table</span> course(</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">..</span>.</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">foreign</span> <span class="kw">key</span> (dept_name) <span class="kw">references</span> departments</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">on</span> <span class="kw">delete</span> <span class="kw">cascade</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">on</span> <span class="kw">update</span> <span class="kw">cascade</span>,</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">..</span>.</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>on delete cascade</code>: If a tuple in <code>department</code> is deleted, all tuples in the <code>course</code> that reference that department are deleteded</li>
+<li><code>on update cascade</code>: same as above</li>
+</ul>
+<p>further behaviour is allowed in SQL other than <code>on delete cascade</code></p>
+<ul>
+<li><code>on delete set null</code></li>
+<li><code>on delete set default</code>: set to the default value of the domain.</li>
+</ul>
+<p>Foreign keys are allowed to be <code>null</code>, unless explicitly specified <code>not null</code>. By default foreign key values that contain a <code>null</code> are automatically accepted to satisfy the foreign-key contraint by default.</p>
+</section>
+</section>
+<section id="naming-constraints" class="level3" data-number="14.4.6">
+<h3 data-number="14.4.6" class="anchored" data-anchor-id="naming-constraints"><span class="header-section-number">14.4.6</span> Naming Constraints</h3>
+<p>Integrity constraints can be named explicitly with the keyword <code>constraint</code>:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>salary <span class="dt">numeric</span>(<span class="dv">8</span>, <span class="dv">2</span>), <span class="kw">constraint</span> minsalary <span class="kw">check</span>(salary <span class="op">&gt;</span> <span class="dv">29000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This allows dropping constraints by name:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> instructor <span class="kw">drop</span> <span class="kw">constraint</span> minsalary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="complex-checks-and-assertions" class="level3" data-number="14.4.7">
+<h3 data-number="14.4.7" class="anchored" data-anchor-id="complex-checks-and-assertions"><span class="header-section-number">14.4.7</span> Complex Checks and Assertions</h3>
+<p>Complex conditions in checks are not implemented in practical DBMS’s, but are part of SQL:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">check</span> (time_slot_id <span class="kw">in</span> (<span class="kw">select</span> <span class="kw">id</span> <span class="kw">from</span> time_slot)) <span class="co">-- in the definition of section</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Current DBMS’ do not provide <code>create assertion</code> or complex <code>check</code> constructs. Nevertheless, equivalent functionality can be achieved using <strong>triggers</strong>, including non-foreigh-key referential integrity constraints.</p>
+<p><strong>Assertion</strong> is a predicate that a DB should always satsify. Consider:</p>
+<ul>
+<li>for each student tuple in the <code>student</code> relation, <code>tot_cred</code> must be equal to the sum of successfully completed courses in the relation <code>takes</code></li>
+</ul>
+<div class="sourceCode" id="cb48"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">assertion</span> credits_earned_constraint <span class="kw">check</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>(<span class="kw">not</span> <span class="kw">exists</span> (</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> <span class="kw">id</span> </span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> student s</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> tot_cred <span class="op">&lt;&gt;</span> (</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">select</span> <span class="fu">coalesce</span>(<span class="fu">sum</span>(credits), <span class="dv">0</span>)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">from</span> takes t, course c </span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">where</span> t.course_id <span class="op">=</span> c.<span class="kw">id</span> </span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>            <span class="kw">and</span> s.<span class="kw">id</span> <span class="op">=</span> takes.student_id</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>            <span class="kw">and</span> t.grade <span class="kw">is</span> <span class="kw">not</span> <span class="kw">null</span> <span class="kw">and</span> t.grade <span class="op">&lt;&gt;</span> <span class="st">'F'</span></span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>General form of an SQL assertion:</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">assertion</span> <span class="op">&lt;</span><span class="kw">assertion</span><span class="op">-</span>name<span class="op">&gt;</span> <span class="kw">check</span> <span class="op">&lt;</span>predicate<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>SQL does not provide</p>
+<p><span class="math display">\[\forall x P(x)\]</span></p>
+<p>Instead we use the equivalent</p>
+<p><span class="math display">\[\neg \exists x \neg P(x)\]</span></p>
+<p>which in turn can be expressed as</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="op">..</span>.</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> <span class="kw">not</span> <span class="kw">exists</span> (</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">..</span>. <span class="co">-- SFW construct simulating tuples satifsying not P</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="op">..</span>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="sql-data-types-and-schemas" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="sql-data-types-and-schemas"><span class="header-section-number">14.5</span> SQL Data Types and Schemas</h2>
+<p>We covered basic DT, s.a. :</p>
+<ul>
+<li><code>int</code></li>
+<li><code>varchar(&lt;N&gt;)</code></li>
+<li><code>numeric(&lt;N&gt;, &lt;M&gt;)</code></li>
+<li><code>float</code></li>
+</ul>
+<p>There are additional DTs, as well as possiblity to define custom DTs.</p>
+<section id="date-and-time" class="level3" data-number="14.5.1">
+<h3 data-number="14.5.1" class="anchored" data-anchor-id="date-and-time"><span class="header-section-number">14.5.1</span> Date and Time</h3>
+<p>SQL standard supports several DTs relating to the dates and times:</p>
+<ul>
+<li><code>date</code>: A calendar date containing a four-digit year, month and a day of the month</li>
+<li><code>time</code>: The time of day in hours, minutes and seconds.</li>
+<li><code>time(&lt;P&gt;)</code>: Same as time, where <code>&lt;P&gt;</code> can be used to specify the number of fractional digits for seconds.</li>
+<li><code>time with timezone</code>: Same as time, with the additional information for the time zone.</li>
+<li><code>timestamp</code>: A combination of <code>time</code> and <code>date</code></li>
+<li><code>timestamp(&lt;P&gt;)</code>: Same as <code>timestamp</code>, where <code>&lt;P&gt;</code> specifies the number of fractional digits for seconds. (default is 6)</li>
+<li><code>timestamp with timezone</code>: self-explanatory</li>
+</ul>
+<p>Exmaples:</p>
+<ul>
+<li><code>date '2023-04-25'</code>, format: <code>yyyy-mm-dd</code></li>
+<li><code>time '09:30:15'</code>, format: <code>hh:mm:ss[.ff]</code></li>
+<li><code>timestampt</code>, format: <code>date time</code></li>
+</ul>
+<p>Individual fields can be extracted from <code>date</code> or <code>time</code> values using <code>extract()</code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="kw">values</span> </span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>(<span class="fu">extract</span>(<span class="dt">year</span> <span class="kw">from</span> <span class="dt">date</span>(<span class="st">'1999-12-12'</span>))),</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>(<span class="fu">extract</span> (<span class="dt">second</span> <span class="kw">from</span> <span class="dt">time</span> <span class="st">'10:15:30.14'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>2 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">column1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1999.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">30.14</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>We can get current date, current time (with time zone), local time (without timezone), current time stamp (with time zone), local time stamp (without time zone):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="kw">values</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>(<span class="fu">current_date</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">column1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2023-10-29</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> (</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span> </span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    (current_time(<span class="dv">2</span>), localtime(<span class="dv">2</span>))</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>) times(with_time_zone, without_time_zone)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">with_time_zone</th>
+<th style="text-align: left;">without_time_zone</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">20:17:24.72</td>
+<td style="text-align: left;">20:17:24.72</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> (</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span> </span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>    (<span class="fu">current_timestamp</span>, <span class="fu">localtimestamp</span>)</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>) time_date(with_time_zone, without_time_zone)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">with_time_zone</th>
+<th style="text-align: left;">without_time_zone</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2023-10-29 20:17:24</td>
+<td style="text-align: left;">2023-10-29 20:17:24</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>SQL allows comparison of date and time types.</p>
+<p>There is <code>interval</code> data type that corresponds to interval compoutations of <code>time</code> types.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">values</span> </span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>(<span class="st">'10:30:15'</span>:<span class="ch">:time</span> <span class="op">-</span> <span class="st">'09:15:30'</span>:<span class="ch">:time</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">column1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">01:14:45</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="kw">values</span> </span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>(age(<span class="st">'1999-10-13'</span>:<span class="ch">:date</span>, <span class="st">'1983-03-15'</span>:<span class="ch">:date</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">column1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">16 years 6 mons 29 days</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Arithmetic operations with <code>interval</code> type are possible:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="kw">values</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>(<span class="st">'1 years 5 mons 20 days'</span>:<span class="ch">:interval</span> <span class="op">+</span> <span class="fu">current_date</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">column1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2025-04-18</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="type-conversion-and-formatting-functions" class="level3" data-number="14.5.2">
+<h3 data-number="14.5.2" class="anchored" data-anchor-id="type-conversion-and-formatting-functions"><span class="header-section-number">14.5.2</span> Type Conversion and Formatting Functions</h3>
+<section id="casting" class="level4" data-number="14.5.2.1">
+<h4 data-number="14.5.2.1" class="anchored" data-anchor-id="casting"><span class="header-section-number">14.5.2.1</span> Casting</h4>
+<p>Casting DT with <code>cast(&lt;D1&gt; as &lt;D2&gt;)</code> or with <code>::</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="kw">values</span> </span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>(<span class="fu">cast</span>(<span class="fl">10.2</span> <span class="kw">as</span> <span class="dt">int</span>)),</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>(<span class="fl">10.2</span>:<span class="ch">:int</span>),</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>(<span class="st">'1111'</span>:<span class="ch">:int</span>) <span class="co">--casting string as int</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>3 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">column1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1111</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="formatting" class="level4" data-number="14.5.2.2">
+<h4 data-number="14.5.2.2" class="anchored" data-anchor-id="formatting"><span class="header-section-number">14.5.2.2</span> Formatting</h4>
+<p>Changing displayed format instead of the DT with <code>to_char</code>, <code>to_number</code>, <code>to_date</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="kw">values</span> </span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>(<span class="fu">cast</span>(<span class="fl">10.2</span> <span class="kw">as</span> <span class="dt">int</span>)),</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>(<span class="fl">10.2</span>:<span class="ch">:int</span>),</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>(<span class="st">'1111'</span>:<span class="ch">:int</span>) <span class="co">--casting string as int;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>3 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">column1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1111</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="kw">values</span> </span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>(<span class="fu">to_char</span>(<span class="dv">10</span>, <span class="st">'999D99'</span>)),</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>(<span class="fu">to_char</span>(<span class="fl">124.43</span>:<span class="ch">:real</span>, <span class="st">'999D9'</span>));</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>2 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">column1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">10,00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">124,4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">values</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>(<span class="fu">to_char</span>(<span class="fu">localtimestamp</span>, <span class="st">'HH12:MI:SS'</span>)),</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>(<span class="fu">to_char</span> (<span class="dt">interval</span> <span class="st">'15h 2m 12s'</span>, <span class="st">'HH24:MI:SS'</span>));</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>2 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">column1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">08:17:24</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">15:02:12</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="kw">values</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>(<span class="fu">to_date</span>(<span class="st">'05 Dec 2000'</span>, <span class="st">'DD Mon YYYY'</span>));</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">column1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2000-12-05</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="handling-null-values" class="level4" data-number="14.5.2.3">
+<h4 data-number="14.5.2.3" class="anchored" data-anchor-id="handling-null-values"><span class="header-section-number">14.5.2.3</span> Handling Null Values</h4>
+<p>We can specify how null values should be displayed with <code>coalesce()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> a, <span class="fu">coalesce</span>(b, <span class="dv">0</span>) <span class="kw">as</span> b</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> (</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span> </span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span>, <span class="kw">null</span>),</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>) r(a, b)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>2 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">a</th>
+<th style="text-align: right;">b</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">3</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="default-values" class="level3" data-number="14.5.3">
+<h3 data-number="14.5.3" class="anchored" data-anchor-id="default-values"><span class="header-section-number">14.5.3</span> Default Values</h3>
+<p>A Default value can be specified for an attribute in the <code>create table</code> statement:</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">table</span> student (</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">id</span> <span class="dt">varchar</span>(<span class="dv">5</span>),</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>    name <span class="dt">varchar</span>(<span class="dv">20</span>) <span class="kw">not</span> <span class="kw">null</span>,</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>    dept_name <span class="dt">varchar</span>(<span class="dv">20</span>),</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>    tot_cred <span class="dt">numeric</span>(<span class="dv">3</span>, <span class="dv">0</span>) <span class="kw">default</span> <span class="dv">0</span></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">primary</span> <span class="kw">key</span> (<span class="kw">id</span>)</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When a tuple is inserted into <code>student</code>, if no value provided for <code>tot_cred</code> its value is set to 0 by default:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="kw">insert</span> <span class="kw">into</span> student(<span class="kw">id</span>, name, dept_name)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="kw">values</span> (<span class="st">'12789'</span>, <span class="st">'Newman'</span>, <span class="st">'Comp. Sci.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="user-defined-types" class="level3" data-number="14.5.4">
+<h3 data-number="14.5.4" class="anchored" data-anchor-id="user-defined-types"><span class="header-section-number">14.5.4</span> User-Defined Types</h3>
+<p>Two forms are supported:</p>
+<ul>
+<li><strong>distinct types</strong></li>
+<li><strong>structured data types</strong>: complex data types with nested record strutures, arrays and multisets</li>
+</ul>
+<section id="distinct-types" class="level4" data-number="14.5.4.1">
+<h4 data-number="14.5.4.1" class="anchored" data-anchor-id="distinct-types"><span class="header-section-number">14.5.4.1</span> Distinct Types</h4>
+<p>Even though <code>student.name</code> and <code>department.name</code> are both strings, they should be distinct on the conceptual level.</p>
+<p>On a programming level assigning a human name to a department name is probably a programming error. Similarly comparing a monetary value in dollars to a monetary value in pounds is also probably a programming error. A good type system should detect such errors.</p>
+<p><code>create domain</code> can be used to create new types:</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">domain</span> dollars <span class="kw">as</span> <span class="dt">numeric</span>(<span class="dv">12</span>, <span class="dv">2</span>) <span class="kw">check</span> (<span class="fu">value</span> <span class="op">&gt;=</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>New types can be used in <code>create table</code> declarations:</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">table</span> department(</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>    dept_name <span class="dt">varchar</span>(<span class="dv">20</span>),</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>    building <span class="dt">varchar</span>(<span class="dv">15</span>),</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>    budget Dollars</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="generating-unique-key-values" class="level3" data-number="14.5.5">
+<h3 data-number="14.5.5" class="anchored" data-anchor-id="generating-unique-key-values"><span class="header-section-number">14.5.5</span> Generating Unique Key Values</h3>
+<p>DBMS offer automatic management of unique-key value generation. In the <code>instructor</code> instead of</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="kw">id</span> <span class="dt">varchar</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>we can write:</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="kw">id</span> <span class="dt">number</span>(<span class="dv">5</span>) <span class="kw">generated</span> always <span class="kw">as</span> identiy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Any <code>insert</code> statement must avoid specifying a value for the automatically generated key:</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="kw">insert</span> <span class="kw">into</span> instructor(name, dept_name, salary)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">values</span> (<span class="st">'Newprof'</span>, <span class="st">'Comp. Sci.'</span>, <span class="dv">100000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>if we replace <code>always</code> with <code>by default</code> we can specify own keys.</p>
+</section>
+<section id="create-table-extensions" class="level3" data-number="14.5.6">
+<h3 data-number="14.5.6" class="anchored" data-anchor-id="create-table-extensions"><span class="header-section-number">14.5.6</span> Create Table Extensions</h3>
+<p>Creating a table with the same schema as an existing table:</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">table</span> temp_instructor (<span class="kw">like</span> instructor <span class="kw">including</span> <span class="kw">all</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A new table can be created and populated with data using a query:</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">table</span> t1 <span class="kw">as</span> (</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> i.name <span class="kw">as</span> i_name, i.salary <span class="kw">as</span> i_salary</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> instructor i</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> dept_name <span class="op">=</span> <span class="st">'Music'</span></span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> <span class="kw">data</span>; <span class="co">--optional in postgres</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>difference to views</strong>:</p>
+<ul>
+<li>views reflect the actual contents dynamically.</li>
+<li>tables created with the above method are initiated with set values.</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="index-definition-in-sql" class="level2" data-number="14.6">
+<h2 data-number="14.6" class="anchored" data-anchor-id="index-definition-in-sql"><span class="header-section-number">14.6</span> Index Definition in SQL</h2>
+<p>Many queries reference only a small portion of the records in the file:</p>
+<ul>
+<li>Find all instructors in the Physics department</li>
+<li>Find the salary of the instructor with the ID 22201</li>
+</ul>
+<p>reference only a fraction of the records in the instructor relation. It is inefficient to check every record if <code>building</code> field is ‘Physics’ or if <code>id</code> field is ‘22201’.</p>
+<p>An <strong>index</strong> on an attribute of a relation is a data structure that allows the DBS to find those tuples in the relation that have a specified value for that attribute efficiently (in logarithmic time), without linearly scanning through all tuples of the relation.</p>
+<p>For example, if we create an index on the <code>dept_value</code> attribute of the relation <code>instructor</code>, DBS can find records that have any specified value for <code>dept_value</code> s.a. “Physics”, or “Music” directly, without reading all the tuples linearly.</p>
+<p>An index can also be created on a list of attributes instead of a single attribute, e.g.&nbsp;on <code>name</code> <strong>and</strong> <code>dept_name</code> of <code>instructor</code>.</p>
+<p>Indexes can be created automatically by the DBMS, but it is not easy to decide, therefore SQL DDL provides syntax for creating indexes manually with the <code>create index</code> command:</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">index</span> <span class="op">&lt;</span><span class="kw">index</span><span class="op">-</span>name<span class="op">&gt;</span> <span class="kw">on</span> <span class="op">&lt;</span>relation<span class="op">-</span>name<span class="op">&gt;</span> (<span class="op">&lt;</span><span class="kw">attribute</span><span class="op">-</span><span class="kw">list</span><span class="op">&gt;</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Example:</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">index</span> dept_index <span class="kw">on</span> instructor (dept_name);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now, when a query uses <code>dept_name</code> from <code>instructor</code> it will benefit from the index and it will execute faster:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> instructor</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> dept_name <span class="op">=</span> <span class="st">'Music'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="knitsql-table">
+<table class="table table-sm table-striped small">
+<caption>2 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">dept_name</th>
+<th style="text-align: right;">salary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">15151</td>
+<td style="text-align: left;">Mozart</td>
+<td style="text-align: left;">Music</td>
+<td style="text-align: right;">40000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">30765</td>
+<td style="text-align: left;">Green</td>
+<td style="text-align: left;">Music</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Named indexes can be dropped:</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="kw">drop</span> <span class="kw">index</span> dept_index;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="authorization" class="level2" data-number="14.7">
+<h2 data-number="14.7" class="anchored" data-anchor-id="authorization"><span class="header-section-number">14.7</span> Authorization</h2>
+<p>A user ma be assigned several types of authorizations on parts of the DB:</p>
+<ul>
+<li>to read data</li>
+<li>to insert new data</li>
+<li>to update data</li>
+<li>to delete data</li>
+</ul>
+<p>Each of the above is called a <strong>privilege</strong>. A user may be authorized on combinations of those on parts of the DB such relations or views.</p>
+<p>User may also be authorized on the DB Schema, s.a. create, modify or drop relations.</p>
+<p>A user may be authorized to</p>
+<ul>
+<li>pass his authorization (<strong>grant</strong>)</li>
+<li>withdraw an authorization that was granted (<strong>revoke</strong>)</li>
+</ul>
+<section id="granting-and-revoking-privileges" class="level3" data-number="14.7.1">
+<h3 data-number="14.7.1" class="anchored" data-anchor-id="granting-and-revoking-privileges"><span class="header-section-number">14.7.1</span> Granting and Revoking Privileges</h3>
+<p>SQL includes following privileges:</p>
+<ul>
+<li><code>select</code> (reading data)</li>
+<li><code>insert</code> (insert new data)</li>
+<li><code>update</code> (updating data)</li>
+<li><code>delete</code> (deleting data)</li>
+</ul>
+<p><code>grant</code> statement is used to confer authorization:</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="kw">grant</span> <span class="op">&lt;</span><span class="kw">privilege</span> <span class="kw">list</span><span class="op">&gt;</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="kw">on</span> <span class="op">&lt;</span>relation<span class="op">/</span><span class="kw">view</span> name<span class="op">&gt;</span></span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a><span class="kw">to</span> <span class="op">&lt;</span><span class="fu">user</span><span class="op">/</span><span class="kw">role</span> <span class="kw">list</span><span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Grant read authorization <code>department</code> relation to users Amit and Satoshi</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="kw">grant</span> <span class="kw">select</span> <span class="kw">on</span> deparment <span class="kw">to</span> Amit, Satoshi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Update authorization can be granted on the whole tuple or only on a list of attributes. List of attributes on which update authorization is granted appears after <code>update</code> listed inside parantheses</p>
+<p>Grant update authorization on <code>budget</code> attribute of the <code>department</code> relation to users Amit and Satoshi:</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="kw">grant</span> <span class="kw">update</span> <span class="kw">on</span> department(<span class="kw">update</span>) <span class="kw">to</span> Amit, Satoshi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>insert</code> and <code>delete</code> authorizations are analogous.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The user name <code>public</code> refers to all current and future users of the system. Thus privileges granted to <code>public</code> are implicitly granted to all current and future users.</p>
+</div>
+</div>
+<p>To revoke authorizations <code>revoke</code> statement is used:</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="kw">revoke</span> <span class="kw">select</span> <span class="kw">on</span> department <span class="kw">from</span> Amit, Satoshi;</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a><span class="kw">revoke</span> <span class="kw">update</span> (budget) <span class="kw">on</span> department <span class="kw">from</span> Amit, Satoshi;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="roles" class="level3" data-number="14.7.2">
+<h3 data-number="14.7.2" class="anchored" data-anchor-id="roles"><span class="header-section-number">14.7.2</span> Roles</h3>
+<p>Naturally each instructor must have the same authorizations on same relations/views. When new insturctor is appointed they must automatically receive this roles.</p>
+<p>In UniDB example roles could be:</p>
+<ul>
+<li><code>instructor</code></li>
+<li><code>teaching_assistant</code></li>
+<li><code>student</code></li>
+<li><code>dean</code></li>
+<li><code>department_chair</code></li>
+</ul>
+<p>Roles can be created as:</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">role</span> instructor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Roles can be granted priviliges just like users:</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="kw">grant</span> <span class="kw">select</span> <span class="kw">on</span> takes</span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a><span class="kw">to</span> instructor;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Roles can be granted to users and to other roles:</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">role</span> dean;</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="kw">grant</span> instructor <span class="kw">to</span> dean <span class="co">--grant role instructor to role dean</span></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="kw">grant</span> dean <span class="kw">to</span> Satoshi; <span class="co">-- grant role dean to user Satoshi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When a user logs in to the DBS, actions executed by the user have all the privileges granted directly to the user, as well ones granted to roles granted to the user.</p>
+</section>
+<section id="authorization-on-views" class="level3" data-number="14.7.3">
+<h3 data-number="14.7.3" class="anchored" data-anchor-id="authorization-on-views"><span class="header-section-number">14.7.3</span> Authorization on Views</h3>
+<p>Consider a staff member who needs to know that salaries of all faculty in the Geology department, but is not authorized to see any information regarding other departments. Thus he must be denied direct access to the <code>instructor</code> relation, but still be able to see information from the Geology department. This can be achieved with granted authorization to a view:</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">view</span> geo_instructor <span class="kw">as</span> (</span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> instructor</span>
+<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> dept_name <span class="op">=</span> <span class="st">'Geology'</span></span>
+<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then we can create role <code>geo_admin</code> and grant it certain privileges:</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">role</span> geo_admin;</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="kw">grant</span> <span class="kw">select</span> <span class="kw">on</span> geo_instructor <span class="kw">to</span> geo_admin;</span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a><span class="kw">grant</span> <span class="kw">update</span> (salary) <span class="kw">on</span> geo_instructor <span class="kw">to</span> geo_admin;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The user who <strong>creates</strong> this view must have <code>select</code> authorization on <code>instructor</code> relation.</p>
+</section>
+<section id="transfer-of-privileges" class="level3" data-number="14.7.4">
+<h3 data-number="14.7.4" class="anchored" data-anchor-id="transfer-of-privileges"><span class="header-section-number">14.7.4</span> Transfer of Privileges</h3>
+<p>A user/role is by default not allowd to pass on their authorization to other users/roles. This can be changed with <code>with grant option</code> clause.</p>
+<p>Example:</p>
+<ul>
+<li>We wish to allow Amit <code>select</code> privilege on <code>department</code> and allow Amit to grant it to others:</li>
+</ul>
+<div class="sourceCode" id="cb86"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="kw">grant</span> <span class="kw">select</span> <span class="kw">on</span> department <span class="kw">to</span> Amit <span class="kw">with</span> <span class="kw">grant</span> <span class="kw">option</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Consider the granting of update authorization on the <code>teaches</code> relation. Assume that, initially DB admin grants update authorization to <span class="math inline">\(U_1\)</span>, <span class="math inline">\(U_2\)</span>, and <span class="math inline">\(U_3\)</span>, with <code>with grant option</code>. These users may grant this authorization to other users, which can be represented by an <strong>authorization graph</strong>.</p>
+<p>A user has an authorization <em>iff</em> there is path from root to the user.</p>
+<div id="fig-authorization-graph" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./imgs/authorization-graph.png" class="img-fluid figure-img" style="width:35.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;14.1: authorization-graph</figcaption>
+</figure>
+</div>
+</section>
+<section id="revoking-of-privileges" class="level3" data-number="14.7.5">
+<h3 data-number="14.7.5" class="anchored" data-anchor-id="revoking-of-privileges"><span class="header-section-number">14.7.5</span> Revoking of Privileges</h3>
+<p>Suppose DB admin decides to revoke the authorization of <span class="math inline">\(U_1\)</span> show in <a href="#fig-authorization-graph">Figure&nbsp;<span>14.1</span></a>. Since <span class="math inline">\(U_4\)</span> has received authorization from <span class="math inline">\(U_1\)</span>, his authorization should be revoked as well. However <span class="math inline">\(U_5\)</span> was granted authorization by both <span class="math inline">\(U_1\)</span> and <span class="math inline">\(U_2\)</span>. Since <span class="math inline">\(U_2\)</span>s authorization was not revoked <span class="math inline">\(U_5\)</span> retains the authorization.</p>
+<p>This default behavior is <strong>cascading revokation</strong>. It can be prevented by the keyword <code>restrict</code>:</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="kw">revoke</span> <span class="kw">select</span> <span class="kw">on</span> department <span class="kw">from</span> Amit, Satoshi <span class="kw">restrict</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This revocation fails, if there are any cascading effects.</p>
+<p>Only the privilege of granting an authorization can be revoked specifically:</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="kw">revoke</span> <span class="kw">grant</span> <span class="kw">option</span> <span class="cf">for</span> <span class="kw">select</span> <span class="kw">on</span> department <span class="kw">from</span> Amit;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now Amit can no more grant <code>select</code> privilege to other users, but still has the privilege itself.</p>
+<p>The default cascading revokation is not appropriate in many cases. Suppose Sutoshi has the role <code>dean</code>, grants <code>instructor</code> to Amit, and later <code>dean</code> is revoked from Sutoshi, perhaps because he leaves the University. Since Amit continues to be employed he should retain the <code>instructor</code> role.</p>
+<p>To deal with this, SQL permits privilege to be granted by a role rather than by a user. SQL has a notion of the current role associated with a session. By default it is null. It can be set with</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span> <span class="kw">role</span> role_name <span class="co">--role associated with the session</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To grant a privilege with the grantor as the current session role, we add the clause</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>granted <span class="kw">by</span> current_role</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>to the grant statement, provided current session role is not null.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../notes/03introSQL/introsql.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to SQL</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../notes/UniDB/unidb.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Uni DB</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
