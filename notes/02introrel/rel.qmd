@@ -15,16 +15,16 @@ con1 <-
 
 * $\texttt{intstructor}(\underline{\texttt{ID}}, \texttt{name}, \texttt{dept\_name}\rightarrow
   \texttt{department}, \texttt{salary})$
-* $\textbf{\ttt{course}}(\underline{\ttt{id}}, \ttt{ title}, \ttt{ dept\_name} \rightarrow \ttt{ department}, \ttt{  credits})$
-* $\textbf{\ttt{prereq}}(\underline{\ttt{course\_id} \rightarrow \ttt{ course}, \ttt{ prereq\_id} \rightarrow \ttt{ course}})$
-* $\textbf{\ttt{department}}(\underline{\ttt{name}} , \ttt{ building, } \ttt{ budget})$
-* $\textbf{\ttt{section}}(\udl{\ttt{course\_id}, \ttt{id}, \ttt{ semester}, \ttt{ year, }}(\ttt{building}, \ttt{ room\_number}) \rightarrow \ttt{classroom}, \ttt{ time\_slot\_id})$
-* $\textbf{\ttt{teaches}}(\udl{\ttt{instructor\_ID}\rightarrow \ttt{ instructor}, (\ttt{ course\_id, sec\_id, semester, year}) \rightarrow \ttt{ section}})$
-* $\textbf{\ttt{student}}(\udl{\ttt{ID}}, \ttt{ name}, \ttt{ dept\_name}\rightarrow \ttt{ department}, \ttt{ total\_credit})$
-* $\textbf{\ttt{takes}}(\udl{\ttt{student\_ID} \rightarrow \ttt{student}, (\ttt{course\_id, section\_id, semester, year}) \rightarrow \ttt{section}}, \ttt{grade})$
-* $\textbf{\ttt{advisor}}(\udl{\ttt{student\_id} \rightarrow \ttt{ student}, \ttt{ instructor\_id} \rightarrow \ttt{ instructor}})$
-* $\textbf{\ttt{classroom}}(\udl{\ttt{building, room\_number}}, \ttt{ capacity})$
-* $\textbf{\ttt{time\_slot}}(\udl{\ttt{id}, \ttt{  day}, \ttt{  start\_time}}, \ttt{ end\_time})$
+* $\textbf{\textttt{course}}(\underline{\textttt{id}}, \textttt{ title}, \textttt{ dept\_name} \rightarrow \textttt{ department}, \textttt{  credits})$
+* $\textbf{\textttt{prereq}}(\underline{\textttt{course\_id} \rightarrow \textttt{ course}, \textttt{ prereq\_id} \rightarrow \textttt{ course}})$
+* $\textbf{\textttt{department}}(\underline{\textttt{name}} , \textttt{ building, } \textttt{ budget})$
+* $\textbf{\textttt{section}}(\underline{\textttt{course\_id}, \textttt{id}, \textttt{ semester}, \textttt{ year, }}(\textttt{building}, \textttt{ room\_number}) \rightarrow \textttt{classroom}, \textttt{ time\_slot\_id})$
+* $\textbf{\textttt{teaches}}(\underline{\textttt{instructor\_ID}\rightarrow \textttt{ instructor}, (\textttt{ course\_id, sec\_id, semester, year}) \rightarrow \textttt{ section}})$
+* $\textbf{\textttt{student}}(\underline{\textttt{ID}}, \textttt{ name}, \textttt{ dept\_name}\rightarrow \textttt{ department}, \textttt{ total\_credit})$
+* $\textbf{\textttt{takes}}(\underline{\textttt{student\_ID} \rightarrow \textttt{student}, (\textttt{course\_id, section\_id, semester, year}) \rightarrow \textttt{section}}, \textttt{grade})$
+* $\textbf{\textttt{advisor}}(\underline{\textttt{student\_id} \rightarrow \textttt{ student}, \textttt{ instructor\_id} \rightarrow \textttt{ instructor}})$
+* $\textbf{\textttt{classroom}}(\underline{\textttt{building, room\_number}}, \textttt{ capacity})$
+* $\textbf{\textttt{time\_slot}}(\underline{\textttt{id}, \textttt{  day}, \textttt{  start\_time}}, \textttt{ end\_time})$
 
 ## Relational Algebra
 

@@ -10,13 +10,13 @@ author:
 ## Uebersetzung eines ER-Schemas
 
 * $\texttt{Addresse}(\underline{\texttt{Ad\_ID}}\texttt{,}\, \texttt{PLZ, Stadt, Strasse, Hausnr})$
-* $\ttt{MusikerIn}(\underline{\texttt{M\_ID}}, \texttt{Name, Geb\_Datum, Ad\_ID \(\rightarrow\) Addresse)}$
-* $\ttt{Instrument}(\underline{\texttt{Name, Stimmung}})$
-* $\ttt{spielt}(\underline{\texttt{M\_ID\(\rightarrow\)MusikerIn, (Name, Stimmung)\(\rightarrow\)Instrument}}, \texttt{bevorzugt})$
-* $\ttt{Musikstueck}(\underline{\texttt{MS\_ID}}, \texttt{Titel, Laenge, M\_ID\(\rightarrow\)MusikerIn)}$
-* $\ttt{Album}(\underline{\texttt{A\_ID}}, \texttt{Titel, Release\_Datum, Preis, Tracks, M\_ID\(\rightarrow\)MusikerIn)}$
-* $\ttt{erscheint}(\underline{\texttt{M\_ID\(\rightarrow\)Musikstueck, A\_ID\(\rightarrow\)Album}}, \texttt{TrackNr})$
-* $\ttt{spielt\_mit}(\underline{\texttt{M\_ID\(\rightarrow\)MusikerIn, MS\_ID\(\rightarrow\)Musikstueck}})$
+* $\textttt{MusikerIn}(\underline{\texttt{M\_ID}}, \texttt{Name, Geb\_Datum, Ad\_ID \(\rightarrow\) Addresse)}$
+* $\textttt{Instrument}(\underline{\texttt{Name, Stimmung}})$
+* $\textttt{spielt}(\underline{\texttt{M\_ID\(\rightarrow\)MusikerIn, (Name, Stimmung)\(\rightarrow\)Instrument}}, \texttt{bevorzugt})$
+* $\textttt{Musikstueck}(\underline{\texttt{MS\_ID}}, \texttt{Titel, Laenge, M\_ID\(\rightarrow\)MusikerIn)}$
+* $\textttt{Album}(\underline{\texttt{A\_ID}}, \texttt{Titel, Release\_Datum, Preis, Tracks, M\_ID\(\rightarrow\)MusikerIn)}$
+* $\textttt{erscheint}(\underline{\texttt{M\_ID\(\rightarrow\)Musikstueck, A\_ID\(\rightarrow\)Album}}, \texttt{TrackNr})$
+* $\textttt{spielt\_mit}(\underline{\texttt{M\_ID\(\rightarrow\)MusikerIn, MS\_ID\(\rightarrow\)Musikstueck}})$
 
 
 ## Uebersetzung eines ER-Schemas mit Hierarchien
@@ -24,13 +24,13 @@ author:
 
 1. *Relationales Schema*
    
-* $\ttt{Personal}(\underline{\texttt{Pers\_ID}}, \texttt{GebDat, Name, Vorname})$
-* $\ttt{MitarbeiterIn}(\underline{\texttt{Pers\_ID\(\rightarrow\)Personal}}, \texttt{Bonus})$
-* $\ttt{KundIn}(\underline{\texttt{KundenID\(\rightarrow\)Personal}}, \texttt{Branche})$
-* $\ttt{ManagerIn}(\underline{\texttt{Pers\_ID\(\rightarrow\)MitarbeiterIn}}, \texttt{Sektion})$
-* $\ttt{ProgrammiererIn}(\underline{\texttt{Pers\_ID\(\rightarrow\)MitarbeiterIn}}, \texttt{Abschluss})$
-* $\ttt{Programmiersprache}(\underline{\texttt{ProgSP}})$
-* $\ttt{kann}(\underline{\texttt{ProgSP\(\rightarrow\)Programmiersprache, Pers\_ID\(\rightarrow\)ProgrammiererIn}}, \texttt{level})$
+* $\textttt{Personal}(\underline{\texttt{Pers\_ID}}, \texttt{GebDat, Name, Vorname})$
+* $\textttt{MitarbeiterIn}(\underline{\texttt{Pers\_ID\(\rightarrow\)Personal}}, \texttt{Bonus})$
+* $\textttt{KundIn}(\underline{\texttt{KundenID\(\rightarrow\)Personal}}, \texttt{Branche})$
+* $\textttt{ManagerIn}(\underline{\texttt{Pers\_ID\(\rightarrow\)MitarbeiterIn}}, \texttt{Sektion})$
+* $\textttt{ProgrammiererIn}(\underline{\texttt{Pers\_ID\(\rightarrow\)MitarbeiterIn}}, \texttt{Abschluss})$
+* $\textttt{Programmiersprache}(\underline{\texttt{ProgSP}})$
+* $\textttt{kann}(\underline{\texttt{ProgSP\(\rightarrow\)Programmiersprache, Pers\_ID\(\rightarrow\)ProgrammiererIn}}, \texttt{level})$
 
 2. *Weitere Methoden fuer is-a*:
 
