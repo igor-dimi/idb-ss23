@@ -28,7 +28,7 @@ book:
         - notes/03introSQL/introsql.qmd
         - notes/04interSQL/intersql.qmd
         - notes/UniDB/unidb.qmd
-  
+  downloads: pdf 
 
 # website:
 #   title: "IDB SS23 Solutions & Notes"
@@ -54,12 +54,7 @@ format:
     theme: cosmo
     css: styles.css
     toc: true
-    include-in-header: 
-      - text: |
-          \usepackage{fvextra} 
-          \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
-          \newcommand{\ttt}[1]{\texttt{#1}}
-          \newcommand{\udl}[1]{\underline{#1}} 
+
   pdf: 
     include-in-header: 
       - text: |
