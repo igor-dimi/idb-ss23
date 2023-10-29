@@ -28,7 +28,7 @@ book:
         - notes/03introSQL/introsql.qmd
         - notes/04interSQL/intersql.qmd
         - notes/UniDB/unidb.qmd
-  
+  downloads: pdf 
 
 # website:
 #   title: "IDB SS23 Solutions & Notes"
